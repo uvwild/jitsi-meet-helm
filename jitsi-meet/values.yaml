@@ -23,9 +23,9 @@ web:
     enabled: false
     minReplicas: 1
     maxReplicas: 3
-    metrics:
-      targetCPUUtilizationPercentage: 70
-      targetMemoryUtilizationPercentage: 70
+#    metrics:
+#      targetCPUUtilizationPercentage: 70
+#      targetMemoryUtilizationPercentage: 70
   service:
     annotations: []
     type: ClusterIP

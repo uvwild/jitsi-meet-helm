@@ -7,23 +7,29 @@ metadata:
 spec:
   type: {{ .Values.prosody.service.type }}
   ports:
-    - port: 5222
-      targetPort: c2s1
+    - name: xmpp-client
+      port: 5222
+      targetPort: xmpp-client
       protocol: TCP
-      name: c2s1
-    - port: 5269
-      targetPort: c2s2
+
+    - name: xmpp-server
+      port: 5269
+      targetPort: xmpp-server
       protocol: TCP
-      name: c2s2
-    - port: 5280
-      targetPort: web
+      
+    - name: xmpp-bosh
+      port: 5280
+      targetPort: xmpp-bosh
       protocol: TCP
-      name: web
-    - port: 5347
+
+    - name: xmpp-unknown
+      port: 5347
       targetPort: xmpp
       protocol: TCP
-      name: xmpp
+
   sessionAffinity: ClientIP
   selector:
     app.kubernetes.io/name: {{ include "jitsi-meet.name-prosody" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
+status:
+  loadBalancer: {}

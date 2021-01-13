@@ -73,19 +73,19 @@ spec:
               value: {{ .value | quote }}
             {{- end }}
           ports:
-            - containerPort: 5222
+            - name: xmpp-client
+              containerPort: 5222
               protocol: TCP
-              name: c2s1
-            - containerPort: 5269
+            - name: xmpp-server
+              containerPort: 5269
               protocol: TCP
-              name: c2s2
-            - containerPort: 5280
+            - name: xmpp-bosh
+              containerPort: 5280
               protocol: TCP
-              name: web
-            - containerPort: 5347
+            - name: xmpp-unknown
+              containerPort: 5347
               protocol: TCP
-              name: xmpp
-          # lifecycle:
+    # lifecycle:
           #   postStart:
           #     exec:
           #       command:
