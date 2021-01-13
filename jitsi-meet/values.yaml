@@ -11,7 +11,7 @@ web:
   image:
     repository: jitsi/web
     tag: latest
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
   environment:
     - name: ENABLE_LETSENCRYPT
       value: false
@@ -47,7 +47,7 @@ jibri:
   image:
     repository: jitsi/jibri
     tag: latest
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
   environment: []
   resources: {}
 
@@ -59,7 +59,7 @@ prosody:
   image:
     repository: jitsi/prosody
     tag: latest
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
   environment: []
   replicaCount: 1
   service:
@@ -93,7 +93,7 @@ jicofo: # jicofo is used as a sidecar container for every prosody instance
   image:
     repository: jitsi/jicofo
     tag: latest
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
   environment: []
   componentSecret: ""
   userAuth:
@@ -106,7 +106,7 @@ jvb:
   image:
     repository: jitsi/jvb
     tag: latest
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
   environment: []
   replicaCount: 1
   securityContext:

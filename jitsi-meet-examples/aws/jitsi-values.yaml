@@ -114,15 +114,14 @@ web:
     extraArgs:
       provider: oidc
       email-domain: *
-      provider-display-name: aws_cognito
-      client-id: yourclientid
-      client-secret: yourclientsecret
+      provider-display-name: auth0
+      client-id: IJ9cjGKL1b410N5QpkI36pNbJ7khJFvu
+      client-secret: Napkyd1t_JuTMJnyQZvRLTq_6xncAxI6ZKuDMUsVyOiSec9Qj-5kYFvGPhyIbPLJ
       insecure-oidc-allow-unverified-email: false
-      oidc-issuer-url: issuerurl
-      oidc-jwks-url: jwksurl
-      scope: "openid profile aws.cognito.signin.user.admin"
+      oidc-issuer-url: https://gardener-demo.eu.auth0.com/
+      oidc-jwks-url:  https://gardener-demo.eu.auth0.com/.well-known/jwks.json
       cookie-secure: true
-      cookie-domain: mydomain.com
+      cookie-domain: jitsi.otcdemo.gardener.t-systems.net
       cookie-secret: randomcookiesecret
       cookie-samesite: lax
       provider: oidc

@@ -1,0 +1,154 @@
+image:
+  pullSecrets: []
+
+webHost: www.jitsi.otcdemo.gardener.t-systems.net
+
+common:
+  environment:
+    - name: XMPP_DOMAIN
+      value: jitsi.meet
+    - name: XMPP_AUTH_DOMAIN
+      value: auth.jitsi.meet
+    - name: XMPP_INTERNAL_MUC_DOMAIN
+      value: internal-muc.jitsi.meet
+    - name: XMPP_MUC_DOMAIN
+      value: muc.jitsi.meet
+    - name: XMPP_GUEST_DOMAIN
+      value: guest.jitsi.meet
+    - name: JVB_BREWERY_MUC
+      value: jvbbrewery
+    - name: TZ
+      value: Europe/Amsterdam
+
+web:
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt"
+      cert-manager.io/acme-challenge-type: http01
+      ingress.kubernetes.io/auth: "oauth2_proxy"
+      ingress.kubernetes.io/oauth-uri-prefix: "/oauth2"
+      ingress.kubernetes.io/forwarded-for: "enabled"
+      ingress.kubernetes.io/load-balance: "uri"
+      ingress.kubernetes.io/ssl-redirect: "ON"
+      ingress.kubernetes.io/ssl-certificate: jitsi-meet-web
+      ingress.kubernetes.io/timeout-tunnel: 3h
+#      kubernetes.io/ingress.class: "haproxy"    
+      kubernetes.io/ingress.class: "nginx"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    hosts:
+      - host: jitsi.otcdemo.gardener.t-systems.net
+        oauth: true
+        paths:
+          - /
+    tls:
+      - hosts:
+          - jitsi.otcdemo.gardener.t-systems.net
+        secretName: jitsi-meet-web
+  environment:
+    - name: ENABLE_LETSENCRYPT
+      value: true
+  replicaCount: 1
+  hpa:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 3
+    metrics:
+      - type: Resource
+        resource:
+          name: memory
+          targetAverageUtilization: 70
+      - type: Resource
+        resource:
+          name: cpu
+          targetAverageUtilization: 70      
+  service:
+    annotations: []
+    type: LoadBalancer
+    port: 80
+  jwtsidecar:
+    extraArgs:
+      provider: oidc
+      email-domain: "*"
+      provider-display-name: auth0
+      client-id: IJ9cjGKL1b410N5QpkI36pNbJ7khJFvu
+      client-secret: Napkyd1t_JuTMJnyQZvRLTq_6xncAxI6ZKuDMUsVyOiSec9Qj-5kYFvGPhyIbPLJ
+      insecure-oidc-allow-unverified-email: true
+      oidc-issuer-url: https://gardener-demo.eu.auth0.com/
+      oidc-jwks-url:  https://gardener-demo.eu.auth0.com/.well-known/jwks.json
+      cookie-secure: true
+      cookie-domain: jitsi.otcdemo.gardener.t-systems.net
+      scope: "cgr_9RGm7rM4ooq1k87C"
+      cookie-secure: true
+      cookie-domain: otcdemo.gardener.t-systems.net
+      cookie-secret: randomcookiesecr
+      cookie-samesite: lax
+      set-xauthrequest: true
+      proxy-prefix: "/oauth2"
+
+  environment:
+    - name: XMPP_DOMAIN
+      value: meet.jitsi
+    - name: XMPP_AUTH_DOMAIN
+      value: auth.meet.jitsi
+    - name: XMPP_INTERNAL_MUC_DOMAIN
+      value: internal-muc.meet.jitsi
+    - name: XMPP_MUC_DOMAIN
+      value: muc.meet.jitsi
+    - name: TZ
+      value: Europe/Amsterdam 
+    - name: JVB_TCP_HARVESTER_DISABLED
+      value: "true"
+
+jicofo:
+  userAuth:
+    enabled: true
+    name: "focus"
+    secret: dG90bw==
+  componentSecret: dG90bw==
+  environment:
+    - name: TZ
+      value: Europe/Amsterdam
+    - name: JVB_BREWERY_MUC
+      value: jvbbrewery
+    - name: XMPP_DOMAIN
+      value: meet.jitsi
+    - name: XMPP_AUTH_DOMAIN
+      value: auth.meet.jitsi
+    - name: XMPP_INTERNAL_MUC_DOMAIN
+      value: internal-muc.meet.jitsi      
+
+jvb:
+  userAuth:
+    enabled: true
+    name: "jvb"
+    secret: dG90bw==
+  environment:
+    - name: TZ
+      value: Europe/Amsterdam
+    - name: JVB_BREWERY_MUC
+      value: jvbbrewery
+    - name: XMPP_DOMAIN
+      value: meet.jitsi
+    - name: XMPP_AUTH_DOMAIN
+      value: auth.meet.jitsi
+    - name: XMPP_MUC_DOMAIN
+      value: muc.meet.jitsi
+    - name: XMPP_INTERNAL_MUC_DOMAIN
+      value: internal-muc.meet.jitsi
+    - name: JVB_STUN_SERVERS
+      value: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
+    - name: JVB_TCP_HARVESTER_DISABLED
+      value: "true"
+    - name: DOCKER_HOST_ADDRESS
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP
+
+prosody:
+  environment:
+    - name: JVB_TCP_HARVESTER_DISABLED
+      value: "true"
+    - name: TZ
+      value: Europe/Amsterdam
+

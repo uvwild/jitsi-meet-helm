@@ -128,7 +128,7 @@ spec:
                   key: JICOFO_COMPONENT_SECRET
             {{ end }}
             - name: XMPP_SERVER
-              value: "localhost"
+              value: {{ include "jitsi-meet.name-prosody" . }}
             {{- if .Values.prosody.auth.enabled }}
             - name: ENABLE_AUTH
               value: "1"
