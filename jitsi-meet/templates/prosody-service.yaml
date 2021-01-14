@@ -24,7 +24,7 @@ spec:
 
     - name: xmpp-unknown
       port: 5347
-      targetPort: xmpp
+      targetPort: xmpp-unknown
       protocol: TCP
 
   sessionAffinity: ClientIP
