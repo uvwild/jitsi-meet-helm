@@ -1,10 +1,12 @@
-image:
+gep image:
   pullSecrets: []
 
 webHost: jitsi.otcdemo.gardener.t-systems.net
 
 common:
   environment:
+    - name: ENABLE_XMPP_WEBSOCKET
+      value: "0"
     - name: XMPP_DOMAIN
       value: jitsi.otcdemo.gardener.t-systems.net
     - name: XMPP_AUTH_DOMAIN
@@ -17,12 +19,15 @@ common:
       value: guest.jitsi.otcdemo.gardener.t-systems.net
     - name: JVB_BREWERY_MUC
       value: jvbbrewery
+    - name: JVB_TCP_HARVESTER_DISABLED
+      value: "true"
     - name: TZ
       value: Europe/Amsterdam
-    - name: ENABLE_XMPP_WEBSOCKET
-      value: 0
 
 web:
+  image:
+    repository: jitsi/web
+    tag: stable-5142-4
   ingress:
     enabled: true
     annotations:
@@ -88,11 +93,10 @@ web:
       set-xauthrequest: true
       proxy-prefix: "/oauth2"
 
-  environment:
-    - name: JVB_TCP_HARVESTER_DISABLED
-      value: "true"
-
 jicofo:
+  image:
+    repository: jitsi/jicofo
+    tag: stable-5142-4
   userAuth:
     enabled: true
     name: "focus"
@@ -100,6 +104,9 @@ jicofo:
   componentSecret: dG90bw==
 
 jvb:
+  image:
+    repository: jitsi/jvb
+    tag: stable-5142-4
   userAuth:
     enabled: true
     name: "jvb"
@@ -107,15 +114,18 @@ jvb:
   environment:
 #    - name: JVB_STUN_SERVERS
 #      value: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
-    - name: JVB_TCP_HARVESTER_DISABLED
-      value: "true"
     - name: DOCKER_HOST_ADDRESS
       valueFrom:
         fieldRef:
           fieldPath: status.hostIP
 
 prosody:
-  environment:
-    - name: JVB_TCP_HARVESTER_DISABLED
-      value: "true"      
+  auth:
+    enabled: true
+    guest: 1
+    type: internal
+  image:
+    repository: jitsi/prosody
+    tag: stable-5142-4
+    pullPolicy: IfNotPresent
 

@@ -34,4 +34,6 @@ else
 fi
 
 ping -c 1 $JITSI_IP
+
+
 ping   ${JITSI_RECORD%%.}

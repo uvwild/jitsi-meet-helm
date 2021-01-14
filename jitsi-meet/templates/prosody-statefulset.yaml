@@ -144,13 +144,13 @@ spec:
             {{- end }}
           resources:
             {{- toYaml .Values.jicofo.resources | nindent 12 }}
-          # lifecycle:
-          #   postStart:
-          #     exec:
-          #       command:
-          #         - /bin/bash
-          #         - -c
-          #         - cp /var/app/sip-communicator.properties /defaults/sip-communicator.properties
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/bash
+                  - -c
+                  - cp /var/app/sip-communicator.properties /defaults/sip-communicator.properties
           volumeMounts:
             - name: config-jicofo
               mountPath: "/var/app"
