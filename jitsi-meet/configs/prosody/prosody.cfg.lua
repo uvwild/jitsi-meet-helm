@@ -1,5 +1,6 @@
 {{ $LOG_LEVEL := .Env.LOG_LEVEL | default "info" }}
 
+-- holdrio di dudel djoe
 -- Prosody Example Configuration File
 --
 -- Information on configuring Prosody can be found on our
@@ -22,7 +23,10 @@
 -- for the server. Note that you must create the accounts separately
 -- (see http://prosody.im/doc/creating_accounts for info)
 -- Example: admins = { "user1@example.com", "user2@example.net" }
-admins = { {{ .Env.JVB_ADMINS }} }
+admins = { 
+    "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}",
+    "{{ .Env.JVB_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}"
+}
 
 -- Enable use of libevent for better performance under high load
 -- For more information see: http://prosody.im/doc/libevent

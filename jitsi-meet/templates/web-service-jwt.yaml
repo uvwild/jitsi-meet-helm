@@ -5,7 +5,7 @@ metadata:
   labels:
 {{ include "jitsi-meet.labels" . | indent 4 }}
 spec:
-  type: {{ .Values.web.service.type }}
+  type: ClusterIP
   ports:
     - port: 4180
       targetPort: http

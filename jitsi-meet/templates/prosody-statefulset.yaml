@@ -30,6 +30,18 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.prosody.image.repository }}:{{ .Values.prosody.image.tag }}"
           imagePullPolicy: {{ .Values.prosody.image.pullPolicy }}
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - "/bin/bash"
+                  - "-c"
+                  - >
+                    cat /var/app/prosody.cfg.lua | base64 -d > /defaults/prosody.cfg.lua;
+                    cat /var/app/jitsi-meet.cfg.lua | base64 -d > /defaults/conf.d/jitsi-meet.cfg.lua;
+                  {{ if and .Values.prosody.auth.enabled false }}
+                    prosodyctl --config /config/prosody.cfg.lua register me $XMPP_DOMAIN $JVB_AUTH_PASSWORD;
+                  {{ end }}          
           env:
             {{ if .Values.jicofo.userAuth.enabled }}
             - name: JICOFO_AUTH_USER
@@ -85,17 +97,6 @@ spec:
             - name: xmpp-unknown
               containerPort: 5347
               protocol: TCP
-    # lifecycle:
-          #   postStart:
-          #     exec:
-          #       command:
-          #         - /bin/bash
-          #         - -c
-          #         - cat /var/app/prosody.cfg.lua | base64 -d > /defaults/prosody.cfg.lua
-          #         - cat /var/app/jitsi-meet.cfg.lua | base64 -d > /defaults/conf.d/jitsi-meet.cfg.lua
-          #         # {{ if .Values.prosody.auth.enabled }}
-          #         # - prosodyctl --config /config/prosody.cfg.lua register me $XMPP_DOMAIN $JVB_AUTH_PASSWORD;
-          #         # {{ end }}
           resources:
             {{- toYaml .Values.prosody.resources | nindent 12 }}
           volumeMounts:

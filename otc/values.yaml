@@ -1,24 +1,26 @@
 image:
   pullSecrets: []
 
-webHost: www.jitsi.otcdemo.gardener.t-systems.net
+webHost: jitsi.otcdemo.gardener.t-systems.net
 
 common:
   environment:
     - name: XMPP_DOMAIN
-      value: jitsi.meet
+      value: jitsi.otcdemo.gardener.t-systems.net
     - name: XMPP_AUTH_DOMAIN
-      value: auth.jitsi.meet
+      value: auth.jitsi.otcdemo.gardener.t-systems.net
     - name: XMPP_INTERNAL_MUC_DOMAIN
-      value: internal-muc.jitsi.meet
+      value: internal-muc.jitsi.otcdemo.gardener.t-systems.net
     - name: XMPP_MUC_DOMAIN
-      value: muc.jitsi.meet
+      value: muc.jitsi.otcdemo.gardener.t-systems.net
     - name: XMPP_GUEST_DOMAIN
-      value: guest.jitsi.meet
+      value: guest.jitsi.otcdemo.gardener.t-systems.net
     - name: JVB_BREWERY_MUC
       value: jvbbrewery
     - name: TZ
       value: Europe/Amsterdam
+    - name: ENABLE_XMPP_WEBSOCKET
+      value: 0
 
 web:
   ingress:
@@ -87,16 +89,6 @@ web:
       proxy-prefix: "/oauth2"
 
   environment:
-    - name: XMPP_DOMAIN
-      value: meet.jitsi
-    - name: XMPP_AUTH_DOMAIN
-      value: auth.meet.jitsi
-    - name: XMPP_INTERNAL_MUC_DOMAIN
-      value: internal-muc.meet.jitsi
-    - name: XMPP_MUC_DOMAIN
-      value: muc.meet.jitsi
-    - name: TZ
-      value: Europe/Amsterdam 
     - name: JVB_TCP_HARVESTER_DISABLED
       value: "true"
 
@@ -106,17 +98,6 @@ jicofo:
     name: "focus"
     secret: dG90bw==
   componentSecret: dG90bw==
-  environment:
-    - name: TZ
-      value: Europe/Amsterdam
-    - name: JVB_BREWERY_MUC
-      value: jvbbrewery
-    - name: XMPP_DOMAIN
-      value: meet.jitsi
-    - name: XMPP_AUTH_DOMAIN
-      value: auth.meet.jitsi
-    - name: XMPP_INTERNAL_MUC_DOMAIN
-      value: internal-muc.meet.jitsi      
 
 jvb:
   userAuth:
@@ -124,18 +105,6 @@ jvb:
     name: "jvb"
     secret: dG90bw==
   environment:
-    - name: TZ
-      value: Europe/Amsterdam
-    - name: JVB_BREWERY_MUC
-      value: jvbbrewery
-    - name: XMPP_DOMAIN
-      value: meet.jitsi
-    - name: XMPP_AUTH_DOMAIN
-      value: auth.meet.jitsi
-    - name: XMPP_MUC_DOMAIN
-      value: muc.meet.jitsi
-    - name: XMPP_INTERNAL_MUC_DOMAIN
-      value: internal-muc.meet.jitsi
 #    - name: JVB_STUN_SERVERS
 #      value: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
     - name: JVB_TCP_HARVESTER_DISABLED
@@ -148,7 +117,5 @@ jvb:
 prosody:
   environment:
     - name: JVB_TCP_HARVESTER_DISABLED
-      value: "true"
-    - name: TZ
-      value: Europe/Amsterdam
+      value: "true"      
 

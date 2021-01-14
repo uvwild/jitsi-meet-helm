@@ -29,6 +29,14 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.web.image.repository }}:{{ .Values.web.image.tag }}"
           imagePullPolicy: {{ .Values.web.image.pullPolicy }}
+          # lifecycle:
+          #   postStart:
+          #     exec:
+          #       command:
+          #         - "/bin/bash"
+          #         - "-c"
+          #         - >
+          #           sleep 120 && sed -i "/config.websocket/ s/localhost:8443/$XMPP_DOMAIN/"  /config/config.js &
           env:
             - name: XMPP_SERVER
               value: {{ include "jitsi-meet.name-prosody" . }}
