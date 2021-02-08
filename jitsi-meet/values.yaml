@@ -1,9 +1,12 @@
 # Default values for jitsi-meet.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+namespace: jitsi
 
-image:
-  pullSecrets: []
+common:
+  environment:
+    - name: MARKER
+      value: "missing top_level_values.yaml"
 
 webHost: jitsi.meet.local
 

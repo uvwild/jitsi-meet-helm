@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ include "jitsi-meet.name-web" . }}-vs
+  namespace: {{ .Values.namespace }}
+  labels:
+{{ include "jitsi-meet.labels" . | indent 4 }}
+spec:
+  hosts:
+  - {{ .Values.webHost }}
+  gateways:
+  - {{ include "jitsi-meet.name-web" . }}-gw
+  http:
+  - match:
+    - uri:
+        regex: /.*
+    route:
+    - destination:
+        port:
+          number: {{ .Values.web.service.sslport }}
+        host: {{ include "jitsi-meet.name-web" . }}-svc

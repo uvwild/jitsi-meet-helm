@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "jitsi-meet.name-web" . }}
+  namespace: {{ .Values.namespace }}
   labels:
 {{ include "jitsi-meet.labels" . | indent 4 }}
 spec:
@@ -29,6 +30,10 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.web.image.repository }}:{{ .Values.web.image.tag }}"
           imagePullPolicy: {{ .Values.web.image.pullPolicy }}
+          # volumeMounts:
+          #   - name: certs
+          #     mountPath: /etc/certs
+          #     readOnly: true
           env:
             - name: XMPP_SERVER
               value: {{ include "jitsi-meet.name-prosody" . }}
@@ -69,6 +74,9 @@ spec:
           ports:
             - name: http
               containerPort: 80
+              protocol: TCP
+            - name: https
+              containerPort: 443
               protocol: TCP
           livenessProbe:
             httpGet:

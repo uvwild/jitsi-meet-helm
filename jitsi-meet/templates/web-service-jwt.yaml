@@ -1,7 +1,9 @@
+{{ if .Values.web.service.jwtsidecar }}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "jitsi-meet.name-web" . }}-jwt
+  namespace: {{ .Values.namespace }}  
   labels:
 {{ include "jitsi-meet.labels" . | indent 4 }}
 spec:
@@ -14,3 +16,4 @@ spec:
   selector:
     app.kubernetes.io/name: {{ include "jitsi-meet.name-web" . }}-jwt
     app.kubernetes.io/instance: {{ .Release.Name }}
+{{ end }}

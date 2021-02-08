@@ -1,14 +1,8 @@
-admins = { 
-    "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}",
-    "{{ .Env.JVB_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}",
-    "{{ admin@{{ .Env.XMPP_AUTH_DOMAIN }}",
-    "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_DOMAIN }}",
-    "{{ .Env.JVB_AUTH_USER }}@{{ .Env.XMPP_DOMAIN }}",
-    "{{ admin@{{ .Env.XMPP_DOMAIN }}"
-}
+admins ={ {{ .Env.JVB_ADMINS }} }
+
 plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom", "/usr/share/jitsi-meet/prosody-plugins/" }
+
 http_default_host = "{{ .Env.XMPP_DOMAIN }}"
-dudel = "trallala"
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool }}
 {{ $AUTH_TYPE := .Env.AUTH_TYPE | default "internal" }}
 {{ $JWT_ASAP_KEYSERVER := .Env.JWT_ASAP_KEYSERVER | default "" }}
@@ -51,6 +45,7 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
         "pubsub";
         "ping";
         "speakerstats";
+        "turncredentials";
         "conference_duration";
         {{ if eq $AUTH_TYPE "jwt" }}
         "{{ $JWT_TOKEN_AUTH_MODULE }}";
@@ -93,13 +88,15 @@ Component "{{ .Env.XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
     }
     storage = "memory"
     muc_room_cache_size = 1000
+    muc_room_locking = false
+    muc_room_default_public_jids = true
 Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
     storage = "memory"
     modules_enabled = {
         {{ if .Env.XMPP_MUC_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MUC_MODULES) }}";
         {{ end }}
-        {{ if eq $AUTH_TYPE "jwt" }}
+        {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") }}
         "{{ $JWT_TOKEN_AUTH_MODULE }}";
         {{ end }}
     }
@@ -111,3 +108,4 @@ Component "speakerstats.{{ .Env.XMPP_DOMAIN }}" "speakerstats_component"
     muc_component = "{{ .Env.XMPP_MUC_DOMAIN }}"
 Component "conferenceduration.{{ .Env.XMPP_DOMAIN }}" "conference_duration_component"
     muc_component = "{{ .Env.XMPP_MUC_DOMAIN }}"
+

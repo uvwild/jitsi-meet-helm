@@ -1,7 +1,9 @@
+{{ if .Values.web.service.jwtsidecar }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "jitsi-meet.name-web" . }}-jwt
+  namespace: {{ .Values.namespace }}
   labels:
 {{ include "jitsi-meet.labels" . | indent 4 }}
 spec:
@@ -54,3 +56,4 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+{{ end }}

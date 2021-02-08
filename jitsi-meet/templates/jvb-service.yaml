@@ -1,5 +1,6 @@
 {{- $root := . }}
 {{- $name := include "jitsi-meet.name-jvb" $root }}
+# iterate over replica and assing different ports
 {{- range $index, $nbr := until (.Values.prosody.replicaCount | int) }}
 {{- $port := printf "%s%s" "3030" (toString $nbr) }}
 {{- $target := printf "%s-%d" $name $nbr}}
@@ -7,7 +8,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ $target | quote }}
-  labels:
+  namespace: {{ .Values.namespace }}
+labels:
 {{ include "jitsi-meet.labels" $root | indent 4 }}
   {{- with $root.Values.jvb.service.annotations }}
   annotations:
