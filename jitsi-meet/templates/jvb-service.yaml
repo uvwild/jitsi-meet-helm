@@ -8,8 +8,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ $target | quote }}
-  namespace: {{ .Values.namespace }}
-labels:
+  namespace: {{ $root.Values.namespace | quote }}
+  labels:
 {{ include "jitsi-meet.labels" $root | indent 4 }}
   {{- with $root.Values.jvb.service.annotations }}
   annotations:

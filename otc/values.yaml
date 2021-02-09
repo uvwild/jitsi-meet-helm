@@ -33,16 +33,16 @@ common:
       value: Europe/Amsterdam
     - name: JVB_ADMINS
       value: "\"focus@jitsi.otcdemo.gardener.t-systems.net\",\"focus@auth.jitsi.otcdemo.gardener.t-systems.net\""
-   - name: MARKER
+    - name: MARKER
       value: "otc_config"
 
 web:
   image:
     repository: jitsi/web
     tag: stable-5390-2
-  ingress:
-    enabled: true
-    annotations:
+  # ingress:
+  #   enabled: true
+  #   annotations:
       # - name: cert-manager.io/issuer
       #   value: "letsencrypt"
       # - name: cert-manager.io/cluster-issuer
@@ -56,17 +56,17 @@ web:
       # - name: nginx.ingress.kubernetes.io/force-ssl-redirect
       #   value: "true"
 
-      cert-manager.io/cluster-issuer: "letsencrypt"
-      cert-manager.io/acme-challenge-type: http01
-      ingress.kubernetes.io/auth: "oauth2_proxy"
-      ingress.kubernetes.io/oauth-uri-prefix: "/oauth2"
-      ingress.kubernetes.io/forwarded-for: "enabled"
-      ingress.kubernetes.io/load-balance: "uri"
-      ingress.kubernetes.io/ssl-redirect: "ON"
-      ingress.kubernetes.io/ssl-certificate: jitsi-meet-web
-      ingress.kubernetes.io/timeout-tunnel: 3h
-      kubernetes.io/ingress.class: "nginx"
-      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      # cert-manager.io/cluster-issuer: "letsencrypt"
+      # cert-manager.io/acme-challenge-type: http01
+      # ingress.kubernetes.io/auth: "oauth2_proxy"
+      # ingress.kubernetes.io/oauth-uri-prefix: "/oauth2"
+      # ingress.kubernetes.io/forwarded-for: "enabled"
+      # ingress.kubernetes.io/load-balance: "uri"
+      # ingress.kubernetes.io/ssl-redirect: "ON"
+      # ingress.kubernetes.io/ssl-certificate: jitsi-meet-web
+      # ingress.kubernetes.io/timeout-tunnel: 3h
+      # kubernetes.io/ingress.class: "nginx"
+      # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 
       # ingress.kubernetes.io/auth: "oauth2_proxy"
       # ingress.kubernetes.io/oauth-uri-prefix: "/oauth2"
@@ -76,16 +76,18 @@ web:
       # ingress.kubernetes.io/ssl-certificate: jitsi-meet-web
       # ingress.kubernetes.io/timeout-tunnel: 3h
       # kubernetes.io/ingress.class: "haproxy"    
-    hosts:
-      - host: jitsi.otcdemo.gardener.t-systems.net
-        oauth: true
-        paths:
-          - /
-    tls:
-      - hosts:
-          - jitsi.otcdemo.gardener.t-systems.net
-        secretName: ssl-jitsi-cert-tls
-  # this is not working in our helm chart since it depends on unix versions and scripting
+  #   hosts:
+  #     - host: www.jitsi.otcdemo.gardener.t-systems.net
+  #       oauth: true
+  #       paths:
+  #         - /
+  #   tls:
+  #     - hosts:
+  #         - tls.jitsi.otcdemo.gardener.t-systems.net
+  #       secretName: ssl-jitsi-cert-tls
+
+  # # this is not working in our helm chart since it depends on unix versions and scripting
+  # we are using istio and gardener now
   environment:
     - name: ENABLE_LETSENCRYPT
       value: false
@@ -107,7 +109,7 @@ web:
           targetAverageUtilization: 70      
   service:
     annotations: []
-    type: LoadBalancer
+    type: istio
     port: 80
     sslport: 443
   # jwtsidecar:

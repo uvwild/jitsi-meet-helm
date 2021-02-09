@@ -7,7 +7,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ $depName | quote }}
-  namespace: {{ .Values.namespace }}
+  namespace: {{ $root.Values.namespace | quote }}
   labels:
 {{ include "jitsi-meet.labels" $root | indent 4 }}
 spec:
@@ -26,7 +26,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-      serviceAccountName: {{ include "jitsi-meet.serviceAccountName" $root }}
+      serviceAccountName: {{ template "jitsi-meet.serviceAccountName" $root }}
       securityContext:
         {{- toYaml $root.Values.jvb.securityContext | nindent 8 }}
       containers:

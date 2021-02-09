@@ -17,5 +17,5 @@ spec:
     route:
     - destination:
         port:
-          number: {{ .Values.web.service.sslport }}
+          number: {{ .Values.web.service.port }}
         host: {{ include "jitsi-meet.name-web" . }}-svc

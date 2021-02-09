@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: jitsi
+  labels:
+    istio-injection: enabled
+    app.kubernetes.io/name: jitsi-otc
+    helm.sh/chart: jitsi-otc-0.1.0
+    app.kubernetes.io/instance: jitsi-meet
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm

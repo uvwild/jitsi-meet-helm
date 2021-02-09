@@ -6,12 +6,13 @@ metadata:
   labels:  
 {{ include "jitsi-meet.labels" . | indent 4 }}
 spec:
-  type: {{ .Values.web.service.type }}
+#  type: {{ .Values.web.service.type }}
   ports:
-    - port: {{ .Values.web.service.port }}
+    - name: http
+      port: {{ .Values.web.service.port }}
       targetPort: http
       protocol: TCP
-      name: http
+      
     # ssl is handled by istio
     # - port: {{ .Values.web.service.sslport }}
     #   targetPort: https
