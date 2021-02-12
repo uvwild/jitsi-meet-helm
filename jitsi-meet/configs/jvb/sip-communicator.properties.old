@@ -21,3 +21,9 @@ org.jitsi.videobridge.xmpp.user.shard.DISABLE_CERTIFICATE_VERIFICATION=true
 org.jitsi.videobridge.ENABLE_STATISTICS={{ .Env.ENABLE_STATISTICS }}
 org.jitsi.videobridge.STATISTICS_TRANSPORT=muc
 org.jitsi.videobridge.STATISTICS_INTERVAL=5000
+
+
+#"Allowing shutdown of JVB via Rest from localhost..."
+org.jitsi.videobridge.ENABLE_REST_SHUTDOWN=true
+org.jitsi.videobridge.shutdown.ALLOWED_SOURCE_REGEXP=127.0.0.1
+org.ice4j.ice.harvest.DISABLE_AWS_HARVESTER=true

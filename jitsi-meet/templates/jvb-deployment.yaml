@@ -38,6 +38,8 @@ spec:
         - name: {{ $name | quote }}
           image: {{ printf "%s:%s" $root.Values.jvb.image.repository $root.Values.jvb.image.tag | quote }}
           imagePullPolicy: {{ $root.Values.jvb.image.pullPolicy | quote }}
+          command: ["/bin/bash"] # this creates the env variables for the streaming ports
+          args: ["/entrypoint.sh","/init"]          
           securityContext:
             capabilities:
               add:
@@ -47,6 +49,10 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           env:
+            - name: BASE_PORT
+              value: {{ $root.Values.jvb.baseport | quote }}            
+            - name: PUBLIC_URL
+              value: "https://{{ $root.Values.webHost }}:443"            
             - name: XMPP_SERVER
               value: {{ include "jitsi-meet.name-prosody" $root }}
             - name: PROSODY_INSTANCE
@@ -90,10 +96,18 @@ spec:
               containerPort: {{ atoi $tcpport }}
               protocol: TCP
           volumeMounts:
-            # - name: dockersock
-            #   mountPath: "/var/run/docker.sock"
             - name: config
-              mountPath: "/defaults"
+              mountPath: "/entrypoint.sh"
+              subPath: "entrypoint.sh"
+            - name: config
+              mountPath: "/defaults/jvb.conf"
+              subPath: "jvb.conf"            
+            - name: config
+              mountPath: "/defaults/logging.properties"
+              subPath: "logging.properties"
+            - name: config
+              mountPath: "/defaults/sip-communicator.properties"
+              subPath: "sip-communicator.properties"
           resources:
             {{- toYaml $root.Values.jvb.resources | nindent 12 }}
       volumes:
