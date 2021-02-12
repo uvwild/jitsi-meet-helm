@@ -137,7 +137,7 @@ spec:
       volumes:
         - name: config-prosody
           configMap:
-            name: {{ template "jitsi-meet.name-prosody" . }}-config-cm
+            name: {{ template "jitsi-meet.name-prosody" . }}-config
         {{ if .Values.prosody.recorder }}
         - name: shm
           hostPath:
