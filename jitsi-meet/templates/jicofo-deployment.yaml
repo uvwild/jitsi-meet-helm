@@ -3,26 +3,22 @@ kind: Deployment
 metadata:
   name: {{ include "jitsi-meet.name-jicofo" . }}
   namespace: {{ .Values.namespace }}
-  labels:    
+  labels:
 {{ include "jitsi-meet.labels" . | indent 4 }}
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "jitsi-meet.name-jicofo" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}  
+      app.kubernetes.io/instance: {{ .Release.Name }}
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
         app.kubernetes.io/name: {{ include "jitsi-meet.name-jicofo" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}  
+        app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
-      volumes:
-        - name: config-jicofo
-          configMap:
-            name: {{ template "jitsi-meet.name-jicofo-config" . }}-cm
       containers:
       - name: {{ include "jitsi-meet.name-jicofo" . }}
         image: "{{ .Values.jicofo.image.repository }}:{{ .Values.jicofo.image.tag }}"
@@ -56,14 +52,11 @@ spec:
           {{- toYaml .Values.jicofo.resources | nindent 12 }}
         # mount config file /var/app and copy to defaults
         volumeMounts:
-          - name: config-jicofo
-            mountPath: "/var/app"
-        lifecycle:
-          postStart:
-            exec:
-              command:
-                - /bin/bash
-                - -c
-                - cp /var/app/sip-communicator.properties /defaults/sip-communicator.properties
-        resources: {}
-status: {}
+          - name: config
+            mountPath: "/defaults/sip-communicator.properties"
+            subPath: "sip-communicator.properties"
+      volumes:
+        - name: config
+          configMap:
+            name: {{ template "jitsi-meet.name-jicofo-config" . }}
+
