@@ -13,11 +13,11 @@ spec:
       targetPort: http
       protocol: TCP
       
-    # ssl is handled by istio
-    # - port: {{ .Values.web.service.sslport }}
-    #   targetPort: https
+    # # ssl is handled by istio
+    # - name: http2
+    #   port: {{ .Values.web.service.sslport }}
+    #   targetPort: http2
     #   protocol: TCP
-    #   name: https
   selector:
     app.kubernetes.io/name: {{ include "jitsi-meet.name-web" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

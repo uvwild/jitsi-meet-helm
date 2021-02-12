@@ -6,7 +6,7 @@ var config = {
 
     hosts: {
         // XMPP domain.
-        domain: 'meet.jitsi.gardener.t-systems.net',
+        domain: 'jitsi.otc',
 
         // When using authentication, domain for guest users.
         // anonymousdomain: 'guest.example.com',
@@ -24,17 +24,18 @@ var config = {
         // focus: 'focus.jitsi-meet.example.com',
 
         // XMPP MUC domain. FIXME: use XEP-0030 to discover it.
-        muc: 'muc.jitsi.gardener.t-systems.net'
+        muc: 'muc.jitsi.otc',
+        focus: 'focus.jitsi.otc',        
     },
 
     // BOSH URL. FIXME: use XEP-0156 to discover it.
-    bosh: '//meet.jitsi.gardener.t-systems.net/http-bind',
+    bosh: '/http-bind',
 
     // Websocket URL
     // websocket: 'wss://jitsi-meet.example.com/xmpp-websocket',
 
     // The name of client node advertised in XEP-0115 'c' stanza
-    clientNode: 'http://meet.jitsi.gardener.t-systems.net/jitsimeet',
+    clientNode: 'http://jitsi.org/jitsimeet',
 
     // The real JID of focus participant - can be overridden here
     // focusUserJid: 'focus@auth.jitsi-meet.example.com',
@@ -49,7 +50,7 @@ var config = {
         p2pTestMode: false
 
         // Enables the test specific features consumed by jitsi-meet-torture
-        // testMode: false
+        // testMode: true
 
         // Disables the auto-play behavior of *all* newly created video element.
         // This is useful when the client runs on a host with limited resources.
@@ -234,7 +235,7 @@ var config = {
     useStunTurn: true,
 
     // Enable IPv6 support.
-    // useIPv6: true,
+    useIPv6: false,
 
     // Enables / disables a data communication channel with the Videobridge.
     // Values can be 'datachannel', 'websocket', true (treat it as
@@ -264,7 +265,7 @@ var config = {
     // disable1On1Mode: false,
 
     // Default language for the user interface.
-    defaultLanguage: 'cz',
+    defaultLanguage: 'en',
 
     // If true all users without a token will be considered guests and all users
     // with token will be considered non-guests. Only guests will be allowed to

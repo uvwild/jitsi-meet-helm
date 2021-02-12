@@ -30,11 +30,9 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.web.image.repository }}:{{ .Values.web.image.tag }}"
           imagePullPolicy: {{ .Values.web.image.pullPolicy }}
-          # volumeMounts:
-          #   - name: certs
-          #     mountPath: /etc/certs
-          #     readOnly: true
           env:
+            - name: PUBLIC_URL
+              value: "https://{{ .Values.webHost }}:443"
             - name: XMPP_SERVER
               value: {{ include "jitsi-meet.name-prosody" . }}
             {{- if .Values.jicofo.userAuth.enabled }}

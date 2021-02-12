@@ -103,58 +103,6 @@ spec:
           volumeMounts:
             - name: config-prosody
               mountPath: "/var/app"
-        - name: {{ include "jitsi-meet.name-jicofo" . }}
-          image: "{{ .Values.jicofo.image.repository }}:{{ .Values.jicofo.image.tag }}"
-          imagePullPolicy: {{ .Values.jicofo.image.pullPolicy }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
-          env:
-            {{ if .Values.jicofo.userAuth.enabled }}
-            - name: JICOFO_AUTH_USER
-              value: {{ .Values.jicofo.userAuth.name }}
-            - name: JICOFO_AUTH_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "jitsi-meet.name-jicofo-config" . }}
-                  key: JICOFO_AUTH_PASSWORD
-            {{ end }}
-            {{ if .Values.jicofo.componentSecret }}
-            - name: JICOFO_COMPONENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "jitsi-meet.name-jicofo-config" . }}
-                  key: JICOFO_COMPONENT_SECRET
-            {{ end }}
-            - name: XMPP_SERVER
-              value: {{ include "jitsi-meet.name-prosody" . }}
-            {{- if .Values.prosody.auth.enabled }}
-            - name: ENABLE_AUTH
-              value: "1"
-            {{- end }}
-            {{- range .Values.jicofo.environment }}
-            - name: {{ .name | quote }}
-              value: {{ .value | quote }}
-            {{- end }}
-            {{- range .Values.common.environment }}
-            - name: {{ .name | quote }}
-              value: {{ .value | quote }}
-            {{- end }}
-          resources:
-            {{- toYaml .Values.jicofo.resources | nindent 12 }}
-          lifecycle:
-            postStart:
-              exec:
-                command:
-                  - /bin/bash
-                  - -c
-                  - cp /var/app/sip-communicator.properties /defaults/sip-communicator.properties
-          volumeMounts:
-            - name: config-jicofo
-              mountPath: "/var/app"
         {{ if .Values.prosody.recorder }}
         - name: {{ include "jitsi-meet.name-jibri" . }}
           image: "{{ .Values.jibri.image.repository }}:{{ .Values.jibri.image.tag }}"
@@ -187,9 +135,6 @@ spec:
               name: dev-snd
         {{ end }}
       volumes:
-        - name: config-jicofo
-          configMap:
-            name: {{ template "jitsi-meet.name-jicofo-config" . }}-cm
         - name: config-prosody
           configMap:
             name: {{ template "jitsi-meet.name-prosody" . }}-config-cm

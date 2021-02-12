@@ -1,7 +1,5 @@
 {{ $LOG_LEVEL := .Env.LOG_LEVEL | default "info" }}
-
--- holdrio di dudel djoe
--- Prosody Example Configuration File
+ -- Prosody Example Configuration File
 --
 -- Information on configuring Prosody can be found on our
 -- website at http://prosody.im/doc/configure
@@ -27,7 +25,7 @@ admins = { {{ .Env.JVB_ADMINS }} }
 
 -- Enable use of libevent for better performance under high load
 -- For more information see: http://prosody.im/doc/libevent
---use_libevent = true;
+use_libevent = true;
 
 -- This is the list of modules Prosody will load on startup.
 -- It looks for mod_modulename.lua in the plugins folder, so make sure that exists too.
@@ -77,6 +75,7 @@ modules_enabled = {
         "{{ join "\";\n\"" (splitList "," .Env.GLOBAL_MODULES) }}";
         {{ end }}
 };
+cross_domain_bosh = true;
 consider_bosh_secure = true;
 https_ports = { }
 -- These modules are auto-loaded, but should you want
@@ -103,7 +102,7 @@ s2s_secure_auth = false
 -- Many servers don't support encryption or have invalid or self-signed
 -- certificates. You can list domains here that will not be required to
 -- authenticate using certificates. They will be authenticated using DNS.
-s2s_insecure_domains = { "jitsi.otcdemo.gardener.t-systems.net" }
+s2s_insecure_domains = { "jitsi.otcdemo.gardener.t-systems.net", "www.jitsi.otcdemo.gardener.t-systems.net"  }
 -- Even if you leave s2s_secure_auth disabled, you can still require valid
 -- certificates for some domains by specifying a list here.
 --s2s_secure_domains = { "jabber.org" }

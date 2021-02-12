@@ -17,22 +17,22 @@ var interfaceConfig = {
     DEFAULT_REMOTE_DISPLAY_NAME: 'Guest',
     DEFAULT_LOCAL_DISPLAY_NAME: 'You',
     SHOW_JITSI_WATERMARK: true,
-    JITSI_WATERMARK_LINK: 'http://jitsi-stage.wedos.org/',
+    JITSI_WATERMARK_LINK: 'https://github.com/garden-demonstrator/',
     DEFAULT_WELCOME_PAGE_LOGO_URL: "images/watermark.png",
     DEFAULT_LOGO_URL: "images/watermark.png",
 
     // if watermark is disabled by default, it can be shown only for guests
     SHOW_WATERMARK_FOR_GUESTS: true,
     SHOW_BRAND_WATERMARK: true,
-    BRAND_WATERMARK_LINK: 'http://jitsi-stage.wedos.org',
+    BRAND_WATERMARK_LINK: 'https://github.com/garden-demonstrator/',
     SHOW_POWERED_BY: false,
     SHOW_DEEP_LINKING_IMAGE: false,
     GENERATE_ROOMNAMES_ON_WELCOME_PAGE: true,
     DISPLAY_WELCOME_PAGE_CONTENT: true,
     DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT: false,
-    APP_NAME: 'WEDOS Meet',
-    NATIVE_APP_NAME: 'WEDOS Meet',
-    PROVIDER_NAME: 'WEDOS',
+    APP_NAME: 'Jitsi Meet',
+    NATIVE_APP_NAME: 'Jitsi Meet',
+    PROVIDER_NAME: 'T-Systems',
     LANG_DETECTION: false, // Allow i18n to detect the system language
     INVITATION_POWERED_BY: true,
 

@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "jitsi-meet.name-jicofo" . }}
+  namespace: {{ .Values.namespace }}
+  labels:    
+{{ include "jitsi-meet.labels" . | indent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "jitsi-meet.name-jicofo" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}  
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "jitsi-meet.name-jicofo" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}  
+    spec:
+      volumes:
+        - name: config-jicofo
+          configMap:
+            name: {{ template "jitsi-meet.name-jicofo-config" . }}-cm
+      containers:
+      - name: {{ include "jitsi-meet.name-jicofo" . }}
+        image: "{{ .Values.jicofo.image.repository }}:{{ .Values.jicofo.image.tag }}"
+        imagePullPolicy: {{ .Values.jicofo.image.pullPolicy }}
+        env:
+          {{ if .Values.jicofo.userAuth.enabled }}
+          - name: JICOFO_AUTH_USER
+            value: {{ .Values.jicofo.userAuth.name }}
+          - name: JICOFO_AUTH_PASSWORD
+            value: {{ .Values.jicofo.userAuth.secret | b64dec }}
+          {{ end }}
+          {{ if .Values.jicofo.componentSecret }}
+          - name: JICOFO_COMPONENT_SECRET
+            value: {{ .Values.jicofo.componentSecret | b64dec }}
+          {{ end }}
+          - name: XMPP_SERVER
+            value: {{ include "jitsi-meet.name-prosody" . }}
+          {{- if .Values.prosody.auth.enabled }}
+          - name: ENABLE_AUTH
+            value: "1"
+          {{- end }}
+          {{- range .Values.jicofo.environment }}
+          - name: {{ .name | quote }}
+            value: {{ .value | quote }}
+          {{- end }}
+          {{- range .Values.common.environment }}
+          - name: {{ .name | quote }}
+            value: {{ .value | quote }}
+          {{- end }}
+        resources:
+          {{- toYaml .Values.jicofo.resources | nindent 12 }}
+        # mount config file /var/app and copy to defaults
+        volumeMounts:
+          - name: config-jicofo
+            mountPath: "/var/app"
+        lifecycle:
+          postStart:
+            exec:
+              command:
+                - /bin/bash
+                - -c
+                - cp /var/app/sip-communicator.properties /defaults/sip-communicator.properties
+        resources: {}
+status: {}

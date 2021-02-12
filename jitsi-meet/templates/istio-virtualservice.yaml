@@ -1,0 +1,99 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ include "jitsi-meet.name-web" . }}-vs
+  namespace: {{ .Values.namespace }}
+  labels:
+{{ include "jitsi-meet.labels" . | indent 4 }}
+spec:
+  hosts:
+  - {{ .Values.webHost }}
+  gateways:
+  - {{ include "jitsi-meet.name-web" . }}-gw
+# lets try tcp protocol
+  # tcp:
+  # - name: "separate-xmpp"
+  #   match:
+  #   - uri:
+  #       regex: /http-bind.*
+  #   route:
+  #   - destination:
+  #       host: {{ include "jitsi-meet.name-prosody" . }}
+  #       port:
+  #         number: 5280
+# web server  
+  http:
+  - name: "favicon remap"
+    match:
+    - uri:
+        prefix: /favicon.ico
+    rewrite:
+      uri: "/images/favicon.ico"
+    route:
+    - destination:
+        host: {{ include "jitsi-meet.name-web" . }}-svc
+        port:
+          number: {{ .Values.web.service.port }}
+
+  - name: "standard"
+    match:
+    - uri:
+        regex: /.*
+    route:
+    - destination:
+        host: {{ include "jitsi-meet.name-web" . }}-svc
+        port:
+          number: {{ .Values.web.service.port }}
+
+# video bridge
+  tcp:
+  - name: "udpvideo"
+    match:
+    - port: {{ .Values.jvb.udpport }}
+      protocol: UDP
+    route:
+    - destination:
+        host: {{ include "jitsi-meet.name-jvb" . }}-svc
+        port:
+          number: {{ .Values.jvb.udpport }}
+  
+  - name: "tcpvideo"
+    match:
+    - port: {{ .Values.jvb.tcpport }}
+      protocol: TCP
+    route:
+    - destination:
+        host: {{ include "jitsi-meet.name-jvb" . }}-svc
+        port:
+          number: {{ .Values.jvb.tcpport }}
+
+{{- $root := . }}
+{{- $name := include "jitsi-meet.name-jvb" $root }}
+{{- $svcname := printf "%s-svc" $name }}
+{{- $tcpoffset := "{{ .Values.jvb.tcpoffset }}" }}
+# iterate over replica and assing different ports
+{{- range $index, $nbr := until (.Values.prosody.replicaCount | int) }}
+{{- $udpport := printf "%s%s" "{{ (div $root.Values.jvb.baseport 10) }}" (toString $nbr) }}
+{{- $tcpport := printf "%s%s" "{{ (add (div $root.Values.jvb.baseport 10) $tcpoffset }}" (toString $nbr) }}
+{{- $udpportname := printf "udp-%d" $nbr }}
+{{- $tcpportname := printf "tcp-%d" $nbr }}
+  - name:  "$udpportname"
+    match:
+    - port:  {{ atoi $udpport }}
+      protocol: UDP
+    route:
+    - destination:
+        host: "$svcname"
+        port:
+          number: {{ atoi $udpport }}
+
+  - name: "$tcpportname"
+    match:
+    - port: {{ atoi $tcpport }}
+      protocol: TCP
+    route:
+    - destination:
+        host: "$svcname"
+        port:
+          number: {{ atoi $tcpport }}
+{{- end }}

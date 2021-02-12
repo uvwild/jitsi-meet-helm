@@ -1,6 +1,7 @@
 {{- $root := . -}}
 {{- $name := include "jitsi-meet.name-jvb" $root -}}
 {{- range $index, $nbr := until (.Values.prosody.replicaCount | int) }}
+{{- $baseport := (div (atoi ".Values.jvb.baseport") 10) }}
 ---
 {{- $depName := printf "%s-%d" $name $nbr -}}
 apiVersion: apps/v1
@@ -71,8 +72,6 @@ spec:
                   name: {{ include "jitsi-meet.name-jicofo-config" $root }}
                   key: JICOFO_COMPONENT_SECRET
             {{- end }}
-            - name: JVB_PORT
-              value: {{ printf "%s%s" "3030" (toString $nbr) | quote }}
             {{- with $root.Values.jvb.environment }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -84,16 +83,13 @@ spec:
               containerPort: {{ printf "%s%s" "3030" (toString $nbr) | int }}
               protocol: UDP
           volumeMounts:
-            - name: dockersock
-              mountPath: "/var/run/docker.sock"
+            # - name: dockersock
+            #   mountPath: "/var/run/docker.sock"
             - name: config
               mountPath: "/defaults"
           resources:
             {{- toYaml $root.Values.jvb.resources | nindent 12 }}
       volumes:
-        - name: dockersock
-          hostPath:
-            path: /var/run/docker.sock
         - name: config
           configMap:
             name: {{ template "jitsi-meet.name-jvb-config" $root }}-cm
