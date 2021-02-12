@@ -30,8 +30,8 @@ spec:
     - {{ .Values.webHost }}
 # video node
 # default settings
-    match:
-    - port: {{ .Values.jvb.udpport }}
+  - port:
+      number: {{ .Values.jvb.udpport }}
       name: udpvideo
       protocol: UDP
     tls:
