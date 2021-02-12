@@ -15,8 +15,6 @@ common:
       value: "0"
     - name: ENABLE_STATISTICS
       value: "1"
-    - name: LOG_LEVEL
-      value: debug
     - name: XMPP_DOMAIN
       value: jitsi.otc
     - name: XMPP_AUTH_DOMAIN
@@ -42,58 +40,16 @@ web:
   image:
     repository: jitsi/web
     tag: stable-5390-2
-  # ingress:
-  #   enabled: true
-  #   annotations:
-      # ingress.kubernetes.io/auth: "oauth2_proxy"
-      # ingress.kubernetes.io/oauth-uri-prefix: "/oauth2"
-      # ingress.kubernetes.io/forwarded-for: "enabled"
-      # ingress.kubernetes.io/load-balance: "uri"
-      # ingress.kubernetes.io/ssl-redirect: "ON"
-      # ingress.kubernetes.io/ssl-certificate: jitsi-meet-web
-      # ingress.kubernetes.io/timeout-tunnel: 3h
-      # kubernetes.io/ingress.class: "nginx"
-      # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-
-      # ingress.kubernetes.io/auth: "oauth2_proxy"
-      # ingress.kubernetes.io/oauth-uri-prefix: "/oauth2"
-      # ingress.kubernetes.io/forwarded-for: "enabled"
-      # ingress.kubernetes.io/load-balance: "uri"
-      # ingress.kubernetes.io/ssl-redirect: "ON"
-      # ingress.kubernetes.io/ssl-certificate: jitsi-meet-web
-      # ingress.kubernetes.io/timeout-tunnel: 3h
-      # kubernetes.io/ingress.class: "haproxy"    
-  #   hosts:
-  #     - host: www.jitsi.otcdemo.gardener.t-systems.net
-  #       oauth: true
-  #       paths:
-  #         - /
-  #   tls:
-  #     - hosts:
-  #         - tls.jitsi.otcdemo.gardener.t-systems.net
-  #       secretName: ssl-jitsi-cert-tls
-
-  # # this is not working in our helm chart since it depends on unix versions and scripting
-  # we are using istio and gardener now
+  # the letsencrypt script is not working inside the nodes of our helm chart 
+  # we are using istio in gardener instead
   environment:
     - name: ENABLE_LETSENCRYPT
       value: false
     - name: LETSENCRYPT_DOMAIN
       value: xxxx
+    - name: LOG_LEVEL
+      value: info
   replicaCount: 1
-  hpa:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 3
-    metrics:
-      - type: Resource
-        resource:
-          name: memory
-          targetAverageUtilization: 70
-      - type: Resource
-        resource:
-          name: cpu
-          targetAverageUtilization: 70      
   service:
     annotations: []
     type: istio
@@ -109,6 +65,9 @@ jicofo:
     name: "focus"
     secret: dG90bw==
   componentSecret: dG90bw==
+  environment:
+    - name: LOG_LEVEL
+      value: info
 
 jvb:
   image:
@@ -123,20 +82,25 @@ jvb:
   udpport: 10000
   tcpport: 4443
   environment:
+    - name: LOG_LEVEL
+      value: info
     - name: JVB_STUN_SERVERS
-      value: meet-jit-si-turnrelay.jitsi.net:443 
-#      value: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
-    - name: DOCKER_HOST_ADDRESS
-      valueFrom:
-        fieldRef:
-          fieldPath: status.hostIP
+      # value: meet-jit-si-turnrelay.jitsi.net:443 
+      value: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
+    # replaced DOCKER_HOST_ADDRESS with PUBLIC_URL_HOST which is more meaningful in k8s
+    # - name: DOCKER_HOST_ADDRESS
+    #   valueFrom:
+    #     fieldRef:
+    #       fieldPath: status.hostIP
 
 prosody:
   replicaCount: 1
   auth:
     enabled: true
     guest: 1
-# service    
+  environment:
+    - name: LOG_LEVEL
+      value: info# service    
 #    type: internal
   image:
     repository: jitsi/prosody

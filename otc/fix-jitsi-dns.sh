@@ -1,5 +1,6 @@
 #!/bin/bash
 # create DNS entry for jitsi web
+# this is obsoletet because of Istio gateway services
 
 BASE_ZONE=otcdemo.gardener.t-systems.net.
 JITSI_RECORD=jitsi.$BASE_ZONE

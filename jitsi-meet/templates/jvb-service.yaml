@@ -27,17 +27,15 @@ spec:
   {{- toYaml $root.Values.jvb.service.sessionAffinityConfig }}
   {{- end }}
   ports: 
-  - name: {{ $udpportname }}
-    port: {{ atoi $udpport }}
+  - port: {{ atoi $udpport }}
     nodePort: {{ atoi $udpport }}
     protocol: UDP
-    targetPort: {{ atoi $udpport }}
+    targetPort: udpvideo
 
-  - name: {{ $tcpportname }}
-    port: {{ atoi $tcpport}}
+  - port: {{ atoi $tcpport}}
     nodePort: {{ atoi $tcpport }}
     protocol: TCP
-    targetPort: {{ atoi $tcpport }}
+    targetPort: tcpvideo
     
   selector:
     app.kubernetes.io/name: {{ $target | quote }}
