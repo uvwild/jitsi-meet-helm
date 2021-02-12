@@ -5,7 +5,6 @@
 {{- $tcpport := printf "%d" (add $root.Values.jvb.baseport $root.Values.jvb.tcpoffset $nbr) }}
 {{- $udpportname := printf "udp-%d" $nbr }}
 {{- $tcpportname := printf "tcp-%d" $nbr }}
-
 ---
 {{- $depName := printf "%s-%d" $name $nbr -}}
 apiVersion: apps/v1
@@ -39,7 +38,7 @@ spec:
           image: {{ printf "%s:%s" $root.Values.jvb.image.repository $root.Values.jvb.image.tag | quote }}
           imagePullPolicy: {{ $root.Values.jvb.image.pullPolicy | quote }}
           command: ["/bin/bash"] # this creates the env variables for the streaming ports
-          args: ["/entrypoint.sh","/init"]          
+          args: ["/entrypoint.sh","/init"]
           securityContext:
             capabilities:
               add:
@@ -50,13 +49,19 @@ spec:
           {{- end }}
           env:
             - name: BASE_PORT
-              value: {{ $root.Values.jvb.baseport | quote }}            
+              value: {{ $root.Values.jvb.baseport | quote }}
             - name: TCP_OFFSET
-              value: {{ $root.Values.jvb.tcpoffset | quote }}            
+              value: {{ $root.Values.jvb.tcpoffset | quote }}
             - name: PUBLIC_URL
               value: "https://{{ $root.Values.webHost }}:443"
-            - name: PUBLIC_URL_HOST
-              value: "{{ $root.Values.webHost }}:443"
+              {{- if $root.Values.ip }}
+            - name: PUBLIC_IP
+              value: "{{ $root.Values.ip }}"
+              {{- end }}
+            - name: LOCAL_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
             - name: XMPP_SERVER
               value: {{ include "jitsi-meet.name-prosody" $root }}
             - name: PROSODY_INSTANCE
@@ -99,13 +104,8 @@ spec:
             - name: tvpvideo
               containerPort: {{ atoi $tcpport }}
               protocol: TCP
+            - name: config
           volumeMounts:
-            - name: config
-              mountPath: "/entrypoint.sh"
-              subPath: "entrypoint.sh"
-            - name: config
-              mountPath: "/defaults/jvb.conf"
-              subPath: "jvb.conf"            
             - name: config
               mountPath: "/defaults/logging.properties"
               subPath: "logging.properties"
@@ -117,7 +117,7 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: {{ template "jitsi-meet.name-jvb-config" $root }}-cm
+            name: {{ template "jitsi-meet.name-jvb-config" $root }}
       {{- with $root.Values.jvb.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
