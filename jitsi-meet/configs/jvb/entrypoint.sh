@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # both jq and curl are needed for shutdown hook
-apt-dpkg-wrap apt-get update && apt-dpkg-wrap apt-get -y install curl jq tcmpdump
+apt-dpkg-wrap apt-get update && apt-dpkg-wrap apt-get -y install curl jq tcpdump inetutils-ping inetutils-traceroute curl
 
 # JVB baseport can be passed to this script - entrypoint parm can be iterated in deployment spec
 if [[ "$1" =~ ^[0-9]+$ ]]; then
