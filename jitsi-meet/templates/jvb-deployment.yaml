@@ -104,7 +104,6 @@ spec:
             - name: tvpvideo
               containerPort: {{ atoi $tcpport }}
               protocol: TCP
-            - name: config
           volumeMounts:
             - name: config
               mountPath: "/defaults/logging.properties"

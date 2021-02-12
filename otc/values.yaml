@@ -4,7 +4,8 @@ imagePullSecrets:
     - name: regcred
 
 webHost: www.jitsi.otcdemo.gardener.t-systems.net
-ip: 80.158.56.57
+#ip: 80.158.56.57
+#ip: 0.0.0.0
 
 common:
   environment:
@@ -41,7 +42,7 @@ web:
   image:
     repository: jitsi/web
     tag: stable-5390-2
-  # the letsencrypt script is not working inside the nodes of our helm chart 
+  # the letsencrypt script is not working inside the nodes of our helm chart
   # we are using istio in gardener instead
   environment:
     - name: ENABLE_LETSENCRYPT
@@ -56,7 +57,7 @@ web:
     type: istio
     port: 80
     sslport: 443
- 
+
 jicofo:
   image:
     repository: jitsi/jicofo
@@ -78,16 +79,18 @@ jvb:
     enabled: true
     name: "jvb"
     secret: dG90bw==
-  baseport: 30300
+  baseport: 30000
   tcpoffset: 1000
+  # port 4443 & 10000 is not working with nodeport
   udpport: 10000
   tcpport: 4443
   environment:
     - name: LOG_LEVEL
       value: info
     - name: JVB_STUN_SERVERS
-      # value: meet-jit-si-turnrelay.jitsi.net:443 
-      value: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
+      value: turn.jitsi.otcdemo.gardener.t-systems.net:443
+
+    # value: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
     # replaced DOCKER_HOST_ADDRESS with PUBLIC_URL_HOST which is more meaningful in k8s
     # - name: DOCKER_HOST_ADDRESS
     #   valueFrom:
@@ -96,15 +99,37 @@ jvb:
 
 prosody:
   replicaCount: 1
-  auth:
+  userAuth:
     enabled: true
     guest: 1
   environment:
     - name: LOG_LEVEL
-      value: info# service    
+      value: info# service
 #    type: internal
   image:
     repository: jitsi/prosody
     tag: stable-5390-2
     pullPolicy: IfNotPresent
 
+turn:
+  replicaCount: 1
+  listeningport: 3478
+  turnHost: turn.jitsi.otcdemo.gardener.t-systems.net
+  externalIp: 80.158.42.28
+  extPort: 443
+  minPort: 10000
+  userAuth:
+    enabled: true
+    name: tina
+    password: eike
+  image:
+    # repository: flaviostutz/coturn
+    # tag: 4.5.0.5
+    repository: instrumentisto/coturn
+    tag: 4.5.2
+    pullPolicy: IfNotPresent
+  environment:
+    - name: MARKER
+      value: otc-values
+    - name: JVB_STUN_SERVERS
+      value: turn.jitsi.otcdemo.gardener.t-systems.net:443

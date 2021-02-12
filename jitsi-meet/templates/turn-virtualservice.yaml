@@ -1,0 +1,27 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ include "jitsi-meet.name-turn" . }}-vs
+  namespace: {{ .Values.namespace }}
+  labels:
+{{ include "jitsi-meet.labels" . | indent 4 }}
+spec:
+  hosts:
+  - {{ .Values.turn.turnHost }}
+  gateways:
+  - {{ include "jitsi-meet.name-turn" . }}-gw
+  tcp:
+  - match:
+    - port: {{ .Values.turn.extPort }}
+    route:
+    - destination:
+        host: {{ include "jitsi-meet.name-turn" . }}
+        port:
+          number: {{ .Values.turn.listeningport }}
+  - match:
+    - port: {{ .Values.turn.minPort }}
+    route:
+    - destination:
+        host: {{ include "jitsi-meet.name-turn" . }}
+        port:
+          number: {{ .Values.turn.minPort }}

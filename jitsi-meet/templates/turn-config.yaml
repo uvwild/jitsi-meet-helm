@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "jitsi-meet.name-turn" . }}-config
+  namespace: {{ .Values.namespace }}
+  labels:
+{{ include "jitsi-meet.labels" . | indent 4 }}
+data:
+  # this is templated during chart creation
+  turnserver.conf: |-
+    {{- tpl (.Files.Get "configs/turn/turnserver.conf") . | b64enc | nindent 4 }}
+  # this evaluate with env variables on startup
+  turn.cfg.lua: |-
+    {{- .Files.Get "configs/turn/turn.cfg.lua" | b64enc | nindent 4 }}
