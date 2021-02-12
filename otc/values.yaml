@@ -119,8 +119,8 @@ jvb:
     name: "jvb"
     secret: dG90bw==
   baseport: 30300
-  tcpoffset: 10000
-  udport: 10000
+  tcpoffset: 1000
+  udpport: 10000
   tcpport: 4443
   environment:
     - name: JVB_STUN_SERVERS

@@ -46,54 +46,42 @@ spec:
           number: {{ .Values.web.service.port }}
 
 # video bridge
-  tcp:
-  - name: "udpvideo"
-    match:
-    - port: {{ .Values.jvb.udpport }}
-      protocol: UDP
-    route:
-    - destination:
-        host: {{ include "jitsi-meet.name-jvb" . }}-svc
-        port:
-          number: {{ .Values.jvb.udpport }}
+  # tcp:
+  # - match:
+  #   - port: {{ .Values.jvb.udpport }}
+  #   route:
+  #   - destination:
+  #       host: {{ include "jitsi-meet.name-jvb" . }}-svc
+  #       port:
+  #         number: {{ .Values.jvb.udpport }}
   
-  - name: "tcpvideo"
-    match:
-    - port: {{ .Values.jvb.tcpport }}
-      protocol: TCP
-    route:
-    - destination:
-        host: {{ include "jitsi-meet.name-jvb" . }}-svc
-        port:
-          number: {{ .Values.jvb.tcpport }}
-
+  # - match:
+  #   - port: {{ .Values.jvb.tcpport }}
+  #   route:
+  #   - destination:
+  #       host: {{ include "jitsi-meet.name-jvb" . }}-svc
+  #       port:
+  #         number: {{ .Values.jvb.tcpport }}
+# iterate over replica and assing different ports
 {{- $root := . }}
 {{- $name := include "jitsi-meet.name-jvb" $root }}
-{{- $svcname := printf "%s-svc" $name }}
-{{- $tcpoffset := "{{ .Values.jvb.tcpoffset }}" }}
-# iterate over replica and assing different ports
 {{- range $index, $nbr := until (.Values.prosody.replicaCount | int) }}
-{{- $udpport := printf "%s%s" "{{ (div $root.Values.jvb.baseport 10) }}" (toString $nbr) }}
-{{- $tcpport := printf "%s%s" "{{ (add (div $root.Values.jvb.baseport 10) $tcpoffset }}" (toString $nbr) }}
-{{- $udpportname := printf "udp-%d" $nbr }}
-{{- $tcpportname := printf "tcp-%d" $nbr }}
-  - name:  "$udpportname"
-    match:
+{{- $target := printf "%s-%d" $name $nbr}}
+{{- $udpport := printf "%d" (add $root.Values.jvb.baseport $nbr) }}
+{{- $tcpport := printf "%d" (add $root.Values.jvb.baseport $root.Values.jvb.tcpoffset $nbr) }}
+  - match:
     - port:  {{ atoi $udpport }}
-      protocol: UDP
     route:
     - destination:
-        host: "$svcname"
+        host: {{ $target }}
         port:
           number: {{ atoi $udpport }}
 
-  - name: "$tcpportname"
-    match:
+  - match:
     - port: {{ atoi $tcpport }}
-      protocol: TCP
     route:
     - destination:
-        host: "$svcname"
+        host: {{ $target }}
         port:
           number: {{ atoi $tcpport }}
 {{- end }}

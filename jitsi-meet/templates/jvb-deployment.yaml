@@ -1,7 +1,11 @@
 {{- $root := . -}}
 {{- $name := include "jitsi-meet.name-jvb" $root -}}
 {{- range $index, $nbr := until (.Values.prosody.replicaCount | int) }}
-{{- $baseport := (div (atoi ".Values.jvb.baseport") 10) }}
+{{- $udpport := printf "%d" (add $root.Values.jvb.baseport $nbr) }}
+{{- $tcpport := printf "%d" (add $root.Values.jvb.baseport $root.Values.jvb.tcpoffset $nbr) }}
+{{- $udpportname := printf "udp-%d" $nbr }}
+{{- $tcpportname := printf "tcp-%d" $nbr }}
+
 ---
 {{- $depName := printf "%s-%d" $name $nbr -}}
 apiVersion: apps/v1
@@ -79,9 +83,12 @@ spec:
               {{- toYaml . | nindent 12 }}
             {{- end }}
           ports:
-            - name: video
-              containerPort: {{ printf "%s%s" "3030" (toString $nbr) | int }}
+            - name: {{ $udpportname }}
+              containerPort: {{ atoi $udpport }}
               protocol: UDP
+            - name: {{ $tcpportname }}
+              containerPort: {{ atoi $tcpport }}
+              protocol: TCP
           volumeMounts:
             # - name: dockersock
             #   mountPath: "/var/run/docker.sock"

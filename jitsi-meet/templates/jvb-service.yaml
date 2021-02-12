@@ -1,10 +1,13 @@
+# iterate over replica and assing different ports
 {{- $root := . }}
 {{- $name := include "jitsi-meet.name-jvb" $root }}
-{{- $tcpoffset := "{{ .Values.jvb.tcpoffset }}" }}
-# iterate over replica and assing different ports
+{{- $tcpoffset := .Values.jvb.tcpoffset }}
 {{- range $index, $nbr := until (.Values.prosody.replicaCount | int) }}
-{{- $port := printf "%s%s" "{{ (div .Values.jvb.baseport 10) }}" (toString $nbr) }}
 {{- $target := printf "%s-%d" $name $nbr}}
+{{- $udpport := printf "%d" (add $root.Values.jvb.baseport $nbr) }}
+{{- $tcpport := printf "%d" (add $root.Values.jvb.baseport $tcpoffset $nbr) }}
+{{- $udpportname := printf "udp-%d" $nbr }}
+{{- $tcpportname := printf "%s-%d" "tcp" $nbr }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -24,17 +27,17 @@ spec:
   {{- toYaml $root.Values.jvb.service.sessionAffinityConfig }}
   {{- end }}
   ports: 
-  - name: udpstream
-    port: {{ atoi $port }}
-    nodePort: {{ atoi $port }}
+  - name: {{ $udpportname }}
+    port: {{ atoi $udpport }}
+    nodePort: {{ atoi $udpport }}
     protocol: UDP
-    targetPort: {{ atoi  $port }}
+    targetPort: {{ atoi $udpport }}
 
-  - name: tcpstream
-    port:  {{ add (atoi $port) $tcpoffset }}
-    nodePort: {{ add (atoi $port) $tcpoffset }}
+  - name: {{ $tcpportname }}
+    port: {{ atoi $tcpport}}
+    nodePort: {{ atoi $tcpport }}
     protocol: TCP
-    targetPort: {{ add (atoi $port) $tcpoffset }}
+    targetPort: {{ atoi $tcpport }}
     
   selector:
     app.kubernetes.io/name: {{ $target | quote }}
