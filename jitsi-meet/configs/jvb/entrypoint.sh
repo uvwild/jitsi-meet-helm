@@ -30,4 +30,7 @@ echo "JVB_TCP_PORT=$JVB_TCP_PORT"
 
 echo "Allowing shutdown of JVB via Rest from localhost..."
 
+# set JVB_OPTS directly in container... so messy
+sed -i 's/^JVB_OPTS.*/JVB_OPTS="--apis=rest,xmpp"/' /etc/jitsi/videobridge/config
+
 exec "$@"
