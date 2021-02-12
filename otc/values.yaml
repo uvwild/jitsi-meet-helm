@@ -5,6 +5,7 @@ imagePullSecrets:
 
 webHost: www.jitsi.otcdemo.gardener.t-systems.net
 ip: 80.158.56.57
+
 common:
   environment:
     - name: ENABLE_XMPP_WEBSOCKET
@@ -14,7 +15,7 @@ common:
     - name: ENABLE_AUTH
       value: "0"
     - name: ENABLE_STATISTICS
-      value: "1"
+      value: "true"
     - name: XMPP_DOMAIN
       value: jitsi.otc
     - name: XMPP_AUTH_DOMAIN

@@ -54,9 +54,9 @@ spec:
             - name: TCP_OFFSET
               value: {{ $root.Values.jvb.tcpoffset | quote }}            
             - name: PUBLIC_URL
-              value: "https://{{ .Values.webHost }}:443"
+              value: "https://{{ $root.Values.webHost }}:443"
             - name: PUBLIC_URL_HOST
-              value: "{{ .Values.webHost }}:443"
+              value: "{{ $root.Values.webHost }}:443"
             - name: XMPP_SERVER
               value: {{ include "jitsi-meet.name-prosody" $root }}
             - name: PROSODY_INSTANCE
