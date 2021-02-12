@@ -25,6 +25,15 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 
 {{/*
+Create the turn server name
+*/}}
+{{- define "jitsi-meet.name-turn" -}}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- printf "%s-%s" $name "turn" | trunc 63 -}}
+{{- end -}}
+
+
+{{/*
 Create the web server name
 */}}
 {{- define "jitsi-meet.name-web" -}}
