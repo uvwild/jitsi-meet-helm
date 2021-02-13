@@ -66,30 +66,30 @@ spec:
               value: {{ include "jitsi-meet.name-prosody" $root }}
             - name: PROSODY_INSTANCE
               value: {{ printf "%d" $nbr | quote }}
+
             {{- if $root.Values.jicofo.userAuth.enabled }}
             - name: JICOFO_AUTH_USER
               value: {{ $root.Values.jicofo.userAuth.name }}
             - name: JICOFO_AUTH_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "jitsi-meet.name-jicofo-config" $root }}
+                  name: {{ include "jitsi-meet.name-jicofo" $root }}-secret
                   key: JICOFO_AUTH_PASSWORD
             {{- end }}
+            - name: JICOFO_COMPONENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name:  {{ include "jitsi-meet.name-jicofo" $root }}-secret
+                  key: JICOFO_COMPONENT_SECRET
+
             {{- if $root.Values.jvb.userAuth.enabled }}
             - name: JVB_AUTH_USER
               value: {{ $root.Values.jvb.userAuth.name }}
             - name: JVB_AUTH_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "jitsi-meet.name-jvb-config" $root }}
+                  name: {{ include "jitsi-meet.name-jvb" $root }}-secret
                   key: JVB_AUTH_PASSWORD
-            {{- end }}
-            {{- if $root.Values.jicofo.componentSecret }}
-            - name: JICOFO_COMPONENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "jitsi-meet.name-jicofo-config" $root }}
-                  key: JICOFO_COMPONENT_SECRET
             {{- end }}
             {{- with $root.Values.jvb.environment }}
               {{- toYaml . | nindent 12 }}
