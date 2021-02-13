@@ -13,7 +13,7 @@ spec:
       targetPort: turn
       protocol: TCP
   ports:
-    - name: turn
+    - name: udp
       port:  {{ .Values.turn.minPort }}
       targetPort: udp
       protocol: UDP

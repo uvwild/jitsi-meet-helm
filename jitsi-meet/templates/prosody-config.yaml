@@ -10,3 +10,5 @@ data:
     {{- .Files.Get "configs/prosody/prosody.cfg.lua" | b64enc | nindent 4 }}
   jitsi-meet.cfg.lua: |-
     {{- .Files.Get "configs/prosody/jitsi-meet.cfg.lua" | b64enc | nindent 4 }}
+  turn.cfg.lua: |-
+    {{- .Files.Get "configs/prosody/turn.cfg.lua" | b64enc | nindent 4 }}

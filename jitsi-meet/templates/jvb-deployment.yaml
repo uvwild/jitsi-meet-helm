@@ -106,11 +106,17 @@ spec:
               protocol: TCP
           volumeMounts:
             - name: config
+              mountPath: "/defaults/jvb.conf"
+              subPath: "jvb.conf"
+            - name: config
               mountPath: "/defaults/logging.properties"
               subPath: "logging.properties"
             - name: config
               mountPath: "/defaults/sip-communicator.properties"
               subPath: "sip-communicator.properties"
+            - name: config
+              mountPath: "/entrypoint.sh"
+              subPath: "entrypoint.sh"
           resources:
             {{- toYaml $root.Values.jvb.resources | nindent 12 }}
       volumes:

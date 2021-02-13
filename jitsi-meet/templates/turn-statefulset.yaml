@@ -53,30 +53,11 @@ spec:
             - name: udp
               containerPort:  {{ .Values.turn.minPort }}
               protocol: UDP
-
-          resources:
-            {{- toYaml .Values.turn.resources | nindent 12 }}
           volumeMounts:
             - name: config
               mountPath: "/etc/turnserver.conf"
-              subPath: "turnserver.conf"              
-            - name: config
-              mountPath: "/defaults/conf.d/turnserver.conf"
               subPath: "turnserver.conf"              
       volumes:
         - name: config
           configMap:
             name: {{ template "jitsi-meet.name-turn" . }}-config
-
-    {{- with .Values.turn.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with .Values.turn.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with .Values.turn.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}

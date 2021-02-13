@@ -9,6 +9,6 @@ data:
   # this is templated during chart creation
   turnserver.conf: |-
     {{- tpl (.Files.Get "configs/turn/turnserver.conf") . | b64enc | nindent 4 }}
-  # this evaluate with env variables on startup
-  turn.cfg.lua: |-
-    {{- .Files.Get "configs/turn/turn.cfg.lua" | b64enc | nindent 4 }}
+  # # this evaluate with env variables on startup
+  # turn.cfg.lua: |-
+  #   {{- .Files.Get "configs/turn/turn.cfg.lua" | b64enc | nindent 4 }}
