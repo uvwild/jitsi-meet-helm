@@ -105,8 +105,8 @@ spec:
               mountPath: "/defaults/prosody.cfg.lua"
               subPath: "prosody.cfg.lua"
             - name: config
-              mountPath: "/defaults/jitsi-meet..cfg.lua"
-              subPath: "jitsi-meet..cfg.lua"
+              mountPath: "/defaults/conf.d/jitsi-meet.cfg.lua"
+              subPath: "jitsi-meet.cfg.lua"
             - name: config
               mountPath: "/defaults/turn.cfg.lua"
               subPath: "turn.cfg.lua"
