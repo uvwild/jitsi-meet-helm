@@ -53,14 +53,18 @@ spec:
             {{- end }}
             {{ if .Values.jicofo.userAuth.enabled }}
             - name: JICOFO_AUTH_USER
-              value: {{ .Values.jicofo.userAuth.name }}
+              value: {{ .Values.jicofo.userAuth.name }}            
             - name: JICOFO_AUTH_PASSWORD
-              value: {{ .Values.jicofo.userAuth.secret | b64dec }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "jitsi-meet.name-jicofo-secret" . }}
+                  key: JICOFO_AUTH_PASSWORD
             {{ end }}
-            {{ if .Values.jicofo.componentSecret }}
             - name: JICOFO_COMPONENT_SECRET
-              value: {{ .Values.jicofo.componentSecret | b64dec }}
-            {{ end }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "jitsi-meet.name-jicofo-secret" . }}
+                  key: JICOFO_COMPONENT_SECRET
             {{- if .Values.prosody.userAuth.enabled }}
             - name: ENABLE_AUTH
               value: "1"
@@ -82,12 +86,15 @@ spec:
             - name: xmpp-client
               containerPort: 5222
               protocol: TCP
+
             - name: xmpp-server
               containerPort: 5269
               protocol: TCP
+
             - name: xmpp-bosh
               containerPort: 5280
               protocol: TCP
+
             - name: xmpp-unknown
               containerPort: 5347
               protocol: TCP
@@ -103,9 +110,6 @@ spec:
             - name: config
               mountPath: "/defaults/turn.cfg.lua"
               subPath: "turn.cfg.lua"
-            - name: config
-              mountPath: "/defaults/prosody.cfg.lua"
-              subPath: "prosody.cfg.lua"
 
       volumes:
         - name: config

@@ -11,22 +11,7 @@ spec:
   gateways:
   - {{ include "jitsi-meet.name-jvb" . }}-gw
 # video bridge
-  # tcp:
-  # - match:
-  #   - port: {{ .Values.jvb.udpport }}
-  #   route:
-  #   - destination:
-  #       host: {{ include "jitsi-meet.name-jvb" . }}-svc
-  #       port:
-  #         number: {{ .Values.jvb.udpport }}
-  
-  # - match:
-  #   - port: {{ .Values.jvb.tcpport }}
-  #   route:
-  #   - destination:
-  #       host: {{ include "jitsi-meet.name-jvb" . }}-svc
-  #       port:
-  #         number: {{ .Values.jvb.tcpport }}
+  tcp:
 # iterate over replica and assing different ports
 {{- $root := . }}
 {{- $name := include "jitsi-meet.name-jvb" $root }}
@@ -50,3 +35,18 @@ spec:
         port:
           number: {{ atoi $tcpport }}
 {{- end }}
+  # - match:
+  #   - port: {{ .Values.jvb.udpport }}
+  #   route:
+  #   - destination:
+  #       host: {{ include "jitsi-meet.name-jvb" . }}-svc
+  #       port:
+  #         number: {{ .Values.jvb.udpport }}
+  
+  # - match:
+  #   - port: {{ .Values.jvb.tcpport }}
+  #   route:
+  #   - destination:
+  #       host: {{ include "jitsi-meet.name-jvb" . }}-svc
+  #       port:
+  #         number: {{ .Values.jvb.tcpport }}

@@ -49,6 +49,13 @@ Create the XMPP server name
 {{- end -}}
 
 {{/*
+Create the XMPP server name
+*/}}
+{{- define "jitsi-meet.name-prosody-config" -}}
+{{- printf "%s-%s" .Chart.Name "prosody-config" | trunc 63 -}}
+{{- end -}}
+
+{{/*
 Create the jicofo cmp name
 */}}
 {{- define "jitsi-meet.name-jicofo" -}}
