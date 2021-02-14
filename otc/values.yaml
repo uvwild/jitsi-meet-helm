@@ -114,7 +114,7 @@ prosody:
 turn:
   replicaCount: 1
   turnHost: turn.jitsi.otcdemo.gardener.t-systems.net
-  externalIp: 80.158.42.28
+#  externalIp: 80.158.56.57
   extTlsPort: 443
   udpPort: 3478
   tcpPort: 3478
