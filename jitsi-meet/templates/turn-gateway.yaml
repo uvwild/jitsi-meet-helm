@@ -10,11 +10,18 @@ spec:
     istio: ingressgateway #! use istio default ingress gateway
   servers:
   - port:
-      number: 443
-      name: http2
-      protocol: HTTPS
+      number: {{ .Values.turn.extTlsPort }}
+      name: tls
+      protocol: tls
     tls:
       mode: SIMPLE
       credentialName: wildcard-tls
+    hosts:
+    - {{ .Values.turn.turnHost }}
+
+  - port:
+      number: {{ .Values.turn.udpPort }}
+      name: udp
+      protocol: udp
     hosts:
     - {{ .Values.turn.turnHost }}

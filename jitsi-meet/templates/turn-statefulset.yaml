@@ -38,6 +38,10 @@ spec:
             - name: TURN_AUTH_PASSWORD
               value: "{{ .Values.turn.userAuth.password }}"
             {{ end }}
+            - name: TURN_TCP_PORT
+              value: "{{ .Values.turn.tcpPort }}"
+            - name: TURN_UDP_PORT
+              value: "{{ .Values.turn.udpPort }}"            
             {{- range .Values.turn.environment }}
             - name: {{ .name | quote }}
               value: {{ .value | quote }}
@@ -47,12 +51,21 @@ spec:
               value: {{ .value | quote }}
             {{- end }}
           ports:
+            {{- if .Values.turn.udpPort }}      
             - name: turn
-              containerPort: {{ .Values.turn.listeningport }}
-              protocol: TCP
-            - name: udp
-              containerPort:  {{ .Values.turn.minPort }}
+              containerPort: {{ .Values.turn.udpPort }}
               protocol: UDP
+            {{- end }}      
+            {{- if .Values.turn.tcpPort }}      
+            - name: tcp
+              containerPort: {{ .Values.turn.tcpPort }}
+              protocol: TCP
+            {{- end }}      
+            {{- if .Values.turn.minPort }}      
+            - name: min
+              containerPort: {{ .Values.turn.minPort }}
+              protocol: UDP
+            {{- end }}      
           volumeMounts:
             - name: config
               mountPath: "/etc/turnserver.conf"

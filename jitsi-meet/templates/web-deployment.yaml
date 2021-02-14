@@ -43,7 +43,7 @@ spec:
             - name: JICOFO_AUTH_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "jitsi-meet.name-jicofo-config" . }}
+                  name: {{ include "jitsi-meet.name-jicofo-secret" . }}
                   key: JICOFO_AUTH_PASSWORD
             {{- end }}
             {{- if .Values.jvb.userAuth.enabled }}
@@ -52,7 +52,7 @@ spec:
             - name: JVB_AUTH_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ template "jitsi-meet.name-jvb-config" . }}
+                  name: {{ template "jitsi-meet.name-jvb-secret" . }}
                   key: JVB_AUTH_PASSWORD
             {{- end }}
             {{- if .Values.prosody.auth.enabled }}

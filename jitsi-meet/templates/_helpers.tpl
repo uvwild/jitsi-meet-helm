@@ -63,6 +63,13 @@ Create the jicofo config name
 {{- end -}}
 
 {{/*
+Create the jicofo secret name
+*/}}
+{{- define "jitsi-meet.name-jicofo-secret" -}}
+{{- printf "%s-%s" .Chart.Name "jicofo-secret" | trunc 63 -}}
+{{- end -}}
+
+{{/*
 Create the jvb server name
 */}}
 {{- define "jitsi-meet.name-jvb" -}}
@@ -74,6 +81,13 @@ Create the jvb config name
 */}}
 {{- define "jitsi-meet.name-jvb-config" -}}
 {{- printf "%s-%s" .Chart.Name "jvb-config" | trunc 63 -}}
+{{- end -}}
+
+{{/*
+Create the jvb secret name
+*/}}
+{{- define "jitsi-meet.name-jvb-secret" -}}
+{{- printf "%s-%s" .Chart.Name "jvb-secret" | trunc 63 -}}
 {{- end -}}
 
 {{/*

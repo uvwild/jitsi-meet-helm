@@ -113,11 +113,12 @@ prosody:
 
 turn:
   replicaCount: 1
-  listeningport: 3478
   turnHost: turn.jitsi.otcdemo.gardener.t-systems.net
   externalIp: 80.158.42.28
-  extPort: 443
-  minPort: 10000
+  extTlsPort: 443
+  udpPort: 3478
+  tcpPort: 3478
+#  minPort: 10000
   userAuth:
     enabled: true
     name: tina

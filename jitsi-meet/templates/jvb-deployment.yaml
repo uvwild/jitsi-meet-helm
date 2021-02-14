@@ -73,13 +73,13 @@ spec:
             - name: JICOFO_AUTH_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "jitsi-meet.name-jicofo" $root }}-secret
+                  name: {{ include "jitsi-meet.name-jicofo-secret" $root }}
                   key: JICOFO_AUTH_PASSWORD
             {{- end }}
             - name: JICOFO_COMPONENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name:  {{ include "jitsi-meet.name-jicofo" $root }}-secret
+                  name: {{ include "jitsi-meet.name-jicofo-secret" $root }}
                   key: JICOFO_COMPONENT_SECRET
 
             {{- if $root.Values.jvb.userAuth.enabled }}
@@ -88,7 +88,7 @@ spec:
             - name: JVB_AUTH_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "jitsi-meet.name-jvb" $root }}-secret
+                  name: {{ include "jitsi-meet.name-jvb-secret" $root }}
                   key: JVB_AUTH_PASSWORD
             {{- end }}
             {{- with $root.Values.jvb.environment }}

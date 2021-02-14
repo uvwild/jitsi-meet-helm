@@ -11,13 +11,26 @@ spec:
   gateways:
   - {{ include "jitsi-meet.name-turn" . }}-gw
   tcp:
+    # map external port to internal listening - tls in istio gateway
   - match:
-    - port: {{ .Values.turn.extPort }}
+    - port: {{ .Values.turn.extTlsPort }}
     route:
     - destination:
         host: {{ include "jitsi-meet.name-turn" . }}
         port:
-          number: {{ .Values.turn.listeningport }}
+          number: {{ .Values.turn.tcpPort }}
+
+  {{- if .Values.turn.udpPort }}      
+  - match:
+    - port: {{ .Values.turn.udpPort }}
+    route:
+    - destination:
+        host: {{ include "jitsi-meet.name-turn" . }}
+        port:
+          number: {{ .Values.turn.udpPort }}
+  {{- end }}      
+
+  {{- if .Values.turn.minPort }}      
   - match:
     - port: {{ .Values.turn.minPort }}
     route:
@@ -25,3 +38,4 @@ spec:
         host: {{ include "jitsi-meet.name-turn" . }}
         port:
           number: {{ .Values.turn.minPort }}
+  {{- end }}      

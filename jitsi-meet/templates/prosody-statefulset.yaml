@@ -42,7 +42,7 @@ spec:
                     cat /var/app/jitsi-meet.cfg.lua | base64 -d > /defaults/conf.d/jitsi-meet.cfg.lua;
                   {{ if and .Values.prosody.auth.enabled false }}
                     prosodyctl --config /config/prosody.cfg.lua register me $XMPP_DOMAIN $JVB_AUTH_PASSWORD;
-                  {{ end }}          
+                  {{ end }}
           env:
             {{- if .Values.jvb.userAuth.enabled }}
             - name: JVB_AUTH_USER
@@ -50,17 +50,28 @@ spec:
             - name: JVB_AUTH_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ template "jitsi-meet.name-jvb-config" . }}
+                  name: {{ template "jitsi-meet.name-jvb" . }}-secret
                   key: JVB_AUTH_PASSWORD
             {{- end }}
-            {{- if .Values.prosody.auth.enabled }}
+            {{ if .Values.jicofo.userAuth.enabled }}
+            - name: JICOFO_AUTH_USER
+              value: {{ .Values.jicofo.userAuth.name }}
+            - name: JICOFO_AUTH_PASSWORD
+              value: {{ .Values.jicofo.userAuth.secret | b64dec }}
+            {{ end }}
+            {{ if .Values.jicofo.componentSecret }}
+            - name: JICOFO_COMPONENT_SECRET
+              value: {{ .Values.jicofo.componentSecret | b64dec }}
+            {{ end }}
+            {{- if .Values.prosody.userAuth.enabled }}
             - name: ENABLE_AUTH
               value: "1"
             - name: ENABLE_GUESTS
-              value: {{ .Values.prosody.auth.guest | quote }}
+              value: {{ .Values.prosody.userAuth.guest | quote }}
             - name: AUTH_TYPE
-              value: {{ .Values.prosody.auth.type | quote }}
+              value: {{ .Values.prosody.userAuth.type | quote }}
             {{- end }}
+
             {{- range .Values.prosody.environment }}
             - name: {{ .name | quote }}
               value: {{ .value | quote }}
@@ -87,6 +98,7 @@ spec:
           volumeMounts:
             - name: config-prosody
               mountPath: "/var/app"
+
         {{ if .Values.prosody.recorder }}
         - name: {{ include "jitsi-meet.name-jibri" . }}
           image: "{{ .Values.jibri.image.repository }}:{{ .Values.jibri.image.tag }}"

@@ -13,7 +13,7 @@ spec:
       targetPort: http
       protocol: TCP
       
-    # # ssl is handled by istio
+    # # ssl is handled by istio so this is not used externally
     - name: http2
       port: {{ .Values.web.service.sslport }}
       targetPort: http2

@@ -8,15 +8,24 @@ metadata:
 spec:
   type: {{ .Values.prosody.service.type }}
   ports:
-    - name: turn
-      port:  {{ .Values.turn.listeningport }}
-      targetPort: turn
+    {{- if .Values.turn.tcpPort }}      
+    - name: tls
+      port:  {{ .Values.turn.tcpPort }}
+      targetPort: tcp
       protocol: TCP
-  ports:
-    - name: udp
+    {{- end }}      
+    {{- if .Values.turn.udpPort }}      
+    - name: turn
+      port:  {{ .Values.turn.udpPort }}
+      targetPort: turn
+      protocol: UDP
+    {{- end }}      
+    {{- if .Values.turn.minPort }}      
+    - name: min
       port:  {{ .Values.turn.minPort }}
       targetPort: udp
       protocol: UDP
+    {{- end }}      
 
   sessionAffinity: ClientIP
   selector:
