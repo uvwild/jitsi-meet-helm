@@ -142,5 +142,7 @@ network_settings = {
   tcp_backlog = 511;
 }
 component_interface = { "*" }
+
 data_path = "/config/data"
+
 Include "conf.d/*.cfg.lua"

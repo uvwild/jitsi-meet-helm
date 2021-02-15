@@ -34,19 +34,19 @@ spec:
         host: {{ $target }}
         port:
           number: {{ atoi $tcpport }}
-{{- end }}
-  # - match:
-  #   - port: {{ .Values.jvb.udpport }}
-  #   route:
-  #   - destination:
-  #       host: {{ include "jitsi-meet.name-jvb" . }}-svc
-  #       port:
-  #         number: {{ .Values.jvb.udpport }}
+  - match:
+    - port: {{ $root.Values.jvb.udpport }}
+    route:
+    - destination:
+        host: {{ $target }}
+        port:
+          number: {{ $root.Values.jvb.udpport }}
   
-  # - match:
-  #   - port: {{ .Values.jvb.tcpport }}
-  #   route:
-  #   - destination:
-  #       host: {{ include "jitsi-meet.name-jvb" . }}-svc
-  #       port:
-  #         number: {{ .Values.jvb.tcpport }}
+  - match:
+    - port: {{ $root.Values.jvb.tcpport }}
+    route:
+    - destination:
+        host: {{ $target }}
+        port:
+          number: {{ $root.Values.jvb.tcpport }}
+{{- end }}

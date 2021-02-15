@@ -36,7 +36,7 @@ spec:
             - name: TURN_AUTH_USER
               value: "{{ .Values.turn.userAuth.name }}"
             - name: TURN_AUTH_PASSWORD
-              value: "{{ .Values.turn.userAuth.password }}"
+              value: "{{ .Values.turn.userAuth.secret }}"
             {{ end }}
             - name: TURN_TCP_PORT
               value: "{{ .Values.turn.tcpPort }}"

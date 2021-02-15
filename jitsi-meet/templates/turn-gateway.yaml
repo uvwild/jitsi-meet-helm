@@ -11,7 +11,7 @@ spec:
   servers:
   - port:
       number: {{ .Values.turn.extTlsPort }}
-      name: tls
+      name: extTls
       protocol: tls
     tls:
       mode: SIMPLE
@@ -23,5 +23,15 @@ spec:
       number: {{ .Values.turn.udpPort }}
       name: udp
       protocol: udp
+    hosts:
+    - {{ .Values.turn.turnHost }}
+
+  - port:
+      number: {{ .Values.turn.tlsPort }}
+      name: tls
+      protocol: tls
+    tls:
+      mode: SIMPLE
+      credentialName: wildcard-tls
     hosts:
     - {{ .Values.turn.turnHost }}

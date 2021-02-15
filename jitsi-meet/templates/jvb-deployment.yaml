@@ -91,6 +91,8 @@ spec:
                   name: {{ include "jitsi-meet.name-jvb-secret" $root }}
                   key: JVB_AUTH_PASSWORD
             {{- end }}
+            - name: JVB_OPTS
+              value: "--apis=xmpp,rest"
             {{- with $root.Values.jvb.environment }}
               {{- toYaml . | nindent 12 }}
             {{- end }}

@@ -1,21 +1,21 @@
-# /defaults/conf.d/turn.cfg.lua
-turncredentials_secret = "{{ .Env.TURN_PASSWORD | default "uebersafe" }}";
+-- /defaults/conf.d/turn.cfg.lua
+turncredentials_secret = "{{ .Env.TURN_AUTH_PASSWORD | default 'uebersafe' }}"
 
 turncredentials = {
     { 
     	type = "stun", 
-    	host = "{{ .Env.EXTERNAL_IP }}", 
-    	port = "{{ .Env.TURN_PORT_MIN }}" 
+    	host = "{{ .Env.TURN_HOST }}", 
+    	port = "{{ .Env.TURN_TCP_PORT }}" 
     },
     { 	type = "turn", 
-    	host = "{{ .Env.EXTERNAL_IP }}", 
-    	port = "{{ .Env.TURN_PORT_MIN }}", 
+    	host = "{{ .Env.TURN_HOST }}", 
+    	port = "{{ .Env.TURN_UDP_PORT }}", 
     	transport = "udp"
     },
     { 
     	type = "turns", 
     	host = "{{ .Env.TURN_HOST }}", 
-	    port = "443", 
+        port = "{{ .Env.TURN_TLS_PORT }}", 
 		transport = "tcp" 
 	}
 }

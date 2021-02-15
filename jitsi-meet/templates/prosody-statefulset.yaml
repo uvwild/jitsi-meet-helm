@@ -82,6 +82,19 @@ spec:
             - name: {{ .name | quote }}
               value: {{ .value | quote }}
             {{- end }}
+# add vars for turn.cfg.lua 
+            - name: TURN_USER
+              value: {{ .Values.turn.userAuth.name }} 
+            - name: TURN_PASSWORD
+              value: {{ .Values.turn.userAuth.secret }} 
+            - name: TURN_HOST
+              value: {{ .Values.turn.turnHost }} 
+            - name: TURN_TCP_PORT
+              value: {{ .Values.turn.tcpPort }}  
+            - name: TURN_UDP_PORT
+              value: {{ .Values.turn.udpPort }}  
+            - name: TURN_TLS_PORT
+              value: {{ .Values.turn.tlsPort }}
           ports:
             - name: xmpp-client
               containerPort: 5222
@@ -108,7 +121,7 @@ spec:
               mountPath: "/defaults/conf.d/jitsi-meet.cfg.lua"
               subPath: "jitsi-meet.cfg.lua"
             - name: config
-              mountPath: "/defaults/turn.cfg.lua"
+              mountPath: "/defaults/conf.d/turn.cfg.lua"
               subPath: "turn.cfg.lua"
 
       volumes:

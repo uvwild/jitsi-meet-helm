@@ -30,12 +30,12 @@ spec:
           number: {{ .Values.turn.udpPort }}
   {{- end }}      
 
-  {{- if .Values.turn.minPort }}      
+  {{- if .Values.turn.tlsPort }}      
   - match:
-    - port: {{ .Values.turn.minPort }}
+    - port: {{ .Values.turn.tlsPort }}
     route:
     - destination:
         host: {{ include "jitsi-meet.name-turn" . }}
         port:
-          number: {{ .Values.turn.minPort }}
+          number: {{ .Values.turn.tcpPort }}
   {{- end }}      

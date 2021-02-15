@@ -7,7 +7,8 @@
 {{- $udpport := printf "%d" (add $root.Values.jvb.baseport $nbr) }}
 {{- $tcpport := printf "%d" (add $root.Values.jvb.baseport $tcpoffset $nbr) }}
 {{- $udpportname := printf "udp-%d" $nbr }}
-{{- $tcpportname := printf "%s-%d" "tcp" $nbr }}
+{{- $tcpportname := printf "tcp-%d" $nbr }}
+{{- $baseportname := printf "base-%d" $nbr }}
 apiVersion: v1
 kind: Service
 metadata:

@@ -38,18 +38,17 @@ spec:
 {{- $tcpport := printf "%d" (add $root.Values.jvb.baseport $root.Values.jvb.tcpoffset $nbr) }}
 {{- $udpportname := printf "udp-%d" $nbr }}
 {{- $tcpportname := printf "%s-%d" "tcp" $nbr }}
-  - port:
+  - hosts:
+    - {{ $root.Values.webHost }}
+    port:
       number: {{ atoi $udpport }}
       name: {{ $udpportname }}
       protocol: UDP
-    hosts:
-      - {{ $root.Values.webHost }}
-
-  - port:
+  - hosts:
+    - {{ $root.Values.webHost }}
+    port:
       number: {{ atoi $tcpport }}
       name: {{ $tcpportname }}
       protocol: TCP
-    hosts:
-    - {{ $root.Values.webHost }}
 
 {{- end }}

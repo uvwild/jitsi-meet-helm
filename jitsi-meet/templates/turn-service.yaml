@@ -20,11 +20,11 @@ spec:
       targetPort: turn
       protocol: UDP
     {{- end }}      
-    {{- if .Values.turn.minPort }}      
+    {{- if .Values.turn.tlsPort }}      
     - name: min
-      port:  {{ .Values.turn.minPort }}
-      targetPort: udp
-      protocol: UDP
+      port:  {{ .Values.turn.tlsPort }}
+      targetPort: tcp
+      protocol: TCP
     {{- end }}      
 
   sessionAffinity: ClientIP
