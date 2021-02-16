@@ -5,12 +5,13 @@
 {{- range $index, $nbr := until (.Values.prosody.replicaCount | int) }}
 {{- $target := printf "%s-%d" $name $nbr}}
 {{- $udpport := printf "%d" (add $root.Values.jvb.udpport $nbr) }}
-{{- $tcpport := printf "%d" (add $root.Values.jvb.udpport $tcpoffset $nbr) }}
+{{- $tcpport := printf "%d" (add $root.Values.jvb.tcpport $nbr) }}
+
 {{- $udpnodeport := printf "%d" (add $root.Values.jvb.nodeport $nbr) }}
 {{- $tcpnodeport := printf "%d" (add $root.Values.jvb.nodeport $tcpoffset $nbr)  }}
+
 {{- $udpportname := printf "udp-%d" $nbr }}
 {{- $tcpportname := printf "tcp-%d" $nbr }}
-{{- $nodeportname := printf "base-%d" $nbr }}
 apiVersion: v1
 kind: Service
 metadata:

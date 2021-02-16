@@ -16,6 +16,8 @@ common:
       value: "1"
     - name: ENABLE_AUTH
       value: "0"
+    - name: ENABLE_IPV6
+      value: "false"
     - name: ENABLE_STATISTICS
       value: "true"
     - name: XMPP_DOMAIN
@@ -33,33 +35,13 @@ common:
     - name: JVB_BREWERY_MUC
       value: jvbbrewery
     - name: JVB_TCP_HARVESTER_DISABLED
-      value: "true"
+      value: "false"
     - name: TZ
       value: Europe/Amsterdam
     - name: JVB_ADMINS
       value: "\"jvb@auth.jitsi.otc\",\"focus@auth.jitsi.otc\""
     - name: MARKER
       value: "otc_config"
-
-web:
-  image:
-    repository: jitsi/web
-    tag: stable-5390-2
-  # the letsencrypt script is not working inside the nodes of our helm chart
-  # we are using istio in gardener instead
-  environment:
-    - name: ENABLE_LETSENCRYPT
-      value: false
-    - name: LETSENCRYPT_DOMAIN
-      value: xxxx
-    - name: LOG_LEVEL
-      value: info
-  replicaCount: 1
-  service:
-    annotations: []
-    type: istio
-    port: 80
-    sslport: 443
 
 jicofo:
   image:
@@ -80,18 +62,15 @@ jvb:
     tag: stable-5390-2
   ingress:
     enabled: false
-    annotations: []
-    hosts:
-      - host: www.jitsi.otcdemo.gardener.t-systems.net
-        paths: 
-          - /
+    annotations: |-
+        kubernetes.io/ingress.class: nginx
   userAuth:
     enabled: true
     name: "jvb"
     secret: dG90bw==
+  # nodeports  30000-32768
   nodeport: 30000
   tcpoffset: 1000
-  # port 4443 & 10000 is not working with nodeport
   udpport: 10000
   tcpport: 4443
   environment:
@@ -149,3 +128,23 @@ turn:
     repository: instrumentisto/coturn
     tag: 4.5.2
     pullPolicy: IfNotPresent
+
+web:
+  image:
+    repository: jitsi/web
+    tag: stable-5390-2
+  # the letsencrypt script is not working inside the nodes of our helm chart
+  # we are using istio in gardener instead
+  environment:
+    - name: ENABLE_LETSENCRYPT
+      value: false
+    - name: LETSENCRYPT_DOMAIN
+      value: xxxx
+    - name: LOG_LEVEL
+      value: info
+  replicaCount: 1
+  service:
+    annotations: []
+    type: istio
+    port: 80
+    sslport: 443

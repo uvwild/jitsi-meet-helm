@@ -1,7 +1,8 @@
+{{- $basename := include "jitsi-meet.name-jvb" . }}
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: {{ include "jitsi-meet.name-jvb" . }}-vs
+  name: {{ $basename }}-vs
   namespace: {{ .Values.namespace }}
   labels:
 {{ include "jitsi-meet.labels" . | indent 4 }}
@@ -14,11 +15,10 @@ spec:
   tcp:
 # iterate over replica and assing different ports
 {{- $root := . }}
-{{- $name := include "jitsi-meet.name-jvb" $root }}
 {{- range $index, $nbr := until (.Values.prosody.replicaCount | int) }}
-{{- $target := printf "%s-%d" $name $nbr}}
+{{- $target := printf "%s-%d" $basename $nbr}}
 {{- $udpport := printf "%d" (add $root.Values.jvb.udpport $nbr) }}
-{{- $tcpport := printf "%d" (add $root.Values.jvb.udpport $root.Values.jvb.tcpoffset $nbr) }}
+{{- $tcpport := printf "%d" (add $root.Values.jvb.tcpport $nbr) }}
   - match:
     - port:  {{ atoi $udpport }}
     route:

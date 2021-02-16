@@ -154,10 +154,7 @@ Create the link URL namespace/service:port for UDP route tables
 {{- define "jitsi-meet.udp-route-table-entry" -}}
 {{- if .Values.jvb.service.udpPort -}}
 {{ printf "%d:%s/%s-jvb:%d" .Values.jvb.udpPort .Chart.Namespace .Chart.Name .Values.jvb.udpPort }}
-{{- end }}
-{{- if .Values.jvb.service.tcpPort -}}
-{{ printf "%d:%s/%s-jvb:%d" .Values.jvb.tcpPort .Chart.Namespace .Chart.Name .Values.jvb.tcpPort }}
-{{- end }}
+{{- end -}}
 {{- end -}}
 
 {{/*
@@ -166,5 +163,5 @@ Create the link URL namespace/service:port for TCP route tables
 {{- define "jitsi-meet.tcp-route-table-entry" -}}
 {{- if .Values.jvb.service.tcpPort -}}
 {{ printf "%d:%s/%s-jvb:%d" .Values.jvb.tcpPort .Chart.Namespace .Chart.Name .Values.jvb.tcpPort }}
-{{- end }}
+{{- end -}}
 {{- end -}}
