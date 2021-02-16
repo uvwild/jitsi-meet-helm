@@ -11,16 +11,43 @@ spec:
   gateways:
   - {{ include "jitsi-meet.name-web" . }}-gw
 # lets try tcp protocol
-  # tcp:
-  # - name: "separate-xmpp"
-  #   match:
-  #   - uri:
-  #       regex: /http-bind.*
-  #   route:
-  #   - destination:
-  #       host: {{ include "jitsi-meet.name-prosody" . }}
-  #       port:
-  #         number: 5280
+  http:
+  - name: "separate-xmpp"
+    match:
+    - uri:
+        prefix:  /xmpp-websocket
+    route:
+    - destination:
+        host: {{ include "jitsi-meet.name-prosody" . }}
+        port:
+          number: 5280
+    websocketUpgrade: true
+    corsPolicy:
+      allowOrigin:
+      - "*"
+      allowMethods:
+      - POST
+      - GET
+      - OPTIONS
+      - CONNECT
+      allowCredentials: true
+      allowHeaders:
+        - Accept
+        - Accept-Encoding
+        - Accept-Language
+        - Cache-Control
+        - Connection
+        - Cookie
+        - Host
+        - Origin
+        - Pragma
+        - Sec-Websocket-Extensions
+        - Sec-Websocket-Key
+        - Sec-Websocket-Version
+        - Upgrade
+        - Upgrade-Insecure-Requests
+        - User-Agent
+      maxAge: "24h"
 # web server  
   http:
   - name: "favicon remap"
@@ -44,44 +71,3 @@ spec:
         host: {{ include "jitsi-meet.name-web" . }}-svc
         port:
           number: {{ .Values.web.service.port }}
-
-# video bridge
-  # tcp:
-  # - match:
-  #   - port: {{ .Values.jvb.udpport }}
-  #   route:
-  #   - destination:
-  #       host: {{ include "jitsi-meet.name-jvb" . }}-svc
-  #       port:
-  #         number: {{ .Values.jvb.udpport }}
-  
-  # - match:
-  #   - port: {{ .Values.jvb.tcpport }}
-  #   route:
-  #   - destination:
-  #       host: {{ include "jitsi-meet.name-jvb" . }}-svc
-  #       port:
-  #         number: {{ .Values.jvb.tcpport }}
-# iterate over replica and assing different ports
-{{- $root := . }}
-{{- $name := include "jitsi-meet.name-jvb" $root }}
-{{- range $index, $nbr := until (.Values.prosody.replicaCount | int) }}
-{{- $target := printf "%s-%d" $name $nbr}}
-{{- $udpport := printf "%d" (add $root.Values.jvb.baseport $nbr) }}
-{{- $tcpport := printf "%d" (add $root.Values.jvb.baseport $root.Values.jvb.tcpoffset $nbr) }}
-  - match:
-    - port:  {{ atoi $udpport }}
-    route:
-    - destination:
-        host: {{ $target }}
-        port:
-          number: {{ atoi $udpport }}
-
-  - match:
-    - port: {{ atoi $tcpport }}
-    route:
-    - destination:
-        host: {{ $target }}
-        port:
-          number: {{ atoi $tcpport }}
-{{- end }}

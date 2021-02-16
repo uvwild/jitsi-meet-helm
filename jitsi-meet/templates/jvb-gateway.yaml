@@ -34,10 +34,10 @@ spec:
 {{- $root := . }}
 {{- $name := include "jitsi-meet.name-jvb" $root }}
 {{- range $index, $nbr := until (.Values.prosody.replicaCount | int) }}
-{{- $udpport := printf "%d" (add $root.Values.jvb.baseport $nbr) }}
-{{- $tcpport := printf "%d" (add $root.Values.jvb.baseport $root.Values.jvb.tcpoffset $nbr) }}
-{{- $udpportname := printf "udp-%d" $nbr }}
-{{- $tcpportname := printf "%s-%d" "tcp" $nbr }}
+{{- $udpport := printf "%d" (add $root.Values.jvb.udpport $nbr) }}
+{{- $tcpport := printf "%d" (add $root.Values.jvb.udpport $root.Values.jvb.tcpoffset $nbr) }}
+{{- $udpportname := printf "udp-%s" $nbr }}
+{{- $tcpportname := printf "tcp-%d" $nbr }}
   - hosts:
     - {{ $root.Values.webHost }}
     port:

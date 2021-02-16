@@ -19,6 +19,10 @@ asap_accepted_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ISSU
 {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") .Env.JWT_ACCEPTED_AUDIENCES }}
 asap_accepted_audiences = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_AUDIENCES) }}" }
 {{ end }}
+
+cross_domain_websocket = { "https://localhost:8443" }
+cross_domain_bosh = { "https://localhost:8443" }
+
 VirtualHost "{{ .Env.XMPP_DOMAIN }}"
 {{ if $ENABLE_AUTH }}
   {{ if eq $AUTH_TYPE "jwt" }}
@@ -39,6 +43,9 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
 {{ else }}
     authentication = "anonymous"
 {{ end }}
+    app_id = ""
+    app_secret = ""
+    allow_empty_token = true    
     ssl = {
         key = "/config/certs/{{ .Env.XMPP_DOMAIN }}.key";
         certificate = "/config/certs/{{ .Env.XMPP_DOMAIN }}.crt";

@@ -88,6 +88,23 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.web.resources | nindent 12 }}
+          volumeMounts:
+            - name: config
+              mountPath: "/defaults/config.js"
+              subPath: "config.js"
+            - name: config
+              mountPath: "/defaults/interface_config.js"
+              subPath: "interface_config.js"
+            - name: config
+              mountPath: "/usr/share/jitsi-meet/plugin.head.html"
+              subPath: "plugin.head.html"
+            - name: config
+              mountPath: "/usr/share/jitsi-meet/welcomePageAdditionalContent.html"
+              subPath: "welcomePageAdditionalContent.html"
+      volumes:
+        - name: config
+          configMap:
+            name: {{ template "jitsi-meet.name-web-config" . }}
       {{- with .Values.web.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -5,7 +5,7 @@ imagePullSecrets:
 
 webHost: www.jitsi.otcdemo.gardener.t-systems.net
 videoHost: jvb.jitsi.otcdemo.gardener.t-systems.net
-#ip: 80.158.56.57
+publicIp: 80.158.56.57
 #ip: 0.0.0.0
 
 common:
@@ -37,7 +37,7 @@ common:
     - name: TZ
       value: Europe/Amsterdam
     - name: JVB_ADMINS
-      value: "\"focus@jitsi.otc\",\"focus@auth.jitsi.otc\""
+      value: "\"jvb@auth.jitsi.otc\",\"focus@auth.jitsi.otc\""
     - name: MARKER
       value: "otc_config"
 
@@ -89,7 +89,7 @@ jvb:
     enabled: true
     name: "jvb"
     secret: dG90bw==
-  baseport: 30000
+  nodeport: 30000
   tcpoffset: 1000
   # port 4443 & 10000 is not working with nodeport
   udpport: 10000
@@ -97,9 +97,6 @@ jvb:
   environment:
     - name: LOG_LEVEL
       value: info
-    - name: JVB_STUN_SERVERS
-      value: "turn.jitsi.otcdemo.gardener.t-systems.net:443"
-    # value: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
     - name: JVB_OPTS
       value: "--apis=xmpp,rest,colibri"
     - name: ENABLE_STATISTICS
@@ -120,14 +117,18 @@ prosody:
   environment:
     - name: LOG_LEVEL
       value: info
+    - name: XMPP_MUC_MODULES
+      value: "muc_meeting_id"
   image:
     repository: jitsi/prosody
     tag: stable-5390-2
     pullPolicy: IfNotPresent
 
 turn:
+  enabled: false
   replicaCount: 1
-  turnHost: turn.jitsi.otcdemo.gardener.t-systems.net
+  turnHost: stun.t-online.de
+#  turnHost: turn.jitsi.otcdemo.gardener.t-systems.net
   xmppTurnDomain: turn.jitsi.otc
 
 #  externalIp: 80.158.56.57
@@ -137,7 +138,7 @@ turn:
   tlsPort: 5349
   # ports for turn forwarding
   minPort: 10000
-  maxPort: 20000
+  maxPort: 10100
   userAuth:
     enabled: true
     name: tina
@@ -148,8 +149,3 @@ turn:
     repository: instrumentisto/coturn
     tag: 4.5.2
     pullPolicy: IfNotPresent
-  environment:
-    - name: MARKER
-      value: otc-values
-    - name: JVB_STUN_SERVERS
-      value: "turn.jitsi.otcdemo.gardener.t-systems.net:443"

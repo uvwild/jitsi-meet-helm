@@ -16,10 +16,10 @@ If release name contains chart name it will be used as a full name.
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
 {{- $name := default .Chart.Name .Values.nameOverride -}}
-{{- if contains $name .Release.Name -}}
-{{- .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- if contains $name .Chart.Name -}}
+{{- .Chart.Name | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s" .Chart.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}
@@ -28,8 +28,15 @@ If release name contains chart name it will be used as a full name.
 Create the turn server name
 */}}
 {{- define "jitsi-meet.name-turn" -}}
-{{- $name := default .Chart.Name .Values.nameOverride -}}
-{{- printf "%s-%s" $name "turn" | trunc 63 -}}
+{{- printf "%s-%s" .Chart.Name "turn" | trunc 63 -}}
+{{- end -}}
+
+
+{{/*
+Create the turn server name
+*/}}
+{{- define "jitsi-meet.name-turn-config" -}}
+{{- printf "%s-%s" .Chart.Name "turn-config" | trunc 63 -}}
 {{- end -}}
 
 
@@ -37,8 +44,14 @@ Create the turn server name
 Create the web server name
 */}}
 {{- define "jitsi-meet.name-web" -}}
-{{- $name := default .Chart.Name .Values.nameOverride -}}
-{{- printf "%s-%s" $name "web" | trunc 63 -}}
+{{- printf "%s-%s" .Chart.Name  "web" | trunc 63 -}}
+{{- end -}}
+
+{{/*
+Create the web server name
+*/}}
+{{- define "jitsi-meet.name-web-config" -}}
+{{- printf "%s-%s" .Chart.Name  "web-config" | trunc 63 -}}
 {{- end -}}
 
 {{/*
@@ -52,7 +65,7 @@ Create the XMPP server name
 Create the XMPP server name
 */}}
 {{- define "jitsi-meet.name-prosody-config" -}}
-{{- printf "%s-%s" .Chart.Name "prosody-config" | trunc 63 -}}
+{{- printf "%s-%s" .Chart.Name  "prosody-config" | trunc 63 -}}
 {{- end -}}
 
 {{/*
@@ -117,7 +130,7 @@ Common labels
 {{- define "jitsi-meet.labels" -}}
 app.kubernetes.io/name: {{ include "jitsi-meet.name" . }}
 helm.sh/chart: {{ include "jitsi-meet.chart" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/instance: {{ .Chart.Name }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -140,10 +153,10 @@ Create the link URL namespace/service:port for UDP route tables
 */}}
 {{- define "jitsi-meet.udp-route-table-entry" -}}
 {{- if .Values.jvb.service.udpPort -}}
-{{ printf "%d:%s/%s-jvb:%d" .Values.jvb.udpPort .Release.Namespace .Release.Name .Values.jvb.udpPort }}
+{{ printf "%d:%s/%s-jvb:%d" .Values.jvb.udpPort .Chart.Namespace .Chart.Name .Values.jvb.udpPort }}
 {{- end }}
 {{- if .Values.jvb.service.tcpPort -}}
-{{ printf "%d:%s/%s-jvb:%d" .Values.jvb.tcpPort .Release.Namespace .Release.Name .Values.jvb.tcpPort }}
+{{ printf "%d:%s/%s-jvb:%d" .Values.jvb.tcpPort .Chart.Namespace .Chart.Name .Values.jvb.tcpPort }}
 {{- end }}
 {{- end -}}
 
@@ -152,6 +165,6 @@ Create the link URL namespace/service:port for TCP route tables
 */}}
 {{- define "jitsi-meet.tcp-route-table-entry" -}}
 {{- if .Values.jvb.service.tcpPort -}}
-{{ printf "%d:%s/%s-jvb:%d" .Values.jvb.tcpPort .Release.Namespace .Release.Name .Values.jvb.tcpPort }}
+{{ printf "%d:%s/%s-jvb:%d" .Values.jvb.tcpPort .Chart.Namespace .Chart.Name .Values.jvb.tcpPort }}
 {{- end }}
 {{- end -}}

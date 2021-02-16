@@ -68,6 +68,7 @@ modules_enabled = {
 		--"groups"; -- Shared roster support
 		--"announce"; -- Send announcement to all online users
 		"welcome"; -- Welcome users who register accounts
+		"websocket"; 
 		"watchregistrations"; -- Alert admins of registrations
 		"motd"; -- Send a message to users when they log in
 		--"legacyauth"; -- Legacy authentication. Only used by some old clients and bots.

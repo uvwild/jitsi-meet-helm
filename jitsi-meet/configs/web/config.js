@@ -29,7 +29,7 @@ var config = {
     },
 
     // BOSH URL. FIXME: use XEP-0156 to discover it.
-    bosh: '/http-bind',
+    bosh: '//jitsi.otc/http-bind',
 
     // Websocket URL
     // websocket: 'wss://jitsi-meet.example.com/xmpp-websocket',
@@ -209,7 +209,7 @@ var config = {
     // Misc
 
     // Default value for the channel "last N" attribute. -1 for unlimited.
-    channelLastN: 3,
+    channelLastN: 10,
 
     // Disables or enables RTX (RFC 4588) (defaults to false).
     // disableRtx: false,
@@ -232,7 +232,7 @@ var config = {
     // minParticipants: 2,
 
     // Use XEP-0215 to fetch STUN and TURN servers.
-    useStunTurn: true,
+//    useStunTurn: true,
 
     // Enable IPv6 support.
     useIPv6: false,
@@ -241,7 +241,7 @@ var config = {
     // Values can be 'datachannel', 'websocket', true (treat it as
     // 'datachannel'), undefined (treat it as 'datachannel') and false (don't
     // open any channel).
-    // openBridgeChannel: true,
+    openBridgeChannel: 'websocket',
 
 
     // UI
@@ -335,13 +335,14 @@ var config = {
         enabled: true,
 
         // Use XEP-0215 to fetch STUN and TURN servers.
-        useStunTurn: true,
+//        useStunTurn: true,
 
         // The STUN servers that will be used in the peer to peer connections
         stunServers: [
 
             // { urls: 'stun:jitsi-meet.example.com:4446' },
-            { urls: 'stun:meet-jit-si-turnrelay.jitsi.net:443' }
+            { urls: 'stun:stun.t-online.de:3478' }
+            //{ urls: 'stun:meet-jit-si-turnrelay.jitsi.net:443' }
         ],
 
         // Sets the ICE transport policy for the p2p connection. At the time

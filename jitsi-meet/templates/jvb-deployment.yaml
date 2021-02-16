@@ -1,8 +1,8 @@
 {{- $root := . -}}
 {{- $name := include "jitsi-meet.name-jvb" $root -}}
 {{- range $index, $nbr := until (.Values.prosody.replicaCount | int) }}
-{{- $udpport := printf "%d" (add $root.Values.jvb.baseport $nbr) }}
-{{- $tcpport := printf "%d" (add $root.Values.jvb.baseport $root.Values.jvb.tcpoffset $nbr) }}
+{{- $udpport := printf "%d" (add $root.Values.jvb.udpport $nbr) }}
+{{- $tcpport := printf "%d" (add $root.Values.jvb.udpport $root.Values.jvb.tcpoffset $nbr) }}
 {{- $udpportname := printf "udp-%d" $nbr }}
 {{- $tcpportname := printf "tcp-%d" $nbr }}
 ---
@@ -93,6 +93,9 @@ spec:
             {{- end }}
             - name: JVB_OPTS
               value: "--apis=xmpp,rest"
+            - name: JVB_STUN_SERVERS
+              value: "{{ $root.Values.turn.turnHost }}:{{ $root.Values.turn.udpPort }}"
+            # value: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
             {{- with $root.Values.jvb.environment }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
