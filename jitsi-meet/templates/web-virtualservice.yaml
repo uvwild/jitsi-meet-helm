@@ -58,7 +58,7 @@ spec:
       uri: "/images/favicon.ico"
     route:
     - destination:
-        host: {{ include "jitsi-meet.name-web" . }}-svc
+        host: {{ include "jitsi-meet.name-web" . }}
         port:
           number: {{ .Values.web.service.port }}
 
@@ -68,6 +68,6 @@ spec:
         regex: /.*
     route:
     - destination:
-        host: {{ include "jitsi-meet.name-web" . }}-svc
+        host: {{ include "jitsi-meet.name-web" . }}
         port:
           number: {{ .Values.web.service.port }}

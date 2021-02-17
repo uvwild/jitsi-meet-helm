@@ -29,7 +29,10 @@ var config = {
     },
 
     // BOSH URL. FIXME: use XEP-0156 to discover it.
-    bosh: '//jitsi.otc/http-bind',
+    // use no host
+    bosh: '/http-bind',
+    // or webhost
+//    bosh: '//www.jitsi.otcdemo.gardener.t-systems.net/http-bind',
 
     // Websocket URL
     // websocket: 'wss://jitsi-meet.example.com/xmpp-websocket',
