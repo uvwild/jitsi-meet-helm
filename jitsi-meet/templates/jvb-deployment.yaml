@@ -2,15 +2,15 @@
 {{- $name := include "jitsi-meet.name-jvb" $root -}}
 {{- range $index, $nbr := until (.Values.prosody.replicaCount | int) }}
 {{- $udpport := printf "%d" (add $root.Values.jvb.udpport $nbr) }}
-{{- $tcpport := printf "%d" (add $root.Values.jvb.udpport $root.Values.jvb.tcpoffset $nbr) }}
+{{- $tcpport := printf "%d" (add $root.Values.jvb.tcpport $nbr) }}
 {{- $udpportname := printf "udp-%d" $nbr }}
 {{- $tcpportname := printf "tcp-%d" $nbr }}
 ---
-{{- $depName := printf "%s-%d" $name $nbr -}}
+{{- $deployName := printf "%s-%d" $name $nbr -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $depName | quote }}
+  name: {{ $deployName | quote }}
   namespace: {{ $root.Values.namespace | quote }}
   labels:
 {{ include "jitsi-meet.labels" $root | indent 4 }}
@@ -18,12 +18,12 @@ spec:
   replicas: {{ $root.Values.jvb.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ $depName | quote }}
+      app.kubernetes.io/name: {{ $deployName | quote }}
       app.kubernetes.io/instance: {{ $root.Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ $depName | quote }}
+        app.kubernetes.io/name: {{ $deployName | quote }}
         app.kubernetes.io/instance: {{ $root.Release.Name }}
     spec:
     {{- with $root.Values.imagePullSecrets }}
@@ -37,7 +37,10 @@ spec:
         - name: {{ $name | quote }}
           image: {{ printf "%s:%s" $root.Values.jvb.image.repository $root.Values.jvb.image.tag | quote }}
           imagePullPolicy: {{ $root.Values.jvb.image.pullPolicy | quote }}
-          command: ["/bin/bash"] # this creates the env variables for the streaming ports
+          command: ["/bin/bash"] 
+          # this creates the env variables for the streaming ports if we dont pass the ports in 
+          #args: ["/entrypoint.sh","10000","4333","/init"]
+          # we pass the env vars in to be used in the config templates
           args: ["/entrypoint.sh","/init"]
           securityContext:
             capabilities:
@@ -48,20 +51,24 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           env:
-            - name: BASE_PORT
+            - name: JVB_PORT
+              value: {{ $udpport | quote }}
+            - name: JVB_TCP_PORT
+              value: {{ $tcpport | quote }}
+            - name: JVB_TCP_MAPPED_PORT
+              value: {{ $tcpport | quote }}
+            - name: BASE_PORT # is the nodeport
               value: {{ $root.Values.jvb.baseport | quote }}
-            - name: TCP_OFFSET
-              value: {{ $root.Values.jvb.tcpoffset | quote }}
             - name: PUBLIC_URL
               value: "https://{{ $root.Values.webHost }}:443"
-              {{- if $root.Values.ip }}
             - name: PUBLIC_IP
-              value: "{{ $root.Values.ip }}"
-              {{- end }}
+              value: "{{ $root.Values.publicIp }}"
             - name: LOCAL_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.hostIP
+              value: 0.0.0.0
+              # this is providing the IP of the node host - quite irrelevant              
+              # valueFrom:
+              #   fieldRef:
+              #     fieldPath: status.hostIP
             - name: XMPP_SERVER
               value: {{ include "jitsi-meet.name-prosody" $root }}
             - name: PROSODY_INSTANCE
@@ -91,8 +98,8 @@ spec:
                   name: {{ include "jitsi-meet.name-jvb-secret" $root }}
                   key: JVB_AUTH_PASSWORD
             {{- end }}
-            - name: JVB_OPTS
-              value: "--apis=xmpp,rest"
+            - name: JVB_ENABLE_APIS
+              value: "xmpp,rest"
             - name: JVB_STUN_SERVERS
               value: "{{ $root.Values.turn.turnHost }}:{{ $root.Values.turn.udpPort }}"
             # value: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
@@ -103,10 +110,10 @@ spec:
               {{- toYaml . | nindent 12 }}
             {{- end }}
           ports:
-            - name: udpvideo
+            - name: {{ $udpportname }}
               containerPort: {{ atoi $udpport }}
               protocol: UDP
-            - name: tvpvideo
+            - name: {{ $tcpportname }}
               containerPort: {{ atoi $tcpport }}
               protocol: TCP
           volumeMounts:
@@ -128,10 +135,10 @@ spec:
         - name: config
           configMap:
             name: {{ template "jitsi-meet.name-jvb-config" $root }}
-      {{- with $root.Values.jvb.nodeSelector }}
+    {{- with $root.Values.jvb.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+    {{- end }}
     {{- with $root.Values.jvb.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}

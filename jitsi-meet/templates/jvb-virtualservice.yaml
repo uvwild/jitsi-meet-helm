@@ -20,14 +20,6 @@ spec:
 {{- $udpport := printf "%d" (add $root.Values.jvb.udpport $nbr) }}
 {{- $tcpport := printf "%d" (add $root.Values.jvb.tcpport $nbr) }}
   - match:
-    - port:  {{ atoi $udpport }}
-    route:
-    - destination:
-        host: {{ $target }}
-        port:
-          number: {{ atoi $udpport }}
-
-  - match:
     - port: {{ atoi $tcpport }}
     route:
     - destination:

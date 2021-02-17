@@ -32,16 +32,16 @@ spec:
   {{- end }}
   ports:
   - port: {{ atoi $udpport }}
-    name: {{ $udpportname }}
+    name: "{{ atoi $udpport }}"
     nodePort: {{ atoi $udpnodeport }}
     protocol: UDP
-    targetPort: udpvideo
+    targetPort: {{ $udpport }}
 
   - port: {{ atoi $tcpport}}
-    name: {{ $tcpportname }}
+    name: "{{ atoi $tcpport}}"
     nodePort: {{ atoi $tcpnodeport }}
     protocol: TCP
-    targetPort: tcpvideo
+    targetPort: {{ $tcpport }}
 
   selector:
     app.kubernetes.io/name: {{ $target | quote }}
