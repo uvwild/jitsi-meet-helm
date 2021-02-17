@@ -1,0 +1,73 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ include "jitsi-meet.name-web" . }}-vs
+  namespace: {{ .Values.namespace }}
+  labels:
+{{ include "jitsi-meet.labels" . | indent 4 }}
+spec:
+  hosts:
+  - {{ .Values.webHost }}
+  gateways:
+  - {{ include "jitsi-meet.name-web" . }}-gw
+# lets try tcp protocol
+  http:
+  - name: "separate-xmpp"
+    match:
+    - uri:
+        prefix:  /xmpp-websocket
+    route:
+    - destination:
+        host: {{ include "jitsi-meet.name-prosody" . }}
+        port:
+          number: 5280
+    websocketUpgrade: true
+    corsPolicy:
+      allowOrigin:
+      - "*"
+      allowMethods:
+      - POST
+      - GET
+      - OPTIONS
+      - CONNECT
+      allowCredentials: true
+      allowHeaders:
+        - Accept
+        - Accept-Encoding
+        - Accept-Language
+        - Cache-Control
+        - Connection
+        - Cookie
+        - Host
+        - Origin
+        - Pragma
+        - Sec-Websocket-Extensions
+        - Sec-Websocket-Key
+        - Sec-Websocket-Version
+        - Upgrade
+        - Upgrade-Insecure-Requests
+        - User-Agent
+      maxAge: "24h"
+# web server  
+  http:
+  - name: "favicon remap"
+    match:
+    - uri:
+        prefix: /favicon.ico
+    rewrite:
+      uri: "/images/favicon.ico"
+    route:
+    - destination:
+        host: {{ include "jitsi-meet.name-web" . }}-svc
+        port:
+          number: {{ .Values.web.service.port }}
+
+  - name: "standard"
+    match:
+    - uri:
+        regex: /.*
+    route:
+    - destination:
+        host: {{ include "jitsi-meet.name-web" . }}-svc
+        port:
+          number: {{ .Values.web.service.port }}

@@ -1,0 +1,57 @@
+{{- if eq .Values.turn.enabled true }}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ include "jitsi-meet.name-turn" . }}-vs
+  namespace: {{ .Values.namespace }}
+  labels:
+{{ include "jitsi-meet.labels" . | indent 4 }}
+spec:
+  hosts:
+  - {{ .Values.turn.turnHost }}
+  gateways:
+  - {{ include "jitsi-meet.name-turn" . }}-gw
+  tcp:
+    # map external port to internal listening - tls in istio gateway
+  - match:
+    - port: {{ .Values.turn.extTlsPort }}
+    route:
+    - destination:
+        host: {{ include "jitsi-meet.name-turn" . }}
+        port:
+          number: {{ .Values.turn.tcpPort }}
+
+  {{- if .Values.turn.udpPort }}      
+  - match:
+    - port: {{ .Values.turn.udpPort }}
+    route:
+    - destination:
+        host: {{ include "jitsi-meet.name-turn" . }}
+        port:
+          number: {{ .Values.turn.udpPort }}
+  {{- end }}      
+
+  {{- if .Values.turn.tlsPort }}      
+  - match:
+    - port: {{ .Values.turn.tlsPort }}
+    route:
+    - destination:
+        host: {{ include "jitsi-meet.name-turn" . }}
+        port:
+          number: {{ .Values.turn.tcpPort }}
+  {{- end }}
+    #  create loop from minPort to maxPort for udp ports
+  {{- if .Values.turn.minPort }}
+    {{- range $index, $nbr := untilStep (int .Values.turn.minPort) (int .Values.turn.maxPort) 1 }}
+    {{- $port :=  printf "udp-$s%d" $index  $nbr }}
+  - match:
+    - port: {{ $port }}
+    route:
+    - destination:
+        host: {{ include "jitsi-meet.name-turn" . }}
+        port:
+          number: {{ $port }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+# {{ template "jitsi-meet.udp-route-table-entry" . }}

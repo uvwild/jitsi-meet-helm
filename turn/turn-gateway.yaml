@@ -1,0 +1,39 @@
+{{- if eq .Values.turn.enabled true }}
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: {{ include "jitsi-meet.name-turn" . }}-gw
+  namespace: {{ .Values.namespace }}
+  labels:
+{{ include "jitsi-meet.labels" . | indent 4 }}
+spec:
+  selector:
+    istio: ingressgateway #! use istio default ingress gateway
+  servers:
+  - port:
+      number: {{ .Values.turn.extTlsPort }}
+      name: extTls
+      protocol: tls
+    tls:
+      mode: SIMPLE
+      credentialName: wildcard-tls
+    hosts:
+    - {{ .Values.turn.turnHost }}
+
+  - port:
+      number: {{ .Values.turn.udpPort }}
+      name: udp
+      protocol: udp
+    hosts:
+    - {{ .Values.turn.turnHost }}
+
+  - port:
+      number: {{ .Values.turn.tlsPort }}
+      name: tls
+      protocol: tls
+    tls:
+      mode: SIMPLE
+      credentialName: wildcard-tls
+    hosts:
+    - {{ .Values.turn.turnHost }}
+{{- end }}

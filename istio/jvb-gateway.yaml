@@ -15,7 +15,7 @@ spec:
 {{- range $index, $nbr := until (.Values.prosody.replicaCount | int) }}
 {{- $udpport := printf "%d" (add $root.Values.jvb.udpport $nbr) }}
 {{- $tcpport := printf "%d" (add $root.Values.jvb.tcpport $nbr) }}
-{{- $udpportname := printf "udp-%d" $nbr }}
+{{- $udpportname := printf "udp-%s" $nbr }}
 {{- $tcpportname := printf "tcp-%d" $nbr }}
   - hosts:
     - {{ $root.Values.webHost }}

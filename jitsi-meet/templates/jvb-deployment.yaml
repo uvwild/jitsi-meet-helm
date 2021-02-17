@@ -38,9 +38,7 @@ spec:
           image: {{ printf "%s:%s" $root.Values.jvb.image.repository $root.Values.jvb.image.tag | quote }}
           imagePullPolicy: {{ $root.Values.jvb.image.pullPolicy | quote }}
           command: ["/bin/bash"] 
-          # this creates the env variables for the streaming ports if we dont pass the ports in 
-          #args: ["/entrypoint.sh","10000","4333","/init"]
-          # we pass the env vars in to be used in the config templates
+          # this entrypoint now only installs more packages
           args: ["/entrypoint.sh","/init"]
           securityContext:
             capabilities:
@@ -57,18 +55,18 @@ spec:
               value: {{ $tcpport | quote }}
             - name: JVB_TCP_MAPPED_PORT
               value: {{ $tcpport | quote }}
-            - name: BASE_PORT # is the nodeport
-              value: {{ $root.Values.jvb.baseport | quote }}
+            # - name: BASE_PORT # is the nodeport
+            #   value: {{ $root.Values.jvb.baseport | quote }}
             - name: PUBLIC_URL
               value: "https://{{ $root.Values.webHost }}:443"
+
+            # these values are used for the HARVESTER CONFIG              
             - name: PUBLIC_IP
               value: "{{ $root.Values.publicIp }}"
             - name: LOCAL_IP
-              value: 0.0.0.0
-              # this is providing the IP of the node host - quite irrelevant              
-              # valueFrom:
-              #   fieldRef:
-              #     fieldPath: status.hostIP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
             - name: XMPP_SERVER
               value: {{ include "jitsi-meet.name-prosody" $root }}
             - name: PROSODY_INSTANCE
@@ -99,7 +97,7 @@ spec:
                   key: JVB_AUTH_PASSWORD
             {{- end }}
             - name: JVB_ENABLE_APIS
-              value: "xmpp,rest"
+              value: "rest,colibri,xmpp"
             - name: JVB_STUN_SERVERS
               value: "{{ $root.Values.turn.turnHost }}:{{ $root.Values.turn.udpPort }}"
             # value: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302

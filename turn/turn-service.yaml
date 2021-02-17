@@ -1,0 +1,37 @@
+{{- if eq .Values.turn.enabled true }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "jitsi-meet.name-turn" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+{{ include "jitsi-meet.labels" . | indent 4 }}
+spec:
+  type: {{ .Values.prosody.service.type }}
+  ports:
+    {{- if .Values.turn.tcpPort }}      
+    - name: tls
+      port:  {{ .Values.turn.tcpPort }}
+      targetPort: tcp
+      protocol: TCP
+    {{- end }}      
+    {{- if .Values.turn.udpPort }}      
+    - name: turn
+      port:  {{ .Values.turn.udpPort }}
+      targetPort: turn
+      protocol: UDP
+    {{- end }}      
+    {{- if .Values.turn.tlsPort }}      
+    - name: min
+      port:  {{ .Values.turn.tlsPort }}
+      targetPort: tcp
+      protocol: TCP
+    {{- end }}      
+
+  sessionAffinity: ClientIP
+  selector:
+    app.kubernetes.io/name: {{ include "jitsi-meet.name-turn" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+status:
+  loadBalancer: {}
+{{- end }}

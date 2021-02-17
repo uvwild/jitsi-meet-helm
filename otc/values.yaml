@@ -3,10 +3,13 @@ namespace: jitsi
 imagePullSecrets:
     - name: regcred
 
+tag: stable-5390-3
 webHost: www.jitsi.otcdemo.gardener.t-systems.net
 videoHost: jvb.jitsi.otcdemo.gardener.t-systems.net
 publicIp: 80.158.56.57
 #ip: 0.0.0.0
+ingress:
+  enabled: false
 
 common:
   environment:
@@ -34,7 +37,7 @@ common:
       value: turn.jitsi.otc
     - name: JVB_BREWERY_MUC
       value: jvbbrewery
-    - name: JVB_TCP_HARVESTER_DISABLED
+    - name: JVB_TCP_HARVESTERcd_DISABLED
       value: "false"
     - name: TZ
       value: Europe/Amsterdam
@@ -46,7 +49,6 @@ common:
 jicofo:
   image:
     repository: jitsi/jicofo
-    tag: stable-5390-2
   userAuth:
     enabled: true
     name: "focus"
@@ -59,7 +61,6 @@ jicofo:
 jvb:
   image:
     repository: jitsi/jvb
-    tag: stable-5390-2
   ingress:
     enabled: false
     annotations: |-
@@ -70,6 +71,7 @@ jvb:
     secret: dG90bw==
   # nodeports  30000-32768
   nodeport: 30000
+  # used for nodeport calculation
   tcpoffset: 1000
   udpport: 10000
   tcpport: 4443
@@ -100,7 +102,6 @@ prosody:
       value: "muc_meeting_id"
   image:
     repository: jitsi/prosody
-    tag: stable-5390-2
     pullPolicy: IfNotPresent
 
 turn:
@@ -132,7 +133,6 @@ turn:
 web:
   image:
     repository: jitsi/web
-    tag: stable-5390-2
   # the letsencrypt script is not working inside the nodes of our helm chart
   # we are using istio in gardener instead
   environment:
