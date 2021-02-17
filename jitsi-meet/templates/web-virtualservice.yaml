@@ -1,7 +1,8 @@
+{{- $basename := include "jitsi-meet.name-web" . }}
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: {{ include "jitsi-meet.name-web" . }}-vs
+  name: {{ $basename }}-vs
   namespace: {{ .Values.namespace }}
   labels:
 {{ include "jitsi-meet.labels" . | indent 4 }}
@@ -9,10 +10,33 @@ spec:
   hosts:
   - {{ .Values.webHost }}
   gateways:
-  - {{ include "jitsi-meet.name-web" . }}-gw
-# lets try tcp protocol
+  - {{ include "jitsi-meet.name" . }}-gateway
+# web server  
   http:
-  - name: "separate-xmpp"
+#---------------------------------------------------    
+  - name: "favicon remap"
+    match:
+    - uri:
+        prefix: /favicon.ico
+    rewrite:
+      uri: "/images/favicon.ico"
+    route:
+    - destination:
+        host: {{ include "jitsi-meet.name-web" . }}
+        port:
+          number: {{ .Values.web.service.port }}
+#---------------------------------------------------
+  - name: "standard"
+    match:
+    - uri:
+        regex: /.*
+    route:
+    - destination:
+        host: {{ include "jitsi-meet.name-web" . }}
+        port:
+          number: {{ .Values.web.service.port }}
+#---------------------------------------------------          
+  - name: "remap-xmpp"
     match:
     - uri:
         prefix:  /xmpp-websocket
@@ -21,7 +45,7 @@ spec:
         host: {{ include "jitsi-meet.name-prosody" . }}
         port:
           number: 5280
-    websocketUpgrade: true
+#    websocketUpgrade: true
     corsPolicy:
       allowOrigin:
       - "*"
@@ -48,26 +72,3 @@ spec:
         - Upgrade-Insecure-Requests
         - User-Agent
       maxAge: "24h"
-# web server  
-  http:
-  - name: "favicon remap"
-    match:
-    - uri:
-        prefix: /favicon.ico
-    rewrite:
-      uri: "/images/favicon.ico"
-    route:
-    - destination:
-        host: {{ include "jitsi-meet.name-web" . }}
-        port:
-          number: {{ .Values.web.service.port }}
-
-  - name: "standard"
-    match:
-    - uri:
-        regex: /.*
-    route:
-    - destination:
-        host: {{ include "jitsi-meet.name-web" . }}
-        port:
-          number: {{ .Values.web.service.port }}

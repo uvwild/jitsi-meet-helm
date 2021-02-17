@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
-  name: {{ include "jitsi-meet.name-jvb" . }}-gw
+  name: {{ include "jitsi-meet.name" . }}-gateway
   namespace: {{ .Values.namespace }}
   labels:
 {{ include "jitsi-meet.labels" . | indent 4 }}
@@ -9,25 +9,41 @@ spec:
   selector:
     istio: ingressgateway #! use istio default ingress gateway
   servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    tls:
+      httpsRedirect: true
+    hosts:
+    - {{ .Values.webHost }}    
+
+  - port:
+      number: 443
+      name: http2
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: wildcard-tls
+    hosts:
+    - {{ .Values.webHost }}    
+
 # iterate over jvb replicas and assing different ports TODO for now
 {{- $root := . }}
-{{- $name := include "jitsi-meet.name-jvb" $root }}
-{{- range $index, $nbr := until (.Values.prosody.replicaCount | int) }}
+{{- range $index, $nbr := until (.Values.jvb.replicaCount | int) }}
 {{- $udpport := printf "%d" (add $root.Values.jvb.udpport $nbr) }}
 {{- $tcpport := printf "%d" (add $root.Values.jvb.tcpport $nbr) }}
 {{- $udpportname := printf "udp-%d" $nbr }}
 {{- $tcpportname := printf "tcp-%d" $nbr }}
-  - hosts:
-    - {{ $root.Values.webHost }}
-    port:
-      number: {{ atoi $udpport }}
-      name: {{ $udpportname }}
-      protocol: UDP
-  - hosts:
-    - {{ $root.Values.webHost }}
-    port:
+  - port:
       number: {{ atoi $tcpport }}
       name: {{ $tcpportname }}
       protocol: TCP
+#   no host spec for TCP protocol      
+
+  - port:
+      number: {{ atoi $udpport }}
+      name: {{ $udpportname }}
+      protocol: UDP
 
 {{- end }}

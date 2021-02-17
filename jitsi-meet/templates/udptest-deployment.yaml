@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: udptest
+  namespace: {{ .Values.namespace }}
+  labels:
+{{ include "jitsi-meet.labels" . | indent 4 }}
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: udptest
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: udptest
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+      - image: yboaron/kuryr-udp-demo
+        imagePullPolicy: IfNotPresent
+        name: kuryr-udp-demo

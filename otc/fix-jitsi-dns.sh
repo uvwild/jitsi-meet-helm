@@ -19,7 +19,8 @@ do
 	sleep 2
 done
 echo new loadBalancer IP  $JITSI_NEWIP
-echo Change entry for DOMAIN:$JITSI_RECORD-  OLDIP:$JITSI_IP-  "==>"  -NEWIP:$JITSI_NEWIP-
+echo -n "Change entry for DOMAIN:${JITSI_RECORD}- "
+echo  "OLDIP:${JITSI_IP}- ==>  -NEWIP:${JITSI_NEWIP}-"
 
 if [ "$JITSI_IP" == "$JITSI_NEWIP" ];then
 		echo -e "\e[32m NO CHANGE DONE\e[0m"

@@ -24,27 +24,29 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  type: NodePort
+  type: {{ $root.Values.jvb.service.type }}
+  selector:
+    app.kubernetes.io/name: {{ $target | quote }}
+    app.kubernetes.io/instance: {{ $root.Release.Name }}
+    service: {{ $target | quote }}
   externalTrafficPolicy: Local
   sessionAffinity: {{ $root.Values.jvb.service.sessionAffinity }}
   {{- if $root.Values.jvb.service.sessionAffinityConfig }}
   {{- toYaml $root.Values.jvb.service.sessionAffinityConfig }}
   {{- end }}
   ports:
+ #---------------------------------------------------
+  - port: {{ atoi $tcpport}}
+    name: "{{ atoi $tcpport}}"
+    nodePort: {{ atoi $tcpnodeport }}
+    protocol: TCP
+    targetPort: {{ $tcpport }}
+#---------------------------------------------------
+# officially udp is not working so be prepared and think about nginx  
   - port: {{ atoi $udpport }}
     name: "{{ atoi $udpport }}"
     nodePort: {{ atoi $udpnodeport }}
     protocol: UDP
     targetPort: {{ $udpport }}
 
-  - port: {{ atoi $tcpport}}
-    name: "{{ atoi $tcpport}}"
-    nodePort: {{ atoi $tcpnodeport }}
-    protocol: TCP
-    targetPort: {{ $tcpport }}
-
-  selector:
-    app.kubernetes.io/name: {{ $target | quote }}
-    app.kubernetes.io/instance: {{ $root.Release.Name }}
-    service: {{ $target | quote }}
 {{- end }}

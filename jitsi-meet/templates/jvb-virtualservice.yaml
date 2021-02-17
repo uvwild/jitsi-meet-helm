@@ -10,15 +10,16 @@ spec:
   hosts:
   - {{ .Values.webHost }}
   gateways:
-  - {{ include "jitsi-meet.name-jvb" . }}-gw
-# video bridge
+  - {{ include "jitsi-meet.name" . }}-gateway
+# video bridge over tcp 
   tcp:
 # iterate over replica and assing different ports
 {{- $root := . }}
-{{- range $index, $nbr := until (.Values.prosody.replicaCount | int) }}
+{{- range $index, $nbr := until (.Values.jvb.replicaCount | int) }}
 {{- $target := printf "%s-%d" $basename $nbr}}
 {{- $udpport := printf "%d" (add $root.Values.jvb.udpport $nbr) }}
 {{- $tcpport := printf "%d" (add $root.Values.jvb.tcpport $nbr) }}
+#---------------------------------------------------
   - match:
     - port: {{ atoi $tcpport }}
     route:
@@ -26,4 +27,12 @@ spec:
         host: {{ $target }}
         port:
           number: {{ atoi $tcpport }}
+#---------------------------------------------------          
+  - match:
+    - port: {{ atoi $udpport }}
+    route:
+    - destination:
+        host: {{ $target }}
+        port:
+          number: {{ atoi $udpport }}
 {{- end }}

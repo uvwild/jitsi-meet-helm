@@ -1,13 +1,13 @@
 namespace: jitsi
 
 imagePullSecrets:
-    - name: regcred
+  - name: regcred
 
 tag: stable-5390-3
 webHost: www.jitsi.otcdemo.gardener.t-systems.net
 videoHost: jvb.jitsi.otcdemo.gardener.t-systems.net
+# this should be read from istio
 publicIp: 80.158.56.57
-#ip: 0.0.0.0
 ingress:
   enabled: false
 
@@ -47,8 +47,6 @@ common:
       value: "otc_config"
 
 jicofo:
-  image:
-    repository: jitsi/jicofo
   userAuth:
     enabled: true
     name: "focus"
@@ -57,10 +55,11 @@ jicofo:
   environment:
     - name: LOG_LEVEL
       value: info
+  image:
+    repository: jitsi/jicofo
+    pullPolicy: IfNotPresent
 
 jvb:
-  image:
-    repository: jitsi/jvb
   ingress:
     enabled: false
     annotations: |-
@@ -69,10 +68,13 @@ jvb:
     enabled: true
     name: "jvb"
     secret: dG90bw==
+  service:
+    type: NodePort
   # nodeports  30000-32768
   nodeport: 30000
   # used for nodeport calculation
   tcpoffset: 1000
+  # default ports for video streams
   udpport: 10000
   tcpport: 4443
   environment:
@@ -82,12 +84,9 @@ jvb:
       value: "--apis=xmpp,rest,colibri"
     - name: ENABLE_STATISTICS
       value: "true"
-
-    # replaced DOCKER_HOST_ADDRESS with PUBLIC_URL_HOST which is more meaningful in k8s
-    # - name: DOCKER_HOST_ADDRESS
-    #   valueFrom:
-    #     fieldRef:
-    #       fieldPath: status.hostIP
+  image:
+    repository: jitsi/jvb
+    pullPolicy: IfNotPresent
 
 prosody:
   replicaCount: 1
@@ -95,6 +94,8 @@ prosody:
     enabled: true
     guest: 1
     type: internal
+  service:
+    type: ClusterIP
   environment:
     - name: LOG_LEVEL
       value: info
@@ -123,6 +124,8 @@ turn:
     enabled: true
     name: tina
     secret: eike
+  service:
+    type: ClusterIP    
   image:
     # repository: flaviostutz/coturn
     # tag: 4.5.0.5
@@ -131,8 +134,7 @@ turn:
     pullPolicy: IfNotPresent
 
 web:
-  image:
-    repository: jitsi/web
+  replicaCount: 1
   # the letsencrypt script is not working inside the nodes of our helm chart
   # we are using istio in gardener instead
   environment:
@@ -142,9 +144,11 @@ web:
       value: xxxx
     - name: LOG_LEVEL
       value: info
-  replicaCount: 1
   service:
-    annotations: []
-    type: istio
+    type: ClusterIP
     port: 80
     sslport: 443
+    annotations: []
+  image:
+    repository: jitsi/web
+    pullPolicy: IfNotPresent
