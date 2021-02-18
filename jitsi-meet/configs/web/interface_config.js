@@ -18,8 +18,8 @@ var interfaceConfig = {
     DEFAULT_LOCAL_DISPLAY_NAME: 'You',
     SHOW_JITSI_WATERMARK: true,
     JITSI_WATERMARK_LINK: 'https://github.com/garden-demonstrator/',
-    DEFAULT_WELCOME_PAGE_LOGO_URL: "images/watermark.png",
-    DEFAULT_LOGO_URL: "images/watermark.png",
+    DEFAULT_WELCOME_PAGE_LOGO_URL: "images/watermark.svg",
+    DEFAULT_LOGO_URL: "images/watermark.svg",
 
     // if watermark is disabled by default, it can be shown only for guests
     SHOW_WATERMARK_FOR_GUESTS: true,

@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars, no-var */
 
+// this config is extended/replaced by the env settings of the pod (appended)
 var config = {
     // Connection
-    //
 
     hosts: {
         // XMPP domain.

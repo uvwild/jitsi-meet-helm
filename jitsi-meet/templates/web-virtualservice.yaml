@@ -14,7 +14,7 @@ spec:
 # web server  
   http:
 #---------------------------------------------------    
-  - name: "favicon remap"
+  - name: "favicon_remap"
     match:
     - uri:
         prefix: /favicon.ico

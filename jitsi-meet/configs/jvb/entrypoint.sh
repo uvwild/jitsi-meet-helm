@@ -1,8 +1,12 @@
 #!/bin/bash
 set -euo pipefail
 # both jq and curl are needed for shutdown hook
+DBG_TOOLS="curl vim tcpdump net-tools inetutils-traceroute inetutils-ping iproute2 procps"
 apt-dpkg-wrap apt-get update && \
-apt-dpkg-wrap apt-get -y install curl jq tcpdump net-tools inetutils-traceroute inetutils-ping
+apt-dpkg-wrap apt-get -y install curl jq $DBG_TOOLS
+
+# can't do without
+echo 'alias ll="ls -alh"'  >> /etc/bash.bashrc
 
 # logging no longer needed
 # echo "ENTRYPOINT $(date)" >>  /var/log/env.log

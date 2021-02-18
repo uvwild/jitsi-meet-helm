@@ -8,9 +8,9 @@ metadata:
 {{ include "jitsi-meet.labels" . | indent 4 }}
   {{- with .Values.jvb.ingress.annotations -}}
   annotations:
-    sidecar.istio.io/inject: 'true'
-    traffic.sidecar.istio.io/includeInboundPorts: ""
-    traffic.sidecar.istio.io/excludeInboundPorts: "80,443,10000,4443"
+    # sidecar.istio.io/inject: 'true'
+    # traffic.sidecar.istio.io/includeInboundPorts: ""
+    # traffic.sidecar.istio.io/excludeInboundPorts: "80,443,10000,4443"
     {{- toYaml . | nindent 4 }}
   {{- end -}}
 spec:

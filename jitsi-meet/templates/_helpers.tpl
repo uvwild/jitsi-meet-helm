@@ -32,7 +32,7 @@ Create the istio gateway name
 {{- printf "%s-%s" .Chart.Name "gateway" | trunc 63 -}}
 {{- end -}}
 {{- define "jitsi-meet.name-gateway-fqdn" -}}
-{{- printf "%s-%s.%s.%s" .Values.namespace .Chart.Name .Values.namespace .Values.svcSuffix -}}
+{{- printf "%s/%s-%s" .Values.namespace .Chart.Name  "gateway"  -}}
 {{- end -}}
 
 {/*
