@@ -10,7 +10,7 @@ spec:
   hosts:
   - {{ .Values.webHost }}
   gateways:
-  - {{ include "jitsi-meet.name" . }}-gateway
+  - {{ include "jitsi-meet.name-gateway-fqdn" . }}
 # web server  
   http:
 #---------------------------------------------------    
@@ -22,7 +22,7 @@ spec:
       uri: "/images/favicon.ico"
     route:
     - destination:
-        host: {{ include "jitsi-meet.name-web" . }}
+        host: {{ include "jitsi-meet.name-websvc-fqdn" . }}
         port:
           number: {{ .Values.web.service.port }}
 #---------------------------------------------------
@@ -32,43 +32,43 @@ spec:
         regex: /.*
     route:
     - destination:
-        host: {{ include "jitsi-meet.name-web" . }}
+        host: {{ include "jitsi-meet.name-websvc-fqdn" . }}
         port:
           number: {{ .Values.web.service.port }}
 #---------------------------------------------------          
-  - name: "remap-xmpp"
-    match:
-    - uri:
-        prefix:  /xmpp-websocket
-    route:
-    - destination:
-        host: {{ include "jitsi-meet.name-prosody" . }}
-        port:
-          number: 5280
-#    websocketUpgrade: true
-    corsPolicy:
-      allowOrigin:
-      - "*"
-      allowMethods:
-      - POST
-      - GET
-      - OPTIONS
-      - CONNECT
-      allowCredentials: true
-      allowHeaders:
-        - Accept
-        - Accept-Encoding
-        - Accept-Language
-        - Cache-Control
-        - Connection
-        - Cookie
-        - Host
-        - Origin
-        - Pragma
-        - Sec-Websocket-Extensions
-        - Sec-Websocket-Key
-        - Sec-Websocket-Version
-        - Upgrade
-        - Upgrade-Insecure-Requests
-        - User-Agent
-      maxAge: "24h"
+#   - name: "remap-xmpp"
+#     match:
+#     - uri:
+#         prefix:  /xmpp-websocket
+#     route:
+#     - destination:
+#         host: {{ include "jitsi-meet.name-prosody" . }}
+#         port:
+#           number: 5280
+# #    websocketUpgrade: true
+#     corsPolicy:
+#       allowOrigin:
+#       - "*"
+#       allowMethods:
+#       - POST
+#       - GET
+#       - OPTIONS
+#       - CONNECT
+#       allowCredentials: true
+#       allowHeaders:
+#         - Accept
+#         - Accept-Encoding
+#         - Accept-Language
+#         - Cache-Control
+#         - Connection
+#         - Cookie
+#         - Host
+#         - Origin
+#         - Pragma
+#         - Sec-Websocket-Extensions
+#         - Sec-Websocket-Key
+#         - Sec-Websocket-Version
+#         - Upgrade
+#         - Upgrade-Insecure-Requests
+#         - User-Agent
+#       maxAge: "24h"

@@ -1,4 +1,5 @@
 namespace: jitsi
+svcSuffix: svc.cluster.local
 
 imagePullSecrets:
   - name: regcred

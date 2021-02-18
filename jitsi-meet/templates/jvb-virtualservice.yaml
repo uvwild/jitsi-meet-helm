@@ -10,15 +10,15 @@ spec:
   hosts:
   - {{ .Values.webHost }}
   gateways:
-  - {{ include "jitsi-meet.name" . }}-gateway
+  - {{ include "jitsi-meet.name-gateway-fqdn" . }}
 # video bridge over tcp 
   tcp:
 # iterate over replica and assing different ports
 {{- $root := . }}
-{{- range $index, $nbr := until (.Values.jvb.replicaCount | int) }}
-{{- $target := printf "%s-%d" $basename $nbr}}
-{{- $udpport := printf "%d" (add $root.Values.jvb.udpport $nbr) }}
-{{- $tcpport := printf "%d" (add $root.Values.jvb.tcpport $nbr) }}
+{{- range $index, $nbr := until (.Values.jvb.replicaCount | int) -}}
+{{- $target := printf "%s-%d.%s.%s" $basename $nbr $root.Values.namespace $root.Values.svcSuffix -}}
+{{- $udpport := printf "%d" (add $root.Values.jvb.udpport $nbr) -}}
+{{- $tcpport := printf "%d" (add $root.Values.jvb.tcpport $nbr) -}}
 #---------------------------------------------------
   - match:
     - port: {{ atoi $tcpport }}
@@ -28,11 +28,11 @@ spec:
         port:
           number: {{ atoi $tcpport }}
 #---------------------------------------------------          
-  - match:
-    - port: {{ atoi $udpport }}
-    route:
-    - destination:
-        host: {{ $target }}
-        port:
-          number: {{ atoi $udpport }}
+  # - match:
+  #   - port: {{ atoi $udpport }}
+  #   route:
+  #   - destination:
+  #       host: {{ $target }}
+  #       port:
+  #         number: {{ atoi $udpport }}
 {{- end }}

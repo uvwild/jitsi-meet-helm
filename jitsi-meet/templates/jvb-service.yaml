@@ -43,10 +43,10 @@ spec:
     targetPort: {{ $tcpport }}
 #---------------------------------------------------
 # officially udp is not working so be prepared and think about nginx  
-  - port: {{ atoi $udpport }}
-    name: "{{ atoi $udpport }}"
-    nodePort: {{ atoi $udpnodeport }}
-    protocol: UDP
-    targetPort: {{ $udpport }}
+  # - port: {{ atoi $udpport }}
+  #   name: "{{ atoi $udpport }}"
+  #   nodePort: {{ atoi $udpnodeport }}
+  #   protocol: UDP
+  #   targetPort: {{ $udpport }}
 
 {{- end }}

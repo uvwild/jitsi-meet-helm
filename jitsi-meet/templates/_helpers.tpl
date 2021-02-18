@@ -24,13 +24,34 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 {{- end -}}
 
+
+{{/*
+Create the istio gateway name
+*/}}
+{{- define "jitsi-meet.name-gateway" -}}
+{{- printf "%s-%s" .Chart.Name "gateway" | trunc 63 -}}
+{{- end -}}
+{{- define "jitsi-meet.name-gateway-fqdn" -}}
+{{- printf "%s-%s.%s.%s" .Values.namespace .Chart.Name .Values.namespace .Values.svcSuffix -}}
+{{- end -}}
+
+{/*
+Create the istio hosts TODO this needs the iteration suffix
+*/}}
+
+{{- define "jitsi-meet.name-websvc-fqdn" -}}
+{{- printf "%s-%s" .Chart.Name "web.jitsi.svc.cluster.local" | trunc 63 -}}
+{{- end -}}
+
+
+
+
 {{/*
 Create the turn server name
 */}}
 {{- define "jitsi-meet.name-turn" -}}
 {{- printf "%s-%s" .Chart.Name "turn" | trunc 63 -}}
 {{- end -}}
-
 
 {{/*
 Create the turn server name
@@ -48,7 +69,7 @@ Create the web server name
 {{- end -}}
 
 {{/*
-Create the web server name
+Create the web server config name
 */}}
 {{- define "jitsi-meet.name-web-config" -}}
 {{- printf "%s-%s" .Chart.Name  "web-config" | trunc 63 -}}
