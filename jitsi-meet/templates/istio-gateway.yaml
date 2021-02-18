@@ -7,26 +7,27 @@ metadata:
 {{ include "jitsi-meet.labels" . | indent 4 }}
 spec:
   selector:
-    istio: ingressgateway #! use istio default ingress gateway
+#    istio: ingressgateway #! use istio default ingress gateway
+    app: {{ include "jitsi-meet.name" . }}
   servers:
   - port:
       number: 80
       name: http
       protocol: HTTP
-    # tls:
-    #   httpsRedirect: true
     hosts:
-    - {{ .Values.webHost }}    
-
+    - {{ .Values.webHost }}
+    # tls:
+    #   httpsRedirect: true # sends 301 redirect for http requests
   - port:
       number: 443
       name: http2
       protocol: HTTP2
+    hosts:
+    - {{ .Values.webHost }}
     tls:
       mode: SIMPLE
+      minProtocolVersion: TLSV1_2
       credentialName: wildcard-tls
-    hosts:
-    - {{ .Values.webHost }}    
 
 # iterate over jvb replicas and assing different ports TODO for now
 {{- $root := . }}

@@ -14,8 +14,7 @@ spec:
 # web server  
   http:
 #---------------------------------------------------    
-  - name: "favicon_remap"
-    match:
+  - match:
     - uri:
         prefix: /favicon.ico
     rewrite:
@@ -26,8 +25,7 @@ spec:
         port:
           number: {{ .Values.web.service.port }}
 #---------------------------------------------------
-  - name: "standard"
-    match:
+  - match:
     - uri:
         regex: /.*
     route:
