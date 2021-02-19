@@ -25,7 +25,7 @@ spec:
 
     - name: prosody-compreg
       port: 5347
-      targetPort: prosody-component-registration
+      targetPort: prosody-compreg
       protocol: TCP
 
   sessionAffinity: ClientIP
