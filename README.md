@@ -7,12 +7,10 @@ To download and to install the Jitsi Meet Chart, make sure that you have the Hel
 To install the chart, in your terminal, go to the `jitsi-meet-helm` repository and run the following command:
 
 ```bash
-helm install --namespace jitsi -n jitsi-meet jitsi-meet -f ./otc/values.yaml --wait
+helm install --namespace jitsi -n jitsi-meet jitsi-meet -f ./otc/values.yaml 
 ```
 
-It assumes that you have a [Nginx Ingress](https://docs.nginx.com/nginx-ingress-controller/overview/) controller and you use [CertManager](https://cert-manager.io/docs/installation/kubernetes/) along with [ACME](https://cert-manager.io/docs/configuration/acme/) issuer type for managing the HTTPS certificates.
-
-Because `--wait` flag, the status will be given once Jisti Meet is ready.
+It assumes that you have a [Istio Service Mesh](https://istio.io/) installed in your gardener cluster for managing the HTTPS certificates.
 
 ## Updating the chart
 To update the chart, in your terminal, go to the `jitsi-meet-helm` repository and run the following command:
@@ -20,8 +18,6 @@ To update the chart, in your terminal, go to the `jitsi-meet-helm` repository an
 ```bash
 helm upgrade jitsi-meet jitsi-meet -f ./jitsi-meet-examples/basic/values.yaml --namespace $MY_NAMESPACE --wait
 ```
-
-`$MY_NAMESPACE` should be replaced by the namespace you want to use for Jitsi Meet.
 
 ## Delete the chart
 To delete the chart, in your terminal, go to the `jitsi-meet-helm` repository and run the following command:
