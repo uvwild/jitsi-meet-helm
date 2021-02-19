@@ -15,7 +15,7 @@ ingress:
 common:
   environment:
     - name: ENABLE_XMPP_WEBSOCKET
-      value: "1"
+      value: "0"
     - name: ENABLE_GUESTS
       value: "1"
     - name: ENABLE_AUTH
