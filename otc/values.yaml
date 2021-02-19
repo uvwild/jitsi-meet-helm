@@ -46,7 +46,7 @@ common:
       value: turn.jitsi.otc
     - name: JVB_BREWERY_MUC
       value: jvbbrewery
-    - name: JVB_TCP_HARVESTERcd_DISABLED
+    - name: JVB_TCP_HARVESTER_DISABLED
       value: "false"
     - name: TZ
       value: Europe/Amsterdam
