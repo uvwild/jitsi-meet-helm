@@ -53,7 +53,7 @@ spec:
             {{- end }}
             {{ if .Values.jicofo.userAuth.enabled }}
             - name: JICOFO_AUTH_USER
-              value: {{ .Values.jicofo.userAuth.name }}            
+              value: {{ .Values.jicofo.userAuth.name }}
             - name: JICOFO_AUTH_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -82,17 +82,17 @@ spec:
             - name: {{ .name | quote }}
               value: {{ .value | quote }}
             {{- end }}
-# add vars for turn.cfg.lua 
+# add vars for turn.cfg.lua
             - name: TURN_USER
-              value: {{ .Values.turn.userAuth.name }} 
+              value: {{ .Values.turn.userAuth.name }}
             - name: TURN_PASSWORD
-              value: {{ .Values.turn.userAuth.secret }} 
+              value: {{ .Values.turn.userAuth.secret }}
             - name: TURN_HOST
-              value: {{ .Values.turn.turnHost }} 
+              value: {{ .Values.turn.turnHost }}
             - name: TURN_TCP_PORT
               value: {{ .Values.turn.tcpPort | quote }}
             - name: TURN_UDP_PORT
-              value: {{ .Values.turn.udpPort | quote }} 
+              value: {{ .Values.turn.udpPort | quote }}
             - name: TURN_TLS_PORT
               value: {{ .Values.turn.tlsPort | quote }}
           ports:
@@ -108,7 +108,7 @@ spec:
               containerPort: 5280
               protocol: TCP
 
-            - name: xmpp-unknown
+            - name: prosody-component-registration
               containerPort: 5347
               protocol: TCP
           resources:

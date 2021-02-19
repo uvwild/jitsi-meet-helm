@@ -17,15 +17,15 @@ spec:
       port: 5269
       targetPort: xmpp-server
       protocol: TCP
-      
+
     - name: xmpp-bosh
       port: 5280
       targetPort: xmpp-bosh
       protocol: TCP
 
-    - name: xmpp-unknown
+    - name: prosody-component-registration
       port: 5347
-      targetPort: xmpp-unknown
+      targetPort: prosody-component-registration
       protocol: TCP
 
   sessionAffinity: ClientIP
