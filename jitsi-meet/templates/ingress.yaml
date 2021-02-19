@@ -1,21 +1,26 @@
-{{- if .Values.ingress.enabled -}}
+{{- if (eq .Values.ingress.type "ingress") -}}
+apiVersion: networking.k8s.io/v1beta1
+kind: IngressClass
+metadata:
+  name: istio
+spec:
+  controller: istio.io/ingress-controller
+---
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  kubernetes.io/ingress.class: istio  
   name: {{ include "jitsi-meet.name" . }}-ingress
   labels:
 {{ include "jitsi-meet.labels" . | indent 4 }}
   {{- with .Values.jvb.ingress.annotations -}}
   annotations:
-    # sidecar.istio.io/inject: 'true'
-    # traffic.sidecar.istio.io/includeInboundPorts: ""
-    # traffic.sidecar.istio.io/excludeInboundPorts: "80,443,10000,4443"
     {{- toYaml . | nindent 4 }}
   {{- end -}}
 spec:
+  # https://istio.io/latest/docs/tasks/traffic-management/ingress/kubernetes-ingress/
+  ingressClassName: istio
   rules:
-    - host: {{ .Values.webHost | quote }}
+    - host: {{ .Values.webHost }}
       tcp:
         port: { .Values.jvb.tcpport }}
         paths:
@@ -24,4 +29,23 @@ spec:
               # single port test
               serviceName: {{ include "jitsi-meet.name-jvb" }}-0
               servicePort: {{ .Values.jvb.udpport }}
+      http:
+        port: { .Values.web.service.port }}
+        paths:
+          - path: 
+            backend:
+              # single port test
+              serviceName: {{ include "jitsi-meet.name-web" }}
+              servicePort: {{ .Values.web.service.port }}
+      http:
+        port: { .Values.web.service.sslport }}
+        paths:
+          - path: "/*"
+            backend:
+              # single port test
+              serviceName: {{ include "jitsi-meet.name-web" }}
+              servicePort: {{ .Values.web.service.sslport }}
+    tls:
+      mode: SIMPLE
+#              
 {{- end -}}  

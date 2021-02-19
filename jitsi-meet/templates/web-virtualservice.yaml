@@ -1,3 +1,4 @@
+{{- if (eq .Values.ingress.type "gateway") -}}
 {{- $basename := include "jitsi-meet.name-web" . }}
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
@@ -70,3 +71,4 @@ spec:
 #         - Upgrade-Insecure-Requests
 #         - User-Agent
 #       maxAge: "24h"
+{{- end -}}  

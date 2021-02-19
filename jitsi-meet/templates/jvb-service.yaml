@@ -29,7 +29,9 @@ spec:
     app.kubernetes.io/name: {{ $target | quote }}
     app.kubernetes.io/instance: {{ $root.Release.Name }}
     service: {{ $target | quote }}
-  externalTrafficPolicy: Local
+  {{- if (eq $root.Values.jvb.service.type "NodePort") -}}
+   externalTrafficPolicy: Local
+  {{- end }}
   sessionAffinity: {{ $root.Values.jvb.service.sessionAffinity }}
   {{- if $root.Values.jvb.service.sessionAffinityConfig }}
   {{- toYaml $root.Values.jvb.service.sessionAffinityConfig }}
@@ -38,7 +40,9 @@ spec:
  #---------------------------------------------------
   - port: {{ atoi $tcpport}}
     name: "{{ atoi $tcpport}}"
+    {{- if (eq $root.Values.jvb.service.type "NodePort") -}}
     nodePort: {{ atoi $tcpnodeport }}
+    {{- end }}
     protocol: TCP
     targetPort: {{ $tcpport }}
 #---------------------------------------------------

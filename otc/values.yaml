@@ -10,7 +10,7 @@ videoHost: jvb.jitsi.otcdemo.gardener.t-systems.net
 # this should be read from istio
 publicIp: 80.158.56.57
 ingress:
-  enabled: false
+  type: gateway
 
 common:
   environment:
@@ -64,14 +64,17 @@ jvb:
   ingress:
     enabled: false
     annotations: |-
-        kubernetes.io/ingress.class: nginx
+      kubernetes.io/ingress.class: nginx
+    # kubernetes.io/ingress.class: istio  
+    # sidecar.istio.io/inject: 'true'
+    # traffic.sidecar.istio.io/includeInboundPorts: ""
+    # traffic.sidecar.istio.io/excludeInboundPorts: "80,443,10000,4443"
   userAuth:
     enabled: true
     name: "jvb"
     secret: dG90bw==
   service:
-    type: NodePort
-  # nodeports  30000-32768
+    type: ClusterIP       # NodePort   # nodeports  30000-32768
   nodeport: 30000
   # used for nodeport calculation
   tcpoffset: 1000

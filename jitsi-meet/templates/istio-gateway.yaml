@@ -1,3 +1,4 @@
+{{- if (eq .Values.ingress.type "gateway") -}}
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
@@ -26,22 +27,23 @@ spec:
     - {{ .Values.webHost }}
     tls:
       mode: SIMPLE
-      minProtocolVersion: TLSV1_2
       credentialName: wildcard-tls
+#      minProtocolVersion: TLSV1_2
 
 # iterate over jvb replicas and assing different ports TODO for now
+# TODO THIS IS NOT WORKING !!
 {{- $root := . }}
 {{- range $index, $nbr := until (.Values.jvb.replicaCount | int) }}
-{{- $udpport := printf "%d" (add $root.Values.jvb.udpport $nbr) }}
 {{- $tcpport := printf "%d" (add $root.Values.jvb.tcpport $nbr) }}
-{{- $udpportname := printf "udp-%d" $nbr }}
 {{- $tcpportname := printf "tcp-%d" $nbr }}
+{{- $udpport := printf "%d" (add $root.Values.jvb.udpport $nbr) }}
+{{- $udpportname := printf "udp-%d" $nbr }}
   - port:
       number: {{ atoi $tcpport }}
       name: {{ $tcpportname }}
       protocol: TCP
     hosts:
-    - "{{ $root.Values.webHost }}"
+    - "*"       # try wildcard
 
   # - port:
   #     number: {{ atoi $udpport }}
@@ -49,4 +51,5 @@ spec:
   #     protocol: UDP
   #   hosts:
   #   - {{ $root.Values.webHost }}
+{{- end }}
 {{- end }}
