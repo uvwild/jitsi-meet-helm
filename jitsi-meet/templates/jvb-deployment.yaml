@@ -35,7 +35,7 @@ spec:
         {{- toYaml $root.Values.jvb.securityContext | nindent 8 }}
       containers:
         - name: {{ $name | quote }}
-          image: {{ printf "%s:%s" $root.Values.jvb.image.repository $root.Values.jvb.image.tag | quote }}
+          image: {{ printf "%s:%s" $root.Values.jvb.image.repository $root.Values.image.tag | quote }}
           imagePullPolicy: {{ $root.Values.jvb.image.pullPolicy | quote }}
           command: ["/bin/bash"] 
           # this entrypoint now only installs more packages

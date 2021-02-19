@@ -4,13 +4,21 @@ svcSuffix: svc.cluster.local
 imagePullSecrets:
   - name: regcred
 
-tag: stable-5390-3
+image:
+  tag: stable-5390-3
 webHost: www.jitsi.otcdemo.gardener.t-systems.net
 videoHost: jvb.jitsi.otcdemo.gardener.t-systems.net
 # this should be read from istio
 publicIp: 80.158.56.57
 ingress:
   type: gateway
+  annotations: |-
+  # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/ingress.class: istio  
+  # sidecar.istio.io/inject: 'true'
+  # traffic.sidecar.istio.io/includeInboundPorts: ""
+  # traffic.sidecar.istio.io/excludeInboundPorts: "80,443,10000,4443"
+
 
 common:
   environment:
@@ -64,9 +72,7 @@ jvb:
   ingress:
     enabled: false
     annotations: |-
-      kubernetes.io/ingress.class: nginx
-    # kubernetes.io/ingress.class: istio  
-    # sidecar.istio.io/inject: 'true'
+      sidecar.istio.io/inject: 'true'
     # traffic.sidecar.istio.io/includeInboundPorts: ""
     # traffic.sidecar.istio.io/excludeInboundPorts: "80,443,10000,4443"
   userAuth:

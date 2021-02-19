@@ -29,7 +29,7 @@ spec:
         - name: {{ include "jitsi-meet.name-prosody" . }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.prosody.image.repository }}:{{ .Values.prosody.image.tag }}"
+          image: "{{ .Values.prosody.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.prosody.image.pullPolicy }}
           lifecycle:
             postStart:

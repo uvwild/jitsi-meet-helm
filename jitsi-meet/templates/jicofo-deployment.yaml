@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: {{ include "jitsi-meet.name-jicofo" . }}
-        image: "{{ .Values.jicofo.image.repository }}:{{ .Values.jicofo.image.tag }}"
+        image: "{{ .Values.jicofo.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.jicofo.image.pullPolicy }}
         env:
           {{ if .Values.jicofo.userAuth.enabled }}

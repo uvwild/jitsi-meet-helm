@@ -28,7 +28,7 @@ spec:
         - name: {{ include "jitsi-meet.name-web" . }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.web.image.repository }}:{{ .Values.web.image.tag }}"
+          image: "{{ .Values.web.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.web.image.pullPolicy }}
           env:
             - name: PUBLIC_URL
