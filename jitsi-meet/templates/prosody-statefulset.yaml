@@ -34,14 +34,14 @@ spec:
           command: ["/bin/bash"] 
           # this entrypoint now only installs more packages
           args: ["/entrypoint.sh","/init"]          
-          lifecycle:
-            postStart:
-              exec:
-                command:
-                  - "/bin/bash"
-                  - "-c"
-                  - >
-                    prosodyctl --config /config/prosody.cfg.lua register me $XMPP_DOMAIN $JVB_AUTH_PASSWORD;
+          # lifecycle:
+          #   postStart:
+          #     exec:
+          #       command:
+          #         - "/bin/bash"
+          #         - "-c"
+          #         - >
+          #           prosodyctl --config /config/prosody.cfg.lua register me $XMPP_DOMAIN $JVB_AUTH_PASSWORD;
           env:
             - name: JVB_AUTH_USER
               value: {{ .Values.jvb.userAuth.name }}
