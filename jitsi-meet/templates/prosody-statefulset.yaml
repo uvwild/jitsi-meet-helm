@@ -31,9 +31,9 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.prosody.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.prosody.image.pullPolicy }}
-          command: ["/bin/bash"] 
           # this entrypoint now only installs more packages
-          args: ["/entrypoint.sh","/init"]          
+          # command: ["/bin/bash"] 
+          # args: ["/entrypoint.sh","/init"]          
           # lifecycle:
           #   postStart:
           #     exec:
