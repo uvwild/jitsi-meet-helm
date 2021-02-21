@@ -70,7 +70,6 @@ spec:
             - name: PROSODY_INSTANCE
               value: {{ printf "%d" $nbr | quote }}
 
-            {{- if $root.Values.jicofo.userAuth.enabled }}
             - name: JICOFO_AUTH_USER
               value: {{ $root.Values.jicofo.userAuth.name }}
             - name: JICOFO_AUTH_PASSWORD
@@ -78,14 +77,12 @@ spec:
                 secretKeyRef:
                   name: {{ include "jitsi-meet.name-jicofo-secret" $root }}
                   key: JICOFO_AUTH_PASSWORD
-            {{- end }}
             - name: JICOFO_COMPONENT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "jitsi-meet.name-jicofo-secret" $root }}
                   key: JICOFO_COMPONENT_SECRET
 
-            {{- if $root.Values.jvb.userAuth.enabled }}
             - name: JVB_AUTH_USER
               value: {{ $root.Values.jvb.userAuth.name }}
             - name: JVB_AUTH_PASSWORD
@@ -93,7 +90,6 @@ spec:
                 secretKeyRef:
                   name: {{ include "jitsi-meet.name-jvb-secret" $root }}
                   key: JVB_AUTH_PASSWORD
-            {{- end }}
             - name: JVB_ENABLE_APIS
               value: "rest,colibri,xmpp"
             - name: JVB_STUN_SERVERS

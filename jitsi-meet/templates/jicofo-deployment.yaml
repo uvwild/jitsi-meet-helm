@@ -24,7 +24,6 @@ spec:
         image: "{{ .Values.jicofo.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.jicofo.image.pullPolicy }}
         env:
-          {{ if .Values.jicofo.userAuth.enabled }}
           - name: JICOFO_AUTH_USER
             value: {{ .Values.jicofo.userAuth.name }}            
           - name: JICOFO_AUTH_PASSWORD
@@ -32,7 +31,6 @@ spec:
               secretKeyRef:
                 name: {{ include "jitsi-meet.name-jicofo-secret" . }}
                 key: JICOFO_AUTH_PASSWORD
-          {{ end }}
           - name: JICOFO_COMPONENT_SECRET
             valueFrom:
               secretKeyRef:
