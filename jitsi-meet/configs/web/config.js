@@ -30,7 +30,7 @@ var config = {
 
     // BOSH URL. FIXME: use XEP-0156 to discover it.
     // use no host
-    bosh: '/http-bind',
+    bosh: '//meet.jitsi/http-bind',
     // or webhost
 //    bosh: '//www.jitsi.otcdemo.gardener.t-systems.net/http-bind',
 
@@ -212,7 +212,7 @@ var config = {
     // Misc
 
     // Default value for the channel "last N" attribute. -1 for unlimited.
-    channelLastN: 10,
+    channelLastN: 3,
 
     // Disables or enables RTX (RFC 4588) (defaults to false).
     // disableRtx: false,
@@ -235,7 +235,7 @@ var config = {
     // minParticipants: 2,
 
     // Use XEP-0215 to fetch STUN and TURN servers.
-//    useStunTurn: true,
+    useStunTurn: true,
 
     // Enable IPv6 support.
     useIPv6: false,
@@ -336,8 +336,8 @@ var config = {
         // connection.
         enabled: true,
 
-        // Use XEP-0215 to fetch STUN and TURN servers.
-//        useStunTurn: true,
+        useStunTurn: true,
+
 
         // The STUN servers that will be used in the peer to peer connections
         stunServers: [

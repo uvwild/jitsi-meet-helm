@@ -40,10 +40,8 @@ spec:
                 key: JICOFO_COMPONENT_SECRET
           - name: XMPP_SERVER
             value: {{ include "jitsi-meet.name-prosody" . }}
-          {{- if .Values.prosody.userAuth.enabled }}
-          - name: ENABLE_AUTH
-            value: "1"
-          {{- end }}
+          - name: JICOFO_ENABLE_HEALTH_CHECKS
+            value: "true"
           {{- range .Values.jicofo.environment }}
           - name: {{ .name | quote }}
             value: {{ .value | quote }}

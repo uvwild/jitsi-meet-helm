@@ -61,9 +61,9 @@ spec:
               value: "https://{{ $root.Values.webHost }}:443"
 
             # these values are used for the HARVESTER CONFIG              
-            - name: PUBLIC_IP
-              value: "{{ $root.Values.publicIp }}"
-            - name: LOCAL_IP
+            # - name: PUBLIC_IP
+            #   value: "{{ $root.Values.publicIp }}"
+            - name: DOCKER_HOST_ADDRESS
               valueFrom:
                 fieldRef:
                   fieldPath: status.hostIP
