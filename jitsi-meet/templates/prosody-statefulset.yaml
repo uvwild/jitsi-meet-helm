@@ -45,7 +45,6 @@ spec:
                     prosodyctl --config /config/prosody.cfg.lua register me $XMPP_DOMAIN $JVB_AUTH_PASSWORD;
                   {{ end }}
           env:
-            {{- if .Values.jvb.userAuth.enabled }}
             - name: JVB_AUTH_USER
               value: {{ .Values.jvb.userAuth.name }}
             - name: JVB_AUTH_PASSWORD
@@ -53,8 +52,6 @@ spec:
                 secretKeyRef:
                   name: {{ template "jitsi-meet.name-jvb" . }}-secret
                   key: JVB_AUTH_PASSWORD
-            {{- end }}
-            {{ if .Values.jicofo.userAuth.enabled }}
             - name: JICOFO_AUTH_USER
               value: {{ .Values.jicofo.userAuth.name }}
             - name: JICOFO_AUTH_PASSWORD
@@ -62,20 +59,13 @@ spec:
                 secretKeyRef:
                   name: {{ include "jitsi-meet.name-jicofo-secret" . }}
                   key: JICOFO_AUTH_PASSWORD
-            {{ end }}
             - name: JICOFO_COMPONENT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "jitsi-meet.name-jicofo-secret" . }}
                   key: JICOFO_COMPONENT_SECRET
-            {{- if .Values.prosody.userAuth.enabled }}
-            - name: ENABLE_AUTH
-              value: "1"
-            - name: ENABLE_GUESTS
-              value: {{ .Values.prosody.userAuth.guest | quote }}
             - name: AUTH_TYPE
               value: {{ .Values.prosody.userAuth.type | quote }}
-            {{- end }}
 
             {{- range .Values.prosody.environment }}
             - name: {{ .name | quote }}
@@ -85,19 +75,6 @@ spec:
             - name: {{ .name | quote }}
               value: {{ .value | quote }}
             {{- end }}
-# add vars for turn.cfg.lua
-            - name: TURN_USER
-              value: {{ .Values.turn.userAuth.name }}
-            - name: TURN_PASSWORD
-              value: {{ .Values.turn.userAuth.secret }}
-            - name: TURN_HOST
-              value: {{ .Values.turn.turnHost }}
-            - name: TURN_TCP_PORT
-              value: {{ .Values.turn.tcpPort | quote }}
-            - name: TURN_UDP_PORT
-              value: {{ .Values.turn.udpPort | quote }}
-            - name: TURN_TLS_PORT
-              value: {{ .Values.turn.tlsPort | quote }}
           ports:
             - name: xmpp-client
               containerPort: 5222

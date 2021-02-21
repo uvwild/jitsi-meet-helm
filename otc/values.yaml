@@ -25,7 +25,7 @@ common:
     - name: ENABLE_XMPP_WEBSOCKET
       value: "0"    
     - name: ENABLE_LETSENCRYPT
-      value: false
+      value: "0"
     - name: ENABLE_AUTH
       value: "0"
     - name: LETSENCRYPT_DOMAIN
@@ -114,6 +114,19 @@ prosody:
       value: "false"
     - name: ENABLE_STATISTICS
       value: "true"
+    - name: TURN_USER
+      value: tina
+    - name: TURN_PASSWORD
+      value: eike
+    - name: TURN_HOST
+      value: stun.t-online.de
+#  turnHost: turn.jitsi.otcdemo.gardener.t-systems.net
+    - name: TURN_TCP_PORT
+      value: 3478
+    - name: TURN_UDP_PORT
+      value: 3478
+    - name: TURN_TLS_PORT
+      value: 5349
 
 
   image:
@@ -123,15 +136,7 @@ prosody:
 turn:
   enabled: false
   replicaCount: 1
-  turnHost: stun.t-online.de
-#  turnHost: turn.jitsi.otcdemo.gardener.t-systems.net
   xmppTurnDomain: turn.jitsi.otc
-
-#  externalIp: 80.158.56.57
-  extTlsPort: 443
-  udpPort: 3478
-  tcpPort: 3478
-  tlsPort: 5349
   # ports for turn forwarding
   minPort: 10000
   maxPort: 10100
