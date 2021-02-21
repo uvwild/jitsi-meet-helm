@@ -23,15 +23,13 @@ ingress:
 common:
   environment:
     - name: ENABLE_XMPP_WEBSOCKET
-      value: "0"
-    - name: ENABLE_GUESTS
-      value: "1"
+      value: "0"    
+    - name: ENABLE_LETSENCRYPT
+      value: false
     - name: ENABLE_AUTH
       value: "1"
-    - name: ENABLE_IPV6
-      value: "false"
-    - name: ENABLE_STATISTICS
-      value: "true"
+    - name: LETSENCRYPT_DOMAIN
+      value: xxxx
     - name: XMPP_DOMAIN
       value: jitsi.otc
     - name: XMPP_AUTH_DOMAIN
@@ -45,15 +43,11 @@ common:
     - name: XMPP_TURN_DOMAIN
       value: turn.jitsi.otc
     - name: JVB_BREWERY_MUC
-      value: jvbbrewery
-    - name: JVB_TCP_HARVESTER_DISABLED
-      value: "false"
-    - name: TZ
-      value: Europe/Amsterdam
+      value: jvbbrewery      
     - name: JVB_ADMINS
       value: "\"jvb@auth.jitsi.otc\",\"focus@auth.jitsi.otc\""
-    - name: MARKER
-      value: "otc_config"
+    - name: TZ
+      value: Europe/Amsterdam
 
 jicofo:
   userAuth:
@@ -64,6 +58,8 @@ jicofo:
   environment:
     - name: LOG_LEVEL
       value: info
+    - name: JICOFO_ENABLE_HEALTH_CHECKS
+      value: "true"      
   image:
     repository: jitsi/jicofo
     pullPolicy: IfNotPresent
@@ -94,6 +90,9 @@ jvb:
       value: "--apis=xmpp,rest,colibri"
     - name: ENABLE_STATISTICS
       value: "true"
+    - name: JVB_TCP_HARVESTER_DISABLED
+      value: "false"
+
   image:
     repository: jitsi/jvb
     pullPolicy: IfNotPresent
@@ -109,8 +108,14 @@ prosody:
   environment:
     - name: LOG_LEVEL
       value: info
-    - name: XMPP_MUC_MODULES
-      value: "muc_meeting_id"
+    - name: ENABLE_GUESTS
+      value: "1"
+    - name: ENABLE_IPV6
+      value: "false"
+    - name: ENABLE_STATISTICS
+      value: "true"
+
+
   image:
     repository: jitsi/prosody
     pullPolicy: IfNotPresent
@@ -148,10 +153,16 @@ web:
   # the letsencrypt script is not working inside the nodes of our helm chart
   # we are using istio in gardener instead
   environment:
-    - name: ENABLE_LETSENCRYPT
-      value: false
-    - name: LETSENCRYPT_DOMAIN
-      value: xxxx
+    - name: ENABLE_AUTH
+      value: "1"
+    - name: ENABLE_GUESTS
+      value: "1"
+    - name: ENABLE_IPV6
+      value: "false"
+    - name: ENABLE_HTTP_REDIRECT
+      value: "0"
+    - name: ENABLE_XMPP_WEBSOCKET
+      value: "0"
     - name: LOG_LEVEL
       value: info
   service:

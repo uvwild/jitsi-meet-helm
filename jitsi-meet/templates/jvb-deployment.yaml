@@ -55,8 +55,6 @@ spec:
               value: {{ $tcpport | quote }}
             - name: JVB_TCP_MAPPED_PORT
               value: {{ $tcpport | quote }}
-            # - name: BASE_PORT # is the nodeport
-            #   value: {{ $root.Values.jvb.baseport | quote }}
             - name: PUBLIC_URL
               value: "https://{{ $root.Values.webHost }}:443"
 

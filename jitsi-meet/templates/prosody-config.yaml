@@ -12,3 +12,5 @@ data:
     {{- .Files.Get "configs/prosody/jitsi-meet.cfg.lua" | nindent 4 }}
   turn.cfg.lua: |-
     {{- .Files.Get "configs/prosody/turn.cfg.lua" | nindent 4 }}
+  entrypoint.sh: |-
+    {{- .Files.Get "configs/prosody/entrypoint.sh" | nindent 4 }}
