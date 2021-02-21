@@ -41,9 +41,7 @@ spec:
                   - "/bin/bash"
                   - "-c"
                   - >
-                  {{ if and .Values.prosody.auth.enabled false }}
                     prosodyctl --config /config/prosody.cfg.lua register me $XMPP_DOMAIN $JVB_AUTH_PASSWORD;
-                  {{ end }}
           env:
             - name: JVB_AUTH_USER
               value: {{ .Values.jvb.userAuth.name }}
