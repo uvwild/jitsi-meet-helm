@@ -57,7 +57,7 @@ spec:
         prefix: "/*"
     route:
     - destination:
-        host: {{ include "jitsi-meet.name-jvbsvc-fqdn" . }}
+        host: {{ include "jitsi-meet.name-jvbsvc-fqdn" $root }}
         port:
           number: 9090
   {{- end }}
