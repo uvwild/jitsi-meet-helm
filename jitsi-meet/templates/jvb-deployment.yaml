@@ -92,9 +92,6 @@ spec:
                   key: JVB_AUTH_PASSWORD
             - name: JVB_ENABLE_APIS
               value: "rest,colibri,xmpp"
-            - name: JVB_STUN_SERVERS
-              value: "{{ $root.Values.turn.turnHost }}:{{ $root.Values.turn.udpPort }}"
-            # value: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
             {{- with $root.Values.jvb.environment }}
               {{- toYaml . | nindent 12 }}
             {{- end }}

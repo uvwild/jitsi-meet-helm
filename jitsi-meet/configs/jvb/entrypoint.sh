@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 # both jq and curl are needed for shutdown hook
-DBG_TOOLS="curl vim tcpdump net-tools inetutils-traceroute inetutils-ping iproute2 procps"
+DBG_TOOLS="curl vim tcpdump net-tools inetutils-traceroute inetutils-ping iproute2 procps netcat telnet"
 apt-dpkg-wrap apt-get update && \
 apt-dpkg-wrap apt-get -y install curl jq $DBG_TOOLS
 
