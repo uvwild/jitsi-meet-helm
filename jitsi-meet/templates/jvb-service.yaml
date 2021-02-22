@@ -35,7 +35,7 @@ spec:
   {{- toYaml $root.Values.jvb.service.sessionAffinityConfig }}
   {{- end }}
   ports:
- #---------------------------------------------------
+  #---------------------------------------------------
   - port: {{ atoi $tcpport}}
     name: "{{ $tcpportname}}"
     {{- if (eq $root.Values.jvb.service.type "NodePort") -}}
@@ -43,27 +43,23 @@ spec:
     {{- end }}
     protocol: TCP
     targetPort: {{ $tcpport }}
- #---------------------------------------------------
-  - port: 5555
-    name: "tcp-5555"
-    protocol: TCP
-    targetPort: 5555
- #---------------------------------------------------
+  #---------------------------------------------------
+  # test port
   - port: 8080
     name: "tcp-8080"
     protocol: TCP
     targetPort: 8080
- #---------------------------------------------------
+  #---------------------------------------------------
+  # test port
   - port: 9090
     name: "http-9090"
-    protocol: 
+    protocol:
     targetPort: 9090
-#---------------------------------------------------
-# officially udp is not working so be prepared and think about nginx  
-  # - port: {{ atoi $udpport }}
-  #   name: "{{ atoi $udpport }}"
-  #   nodePort: {{ atoi $udpnodeport }}
-  #   protocol: UDP
-  #   targetPort: {{ $udpport }}
-
+  #---------------------------------------------------
+  # officially udp proxying is not working - dont depend on it
+  - port: {{ atoi $udpport }}
+    name: "{{ atoi $udpport }}"
+    nodePort: {{ atoi $udpnodeport }}
+    protocol: UDP
+    targetPort: {{ $udpport }}
 {{- end }}
