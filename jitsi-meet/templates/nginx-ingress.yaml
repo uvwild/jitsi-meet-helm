@@ -23,4 +23,12 @@ spec:
             backend:
               serviceName: {{ include "jitsi-meet.name-web" . }}
               servicePort: {{ .Values.web.service.port }}
+    - host: {{ .Values.webHostAlt }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: {{ include "jitsi-meet.name-web" . }}
+              servicePort: {{ .Values.web.service.port }}
 {{- end -}}

@@ -30,7 +30,7 @@ metadata:
   namespace: jitsi
 data:
   enable-access-log-for-default-backend: enabled
-  error-log-level: debug
+  error-log-level: info
 ---
 # Source: ingress-nginx/templates/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -673,3 +673,35 @@ spec:
       securityContext:
         runAsNonRoot: true
         runAsUser: 2000
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tcp-services
+  namespace: jitsi
+  labels:
+    helm.sh/chart: ingress-nginx-3.23.0
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/version: 0.44.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: admission-webhook
+data:
+  4443: "jitsi/jitsi-otc-jvb-0:4443"
+  8080: "jitsi/jitsi-otc-jvb-0:8080"
+  9090: "jitsi/jitsi-otc-jvb-0:9090"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: udp-services
+  namespace: jitsi
+  labels:
+    helm.sh/chart: ingress-nginx-3.23.0
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/version: 0.44.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: admission-webhook
+data:
+  10000: "jitsi/jitsi-otc-jvb-0:10000"
