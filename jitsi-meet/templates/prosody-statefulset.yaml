@@ -32,8 +32,8 @@ spec:
           image: "{{ .Values.prosody.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.prosody.image.pullPolicy }}
           # this entrypoint now only installs more packages
-          command: ["/bin/bash"] 
-          args: ["/entrypoint.sh","/init"]          
+          command: ["/bin/bash"]
+          args: ["/entrypoint.sh","/init"]
           lifecycle:
             postStart:
               exec:
