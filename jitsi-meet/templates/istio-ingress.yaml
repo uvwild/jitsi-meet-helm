@@ -1,8 +1,8 @@
-{{- if (ne .Values.ingress.type "istio-gateway") -}}
+{{- if (eq .Values.ingress.type "disabled") -}}
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: {{ include "jitsi-meet.name" . }}-ingress
+  name: {{ include "jitsi-meet.name" . }}-istio-ingress
   namespace: {{ .Values.namespace }}
   annotations:
     kubernetes.io/ingress.class: {{ trunc 5 .Values.ingress.type }}
@@ -21,8 +21,6 @@ spec:
           - path: /
             pathType: Prefix
             backend:
-              service:
-                name: {{ include "jitsi-meet.name-web" . }}
-                port:
-                  number: {{ .Values.web.service.port }}
+              serviceName: {{ include "jitsi-meet.name-web" . }}
+              servicePort: {{ .Values.web.service.port }}
 {{- end -}}

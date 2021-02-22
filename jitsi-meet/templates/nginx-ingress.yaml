@@ -1,0 +1,26 @@
+{{- if (eq .Values.ingress.type "nginx-ingress") -}}
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ include "jitsi-meet.name" . }}-nginx-ingress
+  namespace: {{ .Values.namespace }}
+  annotations:
+    kubernetes.io/ingress.class: {{ trunc 5 .Values.ingress.type }}
+  labels:
+{{ include "jitsi-meet.labels" . | indent 4 }}
+spec:
+  tls:
+    hosts:
+      - {{ .Values.webHost }}
+    mode: SIMPLE
+    secretName: wildcard-tls
+  rules:
+    - host: {{ .Values.webHost }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: {{ include "jitsi-meet.name-web" . }}
+              servicePort: {{ .Values.web.service.port }}
+{{- end -}}
