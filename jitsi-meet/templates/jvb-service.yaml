@@ -55,6 +55,11 @@ spec:
     name: "test-8080"
     protocol: TCP
     targetPort: 8080
+ #---------------------------------------------------
+  - port: 9090
+    name: "test-9090"
+    protocol: 
+    targetPort: 9090
 #---------------------------------------------------
 # officially udp is not working so be prepared and think about nginx  
   # - port: {{ atoi $udpport }}

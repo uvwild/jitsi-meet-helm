@@ -108,6 +108,12 @@ spec:
             - name: "test-5555"
               containerPort: 5555
               protocol: TCP
+            - name: "test-8080"
+              containerPort: 8080
+              protocol: TCP
+            - name: "test-9090"
+              containerPort: 9090
+              protocol: TCP
           volumeMounts:
             - name: config
               mountPath: "/defaults/jvb.conf"
