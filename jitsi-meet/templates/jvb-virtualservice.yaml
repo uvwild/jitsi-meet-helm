@@ -10,6 +10,7 @@ metadata:
 spec:
   hosts:
   - {{ .Values.webHost }}
+  - {{ include "jitsi-meet.name-jvbsvc-fqdn" . }}  
   gateways:
   - {{ include "jitsi-meet.name-gateway-fqdn" . }}
   # video bridge over tcp 
