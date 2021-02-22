@@ -59,7 +59,6 @@ spec:
   # officially udp proxying is not working - dont depend on it
   - port: {{ atoi $udpport }}
     name: "{{ atoi $udpport }}"
-    nodePort: {{ atoi $udpnodeport }}
     protocol: UDP
     targetPort: {{ $udpport }}
 {{- end }}
