@@ -59,6 +59,13 @@ spec:
     hosts:
     - "*"       # try wildcard
 
+  - port:
+      number: 9090
+      name: test-9090
+      protocol: HTTP
+    hosts:
+    - "*"       # try wildcard
+
   # - port:
   #     number: {{ atoi $udpport }}
   #     name: {{ $udpportname }}

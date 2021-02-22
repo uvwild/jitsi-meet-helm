@@ -35,6 +35,13 @@ spec:
         host: {{ $target }}
         port:
           number: 5555
+  - match:
+    - port: 8080
+    route:
+    - destination:
+        host: {{ $target }}
+        port:
+          number: 8080
   #---------------------------------------------------          
   # - match:
   #   - port: {{ atoi $udpport }}
@@ -43,5 +50,15 @@ spec:
   #       host: {{ $target }}
   #       port:
   #         number: {{ atoi $udpport }}
+  http:
+#---------------------------------------------------    
+  - match:
+    - uri:
+        prefix: "/*"
+    route:
+    - destination:
+        host: {{ include "jitsi-meet.name-jvbsvc-fqdn" . }}
+        port:
+          number: 9090
   {{- end }}
 {{- end -}}  

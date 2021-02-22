@@ -38,11 +38,16 @@ Create the istio gateway name
 {/*
 Create the istio hosts TODO this needs the iteration suffix
 */}}
-
 {{- define "jitsi-meet.name-websvc-fqdn" -}}
 {{- printf "%s-%s" .Chart.Name "web.jitsi.svc.cluster.local" | trunc 63 -}}
 {{- end -}}
 
+{/*
+Create the istio hosts TODO this needs the iteration suffix
+*/}}
+{{- define "jitsi-meet.name-jvbsvc-fqdn" -}}
+{{- printf "%s-%s" .Chart.Name "jvb-0.jitsi.svc.cluster.local" | trunc 63 -}}
+{{- end -}}
 
 
 
