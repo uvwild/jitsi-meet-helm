@@ -47,7 +47,7 @@ spec:
 
   - port:
       number: 5555
-      name: 5555
+      name: test-5555
       protocol: TCP
     hosts:
     - "*"       # try wildcard
