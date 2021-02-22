@@ -105,7 +105,7 @@ spec:
             - name: {{ $tcpportname }}
               containerPort: {{ atoi $tcpport }}
               protocol: TCP
-            - name: "5555"
+            - name: "test-5555"
               containerPort: 5555
               protocol: TCP
           volumeMounts:
