@@ -68,7 +68,7 @@ jvb:
   ingress:
     enabled: false
     annotations: |-
-      sidecar.istio.io/inject: 'true'
+      sidecar.istio.io/inject: "true"
     # traffic.sidecar.istio.io/includeInboundPorts: ""
     # traffic.sidecar.istio.io/excludeInboundPorts: "80,443,10000,4443"
   userAuth:
@@ -77,6 +77,8 @@ jvb:
     secret: dG90bw==
   service:
     type: ClusterIP       # NodePort   # nodeports  30000-32768
+#    annotations: |-
+#      sidecar.istio.io/inject: 'true'
   nodeport: 30000
   # used for nodeport calculation
   tcpoffset: 1000
@@ -95,7 +97,7 @@ jvb:
     - name: JVB_STUN_SERVERS
       value: "stun.t-online.de:3478"
     # value: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
-    
+
   image:
     repository: jitsi/jvb
     pullPolicy: IfNotPresent
@@ -173,7 +175,8 @@ web:
     type: ClusterIP
     port: 80
     sslport: 443
-    annotations: []
+    annotations: |-
+      sidecar.istio.io/inject: 'true'
   image:
     repository: jitsi/web
     pullPolicy: IfNotPresent

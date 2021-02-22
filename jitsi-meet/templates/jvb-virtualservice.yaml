@@ -7,6 +7,8 @@ metadata:
   namespace: {{ .Values.namespace }}
   labels:
 {{ include "jitsi-meet.labels" . | indent 4 }}
+  annotations:
+    sidecar.istio.io/inject: "true"
 spec:
   hosts:
   - {{ .Values.webHost }}

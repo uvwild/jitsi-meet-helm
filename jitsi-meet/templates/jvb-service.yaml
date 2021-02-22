@@ -19,10 +19,8 @@ metadata:
   namespace: {{ $root.Values.namespace | quote }}
   labels:
 {{ include "jitsi-meet.labels" $root | indent 4 }}
-  {{- with $root.Values.jvb.service.annotations }}
   annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+    sidecar.istio.io/inject: "true"
 spec:
   type: {{ $root.Values.jvb.service.type }}
   selector:
