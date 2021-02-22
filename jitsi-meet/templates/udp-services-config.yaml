@@ -1,10 +1,9 @@
-{{- if .Values.ingress.enabled -}}
+{{- if (eq .Values.ingress.type "nginx-ingress") -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: udp-services
-  namespace: ingress-nginx
+  namespace: default
 data:
-  9090: "jitsi/jitsi-udp-test:9090"  
   10000: "jitsi/jitsi-otc-jvb-0:10000"
 {{- end -}}  

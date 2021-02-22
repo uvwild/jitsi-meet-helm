@@ -7,11 +7,12 @@ imagePullSecrets:
 image:
   tag: stable-5390-3
 webHost: www.jitsi.otcdemo.gardener.t-systems.net
-videoHost: jvb.jitsi.otcdemo.gardener.t-systems.net
+#videoHost: jvb.jitsi.otcdemo.gardener.t-systems.net
 # this should be read from istio
 publicIp: 80.158.56.57
 ingress:
-  type: ingress
+  # nginx-ingress istio-ingress istio-gateway
+  type: nginx-ingress
   annotations: |-
     sidecar.istio.io/inject: "true"  
   # kubernetes.io/ingress.class: nginx
@@ -19,7 +20,10 @@ ingress:
   # sidecar.istio.io/inject: 'true'
   # traffic.sidecar.istio.io/includeInboundPorts: ""
   # traffic.sidecar.istio.io/excludeInboundPorts: "80,443,10000,4443"
-
+# tcp:
+#     configMapNamespace: "jitsi"   # defaults to .Release.Namespace
+# udp:
+#     configMapNamespace: "jitsi"   # defaults to .Release.Namespace
 
 common:
   environment:

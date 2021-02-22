@@ -1,4 +1,4 @@
-{{- if (eq .Values.ingress.type "gateway") -}}
+{{- if (eq .Values.ingress.type "istio-gateway") -}}
 {{- $basename := include "jitsi-meet.name-jvb" . }}
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
@@ -7,8 +7,6 @@ metadata:
   namespace: {{ .Values.namespace }}
   labels:
 {{ include "jitsi-meet.labels" . | indent 4 }}
-  annotations:
-    sidecar.istio.io/inject: "true"
 spec:
   hosts:
   - {{ .Values.webHost }}

@@ -1,9 +1,11 @@
-{{- if .Values.ingress.enabled -}}
+{{- if (eq .Values.ingress.type "nginx-ingress") -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: tcp-services
-  namespace: ingress-nginx
+  namespace: default
 data:
   4443: "jitsi/jitsi-otc-jvb-0:4443"
+  8080: "jitsi/jitsi-otc-jvb-0:8080"
+  9090: "jitsi/jitsi-otc-jvb-0:9090"
 {{- end -}}

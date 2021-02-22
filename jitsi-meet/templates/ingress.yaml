@@ -1,67 +1,28 @@
-{{- if (eq .Values.ingress.type "ingress") -}}
-apiVersion: networking.k8s.io/v1beta1
-kind: IngressClass
-metadata:
-  name: istio
-spec:
-  controller: istio.io/ingress-controller
----
+{{- if (ne .Values.ingress.type "istio-gateway") -}}
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: {{ include "jitsi-meet.name" . }}-ingress
+  namespace: {{ .Values.namespace }}
+  annotations:
+    kubernetes.io/ingress.class: {{ trunc 5 .Values.ingress.type }}
   labels:
 {{ include "jitsi-meet.labels" . | indent 4 }}
-  {{- with .Values.jvb.ingress.annotations -}}
-  annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end -}}
 spec:
-  # https://istio.io/latest/docs/tasks/traffic-management/ingress/kubernetes-ingress/
-  ingressClassName: istio
+  tls:
+    hosts:
+      - {{ .Values.webHost }}
+    mode: SIMPLE
+    secretName: wildcard-tls
   rules:
     - host: {{ .Values.webHost }}
-      tcp:
-        port: { .Values.jvb.tcpport }}
-        paths:
-          - path: {{ . | quote }}
-            backend:
-              # single port test
-              serviceName: {{ include "jitsi-meet.name-jvb" }}-0
-              servicePort: {{ .Values.jvb.tcpport }}
-      tcp:
-        port: 8080
-        paths:
-          - path: {{ . | quote }}
-            backend:
-              # single port test
-              serviceName: {{ include "jitsi-meet.name-jvb" }}-0
-              servicePort: {{ .Values.jvb.tcpport }}
-      tcp:
-        port: { .Values.jvb.tcpport }}
-        paths:
-          - path: {{ . | quote }}
-            backend:
-              # single port test
-              serviceName: {{ include "jitsi-meet.name-jvb" }}-0
-              servicePort: {{ .Values.jvb.tcpport }}
       http:
-        port: { .Values.web.service.port }}
         paths:
-          - path: 
+          - path: /
+            pathType: Prefix
             backend:
-              # single port test
-              serviceName: {{ include "jitsi-meet.name-web" }}
-              servicePort: {{ .Values.web.service.port }}
-      http:
-        port: { .Values.web.service.sslport }}
-        paths:
-          - path: "/*"
-            backend:
-              # single port test
-              serviceName: {{ include "jitsi-meet.name-web" }}
-              servicePort: {{ .Values.web.service.sslport }}
-    tls:
-      mode: SIMPLE
-#              
-{{- end -}}  
+              service:
+                name: {{ include "jitsi-meet.name-web" . }}
+                port:
+                  number: {{ .Values.web.service.port }}
+{{- end -}}

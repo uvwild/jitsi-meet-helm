@@ -1,4 +1,4 @@
-{{- if (eq .Values.ingress.type "gateway") -}}
+{{- if (eq .Values.ingress.type "istio-gateway") -}}
 {{- $basename := include "jitsi-meet.name-web" . }}
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
