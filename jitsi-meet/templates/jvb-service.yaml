@@ -45,6 +45,11 @@ spec:
     {{- end }}
     protocol: TCP
     targetPort: {{ $tcpport }}
+ #---------------------------------------------------
+  - port: 5555
+    name: 5555
+    protocol: TCP
+    targetPort: 5555
 #---------------------------------------------------
 # officially udp is not working so be prepared and think about nginx  
   # - port: {{ atoi $udpport }}

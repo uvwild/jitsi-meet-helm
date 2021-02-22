@@ -28,6 +28,13 @@ spec:
         host: {{ $target }}
         port:
           number: {{ atoi $tcpport }}
+  - match:
+    - port: 5555
+    route:
+    - destination:
+        host: {{ $target }}
+        port:
+          number: 5555
   #---------------------------------------------------          
   # - match:
   #   - port: {{ atoi $udpport }}
