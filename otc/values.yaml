@@ -11,8 +11,9 @@ videoHost: jvb.jitsi.otcdemo.gardener.t-systems.net
 # this should be read from istio
 publicIp: 80.158.56.57
 ingress:
-  type: gateway
+  type: ingress
   annotations: |-
+    sidecar.istio.io/inject: "true"  
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/ingress.class: istio  
   # sidecar.istio.io/inject: 'true'

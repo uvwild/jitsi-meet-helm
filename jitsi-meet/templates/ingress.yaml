@@ -28,7 +28,23 @@ spec:
             backend:
               # single port test
               serviceName: {{ include "jitsi-meet.name-jvb" }}-0
-              servicePort: {{ .Values.jvb.udpport }}
+              servicePort: {{ .Values.jvb.tcpport }}
+      tcp:
+        port: 8080
+        paths:
+          - path: {{ . | quote }}
+            backend:
+              # single port test
+              serviceName: {{ include "jitsi-meet.name-jvb" }}-0
+              servicePort: {{ .Values.jvb.tcpport }}
+      tcp:
+        port: { .Values.jvb.tcpport }}
+        paths:
+          - path: {{ . | quote }}
+            backend:
+              # single port test
+              serviceName: {{ include "jitsi-meet.name-jvb" }}-0
+              servicePort: {{ .Values.jvb.tcpport }}
       http:
         port: { .Values.web.service.port }}
         paths:
