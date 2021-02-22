@@ -39,7 +39,7 @@ spec:
   ports:
  #---------------------------------------------------
   - port: {{ atoi $tcpport}}
-    name: "{{ atoi $tcpport}}"
+    name: "{{ $tcpportname}}"
     {{- if (eq $root.Values.jvb.service.type "NodePort") -}}
     nodePort: {{ atoi $tcpnodeport }}
     {{- end }}
