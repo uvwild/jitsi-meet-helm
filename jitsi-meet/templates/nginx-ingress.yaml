@@ -10,10 +10,9 @@ metadata:
 {{ include "jitsi-meet.labels" . | indent 4 }}
 spec:
   tls:
-    hosts:
+    - hosts:
       - {{ .Values.webHost }}
-    mode: SIMPLE
-    secretName: wildcard-tls
+      secretName: wildcard-tls  # copied from istio to this NS
   rules:
     - host: {{ .Values.webHost }}
       http:
