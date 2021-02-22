@@ -8,3 +8,6 @@ metadata:
 data:
   sip-communicator.properties: |-
     {{- .Files.Get "configs/jicofo/sip-communicator.properties" | nindent 4 }}
+  logging.properties: |-
+    {{- .Files.Get "configs/jicofo/logging.properties" | nindent 4 }}
+  
