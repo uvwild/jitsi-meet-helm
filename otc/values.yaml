@@ -8,22 +8,14 @@ image:
 
 #webHost: www.jitsi.otcdemo.gardener.t-systems.net
 #publicIp: 80.158.56.57
-webHost: ng.jitsi.otcdemo.gardener.t-systems.net
+webHost: jitsing.otcdemo.gardener.t-systems.net
+webHostAlt: ng.jitsi.otcdemo.gardener.t-systems.net
 publicIp: 80.158.17.68
 ingress:
   # nginx-ingress istio-ingress istio-gateway
   type: nginx-ingress
   annotations: |-
     sidecar.istio.io/inject: "true"
-  # kubernetes.io/ingress.class: nginx
-  # kubernetes.io/ingress.class: istio
-  # sidecar.istio.io/inject: 'true'
-  # traffic.sidecar.istio.io/includeInboundPorts: ""
-  # traffic.sidecar.istio.io/excludeInboundPorts: "80,443,10000,4443"
-# tcp:
-#     configMapNamespace: "jitsi"   # defaults to .Release.Namespace
-# udp:
-#     configMapNamespace: "jitsi"   # defaults to .Release.Namespace
 
 common:
   environment:

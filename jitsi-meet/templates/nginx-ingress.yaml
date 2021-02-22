@@ -5,13 +5,14 @@ metadata:
   name: {{ include "jitsi-meet.name" . }}-nginx-ingress
   namespace: {{ .Values.namespace }}
   annotations:
-    kubernetes.io/ingress.class: {{ trunc 5 .Values.ingress.type }}
+    kubernetes.io/ingress.class: nginx
   labels:
 {{ include "jitsi-meet.labels" . | indent 4 }}
 spec:
   tls:
     - hosts:
       - {{ .Values.webHost }}
+      - {{ .Values.webHostAlt }}
       secretName: wildcard-tls  # copied from istio to this NS
   rules:
     - host: {{ .Values.webHost }}
