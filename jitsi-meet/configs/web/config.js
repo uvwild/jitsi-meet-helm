@@ -343,7 +343,8 @@ var config = {
         stunServers: [
 
             // { urls: 'stun:jitsi-meet.example.com:4446' },
-            { urls: 'stun:stun.t-online.de:3478' }
+            // { urls: 'stun:stun.t-online.de:3478' }
+            { urls: 'turn:jitsid.otcdemo.gardener.t-systems.net:3478', credential: 'test', password: 'test123'  }
             //{ urls: 'stun:meet-jit-si-turnrelay.jitsi.net:443' }
         ],
 

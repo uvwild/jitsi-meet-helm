@@ -121,7 +121,8 @@ prosody:
     - name: TURN_PASSWORD
       value: eike
     - name: TURN_HOST
-      value: meet-jit-si-turnrelay.jitsi.net
+      value: jitsid.otcdemo.gardener.t-systems.net
+#      value: meet-jit-si-turnrelay.jitsi.net
 #      value: stun.t-online.de
 #  turnHost: turn.jitsi.otcdemo.gardener.t-systems.net
     - name: TURN_PORT
