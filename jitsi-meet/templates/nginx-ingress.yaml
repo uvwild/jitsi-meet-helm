@@ -6,6 +6,7 @@ metadata:
   namespace: {{ .Values.namespace }}
   annotations:
     kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
   labels:
 {{ include "jitsi-meet.labels" . | indent 4 }}
 spec:
@@ -18,6 +19,11 @@ spec:
     - host: {{ .Values.webHost }}
       http:
         paths:
+          - path: /never
+            pathType: Prefix
+            backend:
+              serviceName: {{ include "jitsi-meet.name-prosody" . }}
+              servicePort: 5280
           - path: /
             pathType: Prefix
             backend:
@@ -26,13 +32,15 @@ spec:
     - host: {{ .Values.webHostAlt }}
       http:
         paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              serviceName: {{ include "jitsi-meet.name-web" . }}
-              servicePort: {{ .Values.web.service.port }}
           - path: /never
             pathType: Prefix
             backend:
               serviceName: {{ include "jitsi-meet.name-prosody" . }}
               servicePort: 5280
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: {{ include "jitsi-meet.name-web" . }}
+              servicePort: {{ .Values.web.service.port }}
+
+{{- end -}}
