@@ -28,10 +28,8 @@ spec:
         app.kubernetes.io/name: {{ $deployName | quote }}
         app.kubernetes.io/instance: {{ $root.Release.Name }}
     spec:
-    {{- with $root.Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       serviceAccountName: {{ template "jitsi-meet.serviceAccountName" $root }}
       securityContext:
         {{- toYaml $root.Values.jvb.securityContext | nindent 8 }}
@@ -39,7 +37,7 @@ spec:
         - name: {{ $name | quote }}
           image: {{ printf "%s:%s" $root.Values.jvb.image.repository $root.Values.image.tag | quote }}
           imagePullPolicy: {{ $root.Values.jvb.image.pullPolicy | quote }}
-          command: ["/bin/bash"] 
+          command: ["/bin/bash"]
           # this entrypoint now only installs more packages
           args: ["/entrypoint.sh","/init"]
           securityContext:
@@ -60,7 +58,7 @@ spec:
             - name: PUBLIC_URL
               value: "https://{{ $root.Values.webHost }}:443"
 
-            # these values are used for the HARVESTER CONFIG              
+            # these values are used for the HARVESTER CONFIG
             # - name: PUBLIC_IP
             #   value: "{{ $root.Values.publicIp }}"
             - name: DOCKER_HOST_ADDRESS
