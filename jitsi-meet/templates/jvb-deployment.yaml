@@ -29,7 +29,7 @@ spec:
         app.kubernetes.io/instance: {{ $root.Release.Name }}
     spec:
       hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
+#      dnsPolicy: ClusterFirstWithHostNet
       serviceAccountName: {{ template "jitsi-meet.serviceAccountName" $root }}
       securityContext:
         {{- toYaml $root.Values.jvb.securityContext | nindent 8 }}
