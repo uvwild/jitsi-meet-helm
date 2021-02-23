@@ -28,7 +28,7 @@ spec:
         app.kubernetes.io/name: {{ $deployName | quote }}
         app.kubernetes.io/instance: {{ $root.Release.Name }}
     spec:
-      hostNetwork: true
+#      hostNetwork: true
 #      dnsPolicy: ClusterFirstWithHostNet
       serviceAccountName: {{ template "jitsi-meet.serviceAccountName" $root }}
       securityContext:
