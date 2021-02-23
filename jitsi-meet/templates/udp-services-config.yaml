@@ -1,4 +1,4 @@
-{{- if (eq .Values.ingress.type "nginx-ingress") -}}
+{{- if (eq .Values.ingress.type "nginx-ingress-unused") -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:

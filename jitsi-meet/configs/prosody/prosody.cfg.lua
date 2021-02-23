@@ -76,8 +76,7 @@ modules_enabled = {
         "{{ join "\";\n\"" (splitList "," .Env.GLOBAL_MODULES) }}";
         {{ end }}
 };
-cross_domain_bosh = true;
-consider_bosh_secure = true;
+
 https_ports = { }
 -- These modules are auto-loaded, but should you want
 -- to disable them then uncomment them here:
@@ -103,7 +102,11 @@ s2s_secure_auth = false
 -- Many servers don't support encryption or have invalid or self-signed
 -- certificates. You can list domains here that will not be required to
 -- authenticate using certificates. They will be authenticated using DNS.
-s2s_insecure_domains = { "jitsi.otcdemo.gardener.t-systems.net", "www.jitsi.otcdemo.gardener.t-systems.net"  }
+s2s_insecure_domains = {
+	"jitsid.otcdemo.gardener.t-systems.net",
+	"www.jitsi.otcdemo.gardener.t-systems.net",
+	"ng.jitsi.otcdemo.gardener.t-systems.net"
+}
 -- Even if you leave s2s_secure_auth disabled, you can still require valid
 -- certificates for some domains by specifying a list here.
 --s2s_secure_domains = { "jabber.org" }

@@ -20,8 +20,11 @@ asap_accepted_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ISSU
 asap_accepted_audiences = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_AUDIENCES) }}" }
 {{ end }}
 
-cross_domain_websocket = { "https://localhost:8443" }
-cross_domain_bosh = { "https://localhost:8443" }
+-- cross_domain_websocket = { "https://localhost:8443" }
+--cross_domain_bosh = { "https://localhost:8443" }
+cross_domain_websocket = false
+cross_domain_bosh = false;
+consider_bosh_secure = true;
 
 VirtualHost "{{ .Env.XMPP_DOMAIN }}"
 {{ if $ENABLE_AUTH }}
@@ -45,7 +48,7 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
 {{ end }}
     app_id = ""
     app_secret = ""
-    allow_empty_token = true    
+    allow_empty_token = true
     ssl = {
         key = "/config/certs/{{ .Env.XMPP_DOMAIN }}.key";
         certificate = "/config/certs/{{ .Env.XMPP_DOMAIN }}.crt";
@@ -70,9 +73,9 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
     speakerstats_component = "speakerstats.{{ .Env.XMPP_DOMAIN }}"
     conference_duration_component = "conferenceduration.{{ .Env.XMPP_DOMAIN }}"
     c2s_require_encryption = false
-    lobby_muc = "lobby.jitmeet.example.com"    
+    lobby_muc = "lobby.jitmeet.example.com"
     main_muc = "conference.{{ .Env.XMPP_DOMAIN }}"
-    
+
 {{ if and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) }}
 VirtualHost "{{ .Env.XMPP_GUEST_DOMAIN }}"
     authentication = "anonymous"
