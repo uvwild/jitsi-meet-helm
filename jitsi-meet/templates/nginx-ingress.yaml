@@ -31,4 +31,8 @@ spec:
             backend:
               serviceName: {{ include "jitsi-meet.name-web" . }}
               servicePort: {{ .Values.web.service.port }}
-{{- end -}}
+          - path: /never
+            pathType: Prefix
+            backend:
+              serviceName: {{ include "jitsi-meet.name-prosody" . }}
+              servicePort: 5280
