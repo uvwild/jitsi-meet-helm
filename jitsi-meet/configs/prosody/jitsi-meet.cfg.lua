@@ -26,13 +26,6 @@ cross_domain_websocket = false
 cross_domain_bosh = false;
 consider_bosh_secure = true;
 
-turncredentials_secret = {{ .Values.TURN_AUTH_PASSWORD | default "uebersafe" }}
-
-turncredentials = {
-  { type = "turn", host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}", transport = "udp" },
-  { type = "turns", host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURNS_PORT }}", transport = "tcp" }
-};
-
 VirtualHost "{{ .Env.XMPP_DOMAIN }}"
 {{ if $ENABLE_AUTH }}
   {{ if eq $AUTH_TYPE "jwt" }}

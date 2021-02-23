@@ -27,6 +27,14 @@ admins = { {{ .Env.JVB_ADMINS }} }
 -- For more information see: http://prosody.im/doc/libevent
 use_libevent = true;
 
+
+turncredentials_secret = {{ .Values.TURN_AUTH_PASSWORD | default "uebersafe" }}
+
+turncredentials = {
+  { type = "turn", host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}", transport = "udp" },
+  { type = "turns", host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURNS_PORT }}", transport = "tcp" }
+};
+
 -- This is the list of modules Prosody will load on startup.
 -- It looks for mod_modulename.lua in the plugins folder, so make sure that exists too.
 -- Documentation on modules can be found at: http://prosody.im/doc/modules
@@ -63,6 +71,7 @@ modules_enabled = {
 		"bosh"; -- Enable BOSH clients, aka "Jabber over HTTP"
 		--"http_files"; -- Serve static files from a directory over HTTP
 
+        "turncredentials";
 	-- Other specific functionality
 		"posix"; -- POSIX functionality, sends server to background, enables syslog, etc.
 		--"groups"; -- Shared roster support
