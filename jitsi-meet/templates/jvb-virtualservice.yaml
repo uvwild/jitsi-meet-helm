@@ -10,10 +10,10 @@ metadata:
 spec:
   hosts:
   - {{ .Values.webHost }}
-  - {{ include "jitsi-meet.name-jvbsvc-fqdn" . }}  
+  - {{ include "jitsi-meet.name-jvbsvc-fqdn" . }}
   gateways:
   - {{ include "jitsi-meet.name-gateway-fqdn" . }}
-  # video bridge over tcp 
+  # video bridge over tcp
   tcp:
   # iterate over replica and assing different ports
   {{- $root := . }}
@@ -43,7 +43,7 @@ spec:
         host: {{ $target }}
         port:
           number: 8080
-  #---------------------------------------------------          
+  #---------------------------------------------------
   # - match:
   #   - port: {{ atoi $udpport }}
   #   route:
@@ -52,7 +52,7 @@ spec:
   #       port:
   #         number: {{ atoi $udpport }}
   http:
-  #---------------------------------------------------    
+  #---------------------------------------------------
   - match:
     - uri:
         prefix: "/*"
@@ -62,4 +62,4 @@ spec:
         port:
           number: 9090
   {{- end }}
-{{- end -}}  
+{{- end -}}

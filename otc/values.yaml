@@ -8,8 +8,8 @@ image:
 
 #webHost: www.jitsi.otcdemo.gardener.t-systems.net
 #publicIp: 80.158.56.57
-webHost: jitsing.otcdemo.gardener.t-systems.net
-webHostAlt: ng.jitsi.otcdemo.gardener.t-systems.net
+webHost: ng.jitsi.otcdemo.gardener.t-systems.net
+webHostAlt: jitsing.otcdemo.gardener.t-systems.net
 publicIp: 80.158.17.68
 ingress:
   # nginx-ingress istio-ingress istio-gateway

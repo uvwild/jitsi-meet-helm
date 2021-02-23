@@ -14,4 +14,3 @@ data:
     {{- .Files.Get "configs/jvb/jvb.conf" | nindent 4 }}
   entrypoint.sh: |-
     {{- .Files.Get "configs/jvb/entrypoint.sh" | nindent 4 }}
-    

@@ -25,7 +25,7 @@ spec:
         imagePullPolicy: {{ .Values.jicofo.image.pullPolicy }}
         env:
           - name: JICOFO_AUTH_USER
-            value: {{ .Values.jicofo.userAuth.name }}            
+            value: {{ .Values.jicofo.userAuth.name }}
           - name: JICOFO_AUTH_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -39,7 +39,7 @@ spec:
           - name: XMPP_SERVER
             value: {{ include "jitsi-meet.name-prosody" . }}
           - name: PUBLIC_URL
-            value: "https://{{ .Values.webHost }}:443"            
+            value: "https://{{ .Values.webHost }}"
           {{- range .Values.jicofo.environment }}
           - name: {{ .name | quote }}
             value: {{ .value | quote }}

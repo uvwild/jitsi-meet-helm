@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: {{ include "jitsi-meet.name-web" . }}
   namespace: {{ .Values.namespace }}
-  labels:  
+  labels:
 {{ include "jitsi-meet.labels" . | indent 4 }}
   annotations:
     sidecar.istio.io/inject: "true"
@@ -17,7 +17,7 @@ spec:
       port: {{ .Values.web.service.port }}
       targetPort: http
       protocol: TCP
-      
+
     # # ssl is handled by istio so this is not used externally
     - name: http2
       port: {{ .Values.web.service.sslport }}

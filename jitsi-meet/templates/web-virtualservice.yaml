@@ -12,9 +12,9 @@ spec:
   - {{ .Values.webHost }}
   gateways:
   - {{ include "jitsi-meet.name-gateway-fqdn" . }}
-# web server  
+# web server
   http:
-#---------------------------------------------------    
+#---------------------------------------------------
   - match:
     - uri:
         prefix: /favicon.ico
@@ -34,7 +34,7 @@ spec:
         host: {{ include "jitsi-meet.name-websvc-fqdn" . }}
         port:
           number: {{ .Values.web.service.port }}
-#---------------------------------------------------          
+#---------------------------------------------------
 #   - name: "remap-xmpp"
 #     match:
 #     - uri:
@@ -71,4 +71,4 @@ spec:
 #         - Upgrade-Insecure-Requests
 #         - User-Agent
 #       maxAge: "24h"
-{{- end -}}  
+{{- end -}}
