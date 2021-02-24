@@ -92,7 +92,7 @@ jvb:
     - name: JVB_TCP_HARVESTER_DISABLED
       value: "false"
     - name: JVB_STUN_SERVERS
-      value: "stun.t-online.de:3478"
+      value: "jitsid.otcdemo.gardener.t-systems.net:4446"
     # value: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
 
   image:
