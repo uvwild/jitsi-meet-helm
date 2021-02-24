@@ -92,7 +92,7 @@ jvb:
     - name: JVB_TCP_HARVESTER_DISABLED
       value: "false"
     - name: JVB_STUN_SERVERS
-      value: "jitsid.otcdemo.gardener.t-systems.net:4446"
+      value: "jitsid.otcdemo.gardener.t-systems.net:3478"
     # value: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
 
   image:
@@ -126,9 +126,9 @@ prosody:
 #      value: stun.t-online.de
 #  turnHost: turn.jitsi.otcdemo.gardener.t-systems.net
     - name: TURN_PORT
-      value: 4446
+      value: 3478
     - name: TURNS_PORT
-      value: 443
+      value: 5349
     # - name: TURN_TCP_PORT
     #   value: 3478
     # - name: TURN_UDP_PORT
