@@ -56,7 +56,7 @@ jicofo:
     - name: LOG_LEVEL
       value: info
     - name: JICOFO_ENABLE_HEALTH_CHECKS
-      value: "true"
+      value: "false"
   image:
     repository: jitsi/jicofo
     pullPolicy: IfNotPresent
