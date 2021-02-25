@@ -524,6 +524,7 @@ var config = {
     enableLipSync
     enableTalkWhileMuted
     forceJVB121Ratio
+    forceTurnRelay
     hiddenDomain
     ignoreStartMuted
     nick
