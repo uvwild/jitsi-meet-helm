@@ -30,7 +30,7 @@ plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom", "/usr/share/jit
 use_libevent = true;
 
 
-turncredentials_secret = {{ .Values.TURN_AUTH_PASSWORD | default "uebersafe" | quote }}
+turncredentials_secret = {{ .Env.TURN_AUTH_PASSWORD | default "uebersafe" | quote }}
 
 turncredentials = {
   { type = "turn", host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}", transport = "udp" },

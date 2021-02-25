@@ -29,10 +29,8 @@ var config = {
     },
 
     // BOSH URL. FIXME: use XEP-0156 to discover it.
-    // use no host
-    bosh: '//jitsiȯtc/http-bind',
-    // or webhost
-//    bosh: '//www.jitsi.otcdemo.gardener.t-systems.net/http-bind',
+    // use abstract xmpp domain as hjst
+    bosh: '//jitsi.otc/http-bind',
 
     // Websocket URL
     // websocket: 'wss://jitsi-meet.example.com/xmpp-websocket',
@@ -212,7 +210,7 @@ var config = {
     // Misc
 
     // Default value for the channel "last N" attribute. -1 for unlimited.
-    channelLastN: 3,
+    channelLastN: -1,
 
     // Disables or enables RTX (RFC 4588) (defaults to false).
     // disableRtx: false,
