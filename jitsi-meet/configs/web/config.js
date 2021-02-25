@@ -30,7 +30,7 @@ var config = {
 
     // BOSH URL. FIXME: use XEP-0156 to discover it.
     // use no host
-    bosh: '//meet.jitsi/http-bind',
+    bosh: '//jitsiȯtc/http-bind',
     // or webhost
 //    bosh: '//www.jitsi.otcdemo.gardener.t-systems.net/http-bind',
 
@@ -238,13 +238,14 @@ var config = {
     useStunTurn: true,
 
     // Enable IPv6 support.
-    useIPv6: false,
+    //useIPv6: false,
 
     // Enables / disables a data communication channel with the Videobridge.
     // Values can be 'datachannel', 'websocket', true (treat it as
     // 'datachannel'), undefined (treat it as 'datachannel') and false (don't
     // open any channel).
-    openBridgeChannel: 'websocket',
+    // openBridgeChannel: XXXXX   // is set during init
+
 
     // UI
     //

@@ -64,7 +64,7 @@ spec:
             - name: DOCKER_HOST_ADDRESS
               valueFrom:
                 fieldRef:
-                  fieldPath: status.hostIP
+                  fieldPath: status.nodeIP
             - name: XMPP_SERVER
               value: {{ include "jitsi-meet.name-prosody" $root }}
             - name: PROSODY_INSTANCE
