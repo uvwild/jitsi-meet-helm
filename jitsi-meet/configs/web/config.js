@@ -25,7 +25,7 @@ var config = {
 
         // XMPP MUC domain. FIXME: use XEP-0030 to discover it.
         muc: 'muc.jitsi.otc',
-        focus: 'focus.jitsi.otc',        
+//        focus: 'focus.jitsi.otc',        
     },
 
     // BOSH URL. FIXME: use XEP-0156 to discover it.
