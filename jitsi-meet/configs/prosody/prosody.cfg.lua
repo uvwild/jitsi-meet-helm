@@ -33,8 +33,9 @@ use_libevent = true;
 turncredentials_secret = {{ .Env.TURN_AUTH_PASSWORD | default "uebersafe" | quote }}
 
 turncredentials = {
-  { type = "turn", host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}", transport = "udp" },
-  { type = "turns", host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURNS_PORT }}", transport = "tcp" }
+  { type = "stun", host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}"},
+  { type = "turn", host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}", transport = "udp" }
+  --{ type = "turns", host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURNS_PORT }}", transport = "tcp" }
 };
 
 -- This is the list of modules Prosody will load on startup.
@@ -75,7 +76,7 @@ modules_enabled = {
 
         "turncredentials";
 	-- Other specific functionality
-		"external_services";
+--		"external_services";
 		"posix"; -- POSIX functionality, sends server to background, enables syslog, etc.
 		--"groups"; -- Shared roster support
 		--"announce"; -- Send announcement to all online users
@@ -89,21 +90,22 @@ modules_enabled = {
         {{ end }}
 };
 
-external_services = {
-    {
-        type = "stun",
-        transport = "udp",
-        host = "jitsid.otcdemo.gardner.t-systems.net",
-        port = 3478,
-        secret = "mySecretTurnPasswordConfiguredInTurnServer"
-    }, {
-        type = "turn",
-        transport = "udp",
-        host = "jitsid.otcdemo.gardner.t-systems.net",
-        port = 3478,
-        secret = "mySecretTurnPasswordConfiguredInTurnServer"
-    }
-}
+-- SEEMS OUTDATED
+-- external_services = {
+--     {
+--         type = "stun",
+--         transport = "udp",
+--         host = "jitsid.otcdemo.gardner.t-systems.net",
+--         port = 3478,
+--         secret = "mySecretTurnPasswordConfiguredInTurnServer"
+--     }, {
+--         type = "turn",
+--         transport = "udp",
+--         host = "jitsid.otcdemo.gardner.t-systems.net",
+--         port = 3478,
+--         secret = "mySecretTurnPasswordConfiguredInTurnServer"
+--     }
+-- }
 
 
 https_ports = { }
