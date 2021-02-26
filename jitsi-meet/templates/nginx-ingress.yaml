@@ -7,36 +7,31 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
+#    nginx.ingress.kubernetes.io/configuration-snippet: |
+#      more_set_headers "proxy_read_timeout: 3600";    
   labels:
 {{ include "jitsi-meet.labels" . | indent 4 }}
 spec:
   tls:
     - hosts:
       - {{ .Values.webHost }}
-      - {{ .Values.webHostAlt }}
       secretName: wildcard-tls  # copied from istio to this NS
   rules:
     - host: {{ .Values.webHost }}
       http:
         paths:
-          - path: /never
+          - path: /http-bind
             pathType: Prefix
             backend:
               serviceName: {{ include "jitsi-meet.name-prosody" . }}
               servicePort: 5280
-          - path: /
+
+          - path: /colibri-ws/
             pathType: Prefix
             backend:
-              serviceName: {{ include "jitsi-meet.name-web" . }}
-              servicePort: {{ .Values.web.service.port }}
-    - host: {{ .Values.webHostAlt }}
-      http:
-        paths:
-          - path: /never
-            pathType: Prefix
-            backend:
-              serviceName: {{ include "jitsi-meet.name-prosody" . }}
-              servicePort: 5280
+              serviceName: {{ include "jitsi-meet.name-jvb" . }}-0
+              servicePort: 9090
+
           - path: /
             pathType: Prefix
             backend:

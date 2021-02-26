@@ -30,7 +30,9 @@ metadata:
   namespace: jitsi
 data:
   enable-access-log-for-default-backend: enabled
-  error-log-level: info
+  error-log-level: debug
+  proxy_read_timeout: 3600
+
 ---
 # Source: ingress-nginx/templates/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
