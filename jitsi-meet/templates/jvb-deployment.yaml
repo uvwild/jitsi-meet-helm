@@ -60,7 +60,7 @@ spec:
 
             # these values are used for the HARVESTER CONFIG
             - name: PUBLIC_IP
-              value: "{{ $root.Values.publicIp }}"
+              value: {{ $root.Values.publicIp | quote }}
             - name: DOCKER_HOST_ADDRESS
               valueFrom:
                 fieldRef:
