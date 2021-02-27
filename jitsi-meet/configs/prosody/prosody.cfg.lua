@@ -34,7 +34,7 @@ turncredentials_secret = {{ .Env.TURN_AUTH_PASSWORD | default "uebersafe" | quot
 
 turncredentials = {
   { type = "stun", host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}"},
-  { type = "turn", host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}", transport = "udp" }
+  { type = "turn", host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}" }
   --{ type = "turns", host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURNS_PORT }}", transport = "tcp" }
 };
 
@@ -76,7 +76,7 @@ modules_enabled = {
 
         "turncredentials";
 	-- Other specific functionality
---		"external_services";
+		"external_services";
 		"posix"; -- POSIX functionality, sends server to background, enables syslog, etc.
 		--"groups"; -- Shared roster support
 		--"announce"; -- Send announcement to all online users

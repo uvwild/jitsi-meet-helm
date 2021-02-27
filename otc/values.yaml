@@ -118,10 +118,6 @@ prosody:
       value: "false"
     - name: ENABLE_STATISTICS
       value: "true"
-    - name: TURN_USER
-      value: tina
-    - name: TURN_PASSWORD
-      value: eike
     - name: TURN_HOST
       value: jitsid.otcdemo.gardener.t-systems.net
     - name: TURN_AUTH_PASSWORD
