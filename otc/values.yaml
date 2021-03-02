@@ -112,7 +112,7 @@ prosody:
   environment:
     - name: LOG_LEVEL
       value: info
-    - name: ENABLE_GUESTS 
+    - name: ENABLE_GUESTS
       value: "1"
     - name: ENABLE_IPV6
       value: "false"
@@ -120,13 +120,17 @@ prosody:
       value: "true"
     - name: TURN_HOST
       value: jitsid.otcdemo.gardener.t-systems.net
-    - name: TURN_AUTH_PASSWORD
-      value: mySecretTurnPasswordConfiguredInTurnServer
+    - name: TURN_USER
+      value: mycoturn
+    - name: TURN_PASS
+      value: m0recomplicatedPassword
+#    - name: TURN_AUTH_PASSWORD
+#      value: mySecretTurnPasswordConfiguredInTurnServer
 #      value: meet-jit-si-turnrelay.jitsi.net
 #      value: stun.t-online.de
 #  turnHost: turn.jitsi.otcdemo.gardener.t-systems.net
-    - name: TURN_PORT
-      value: 3478
+    # - name: TURN_PORT
+    #   value: 3478
     - name: TURNS_PORT
       value: 5349
     # - name: TURN_TCP_PORT

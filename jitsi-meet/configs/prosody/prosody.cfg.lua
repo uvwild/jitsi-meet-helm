@@ -30,11 +30,11 @@ plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom", "/usr/share/jit
 use_libevent = true;
 
 
-turncredentials_secret = {{ .Env.TURN_AUTH_PASSWORD | default "uebersafe" | quote }}
+#turncredentials_secret = {{ .Env.TURN_AUTH_PASSWORD | default "uebersafe" | quote }}
 
 turncredentials = {
-  { type = "stun", host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}"},
-  { type = "turn", host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}" }
+  { type = "stun", host = "{{ .Env.TURN_HOST }}", credential = "{{ .Env.TURN_USER }}", password = "{{ .Env.TURN_PASS }}" },
+  { type = "turn", host = "{{ .Env.TURN_HOST }}", credential = "{{ .Env.TURN_USER }}", password = "{{ .Env.TURN_PASS }}" }
   --{ type = "turns", host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURNS_PORT }}", transport = "tcp" }
 };
 
@@ -135,7 +135,6 @@ s2s_secure_auth = false
 -- authenticate using certificates. They will be authenticated using DNS.
 s2s_insecure_domains = {
 	"jitsid.otcdemo.gardener.t-systems.net",
-	"www.jitsi.otcdemo.gardener.t-systems.net",
 	"ng.jitsi.otcdemo.gardener.t-systems.net"
 }
 -- Even if you leave s2s_secure_auth disabled, you can still require valid
