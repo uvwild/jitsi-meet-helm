@@ -30,7 +30,7 @@ plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom", "/usr/share/jit
 use_libevent = true;
 
 
-# shared auth secret currently disabled in coturn server
+-- shared auth secret currently disabled in coturn server
 turncredentials_secret = {{ .Env.TURN_AUTH_PASSWORD | default "uebersafe" | quote }}
 
 turncredentials = {
