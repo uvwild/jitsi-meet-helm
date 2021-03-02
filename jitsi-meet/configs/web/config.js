@@ -232,7 +232,8 @@ var config = {
     // minParticipants: 2,
 
     // Use XEP-0215 to fetch STUN and TURN servers.
-    useStunTurn: true,
+    // no forca
+    useStunTurn: false,
 
     // Enable IPv6 support.
     //useIPv6: false,
@@ -334,7 +335,8 @@ var config = {
         // connection.
         enabled: true,
 
-        useStunTurn: true,
+        // no forca
+        useStunTurn: false,
 
 
         // The STUN servers that will be used in the peer to peer connections
@@ -344,18 +346,17 @@ var config = {
             // { urls: 'stun:meet-jit-si-turnrelay.jitsi.net:443' }
             // { urls: 'stun:stun.t-online.de:3478' }
             {
-
                 urls: "stun:{{ .Env.TURN_HOST }}:{{ .Env.TURN_PORT }}"
             },
             {
                 urls: "turn:{{ .Env.TURN_HOST }}:{{ .Env.TURN_PORT }}",
                 credential: "{{ .Env.TURN_USER }}",
-                password = "{{ .Env.TURN_PASS }}"
+                password: "{{ .Env.TURN_PASS }}"
             },
             {
                 urls: "turns:{{ .Env.TURN_HOST }}:{{ .Env.TURNS_PORT }}",
                 credential: "{{ .Env.TURN_USER }}",
-                password = "{{ .Env.TURN_PASS }}"
+                password: "{{ .Env.TURN_PASS }}"
             }
         ],
 
