@@ -6,7 +6,7 @@ var config = {
 
     hosts: {
         // XMPP domain.
-        domain: 'jitsi.otc',
+        domain: '{{ .Values.common.domain }}',
 
         // When using authentication, domain for guest users.
         // anonymousdomain: 'guest.example.com',
@@ -24,13 +24,13 @@ var config = {
         // focus: 'focus.jitsi-meet.example.com',
 
         // XMPP MUC domain. FIXME: use XEP-0030 to discover it.
-        muc: 'muc.jitsi.otc',
-//        focus: 'focus.jitsi.otc',        
+        muc: 'muc.{{ .Values.common.domain }}',
+//        focus: 'focus.{{ .Values.common.domain }}',
     },
 
     // BOSH URL. FIXME: use XEP-0156 to discover it.
     // use abstract xmpp domain as hjst
-    bosh: '//jitsi.otc/http-bind',
+    bosh: '//{{ .Values.common.domain }}/http-bind',
 
     // Websocket URL
     // websocket: 'wss://jitsi-meet.example.com/xmpp-websocket',
@@ -342,10 +342,22 @@ var config = {
         stunServers: [
 
             // { urls: 'stun:jitsi-meet.example.com:4446' },
-            // { urls: 'stun:stun.t-online.de:3478' }
             // { urls: 'stun:meet-jit-si-turnrelay.jitsi.net:443' }
-            { urls: 'turn:jitsid.otcdemo.gardener.t-systems.net:3478' },
-            { urls: 'stun:jitsid.otcdemo.gardener.t-systems.net:3478' }
+            // { urls: 'stun:stun.t-online.de:3478' }
+            // HOST =0 PORT SPORT USER PASS=4
+            {
+                urls: "stun:{{ (index .Values.prosody.env 0).value }}:{{ (index .Values.prosody.env 1).value }}"
+            },
+            {
+                urls: "turn:{{ (index .Values.prosody.env 0).value }}:{{ (index .Values.prosody.env 1).value }}",
+                credential: "{{ (index .Values.prosody.env 3).value }}",
+                password: "{{ (index .Values.prosody.env 4).value  }}"
+            },
+            {
+                urls: "turns:{{ (index .Values.prosody.env 0).value }}:{{ (index .Values.prosody.env 2).value }}",
+                credential: "{{ (index .Values.prosody.env 3).value }}",
+                password: "{{ (index .Values.prosody.env 4).value  }}"
+            }
         ],
 
         // Sets the ICE transport policy for the p2p connection. At the time

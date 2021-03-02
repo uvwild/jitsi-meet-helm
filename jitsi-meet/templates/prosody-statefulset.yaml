@@ -44,6 +44,19 @@ spec:
                     "env"
 #                    "prosodyctl --config /config/prosody.cfg.lua register me $XMPP_DOMAIN $JVB_AUTH_PASSWORD || true"
           env:
+            - name: XMPP_DOMAIN
+              value: {{ .Values.common.domain }}
+            - name: XMPP_AUTH_DOMAIN
+              value: auth.{{ .Values.common.domain }}
+            - name: XMPP_INTERNAL_MUC_DOMAIN
+              value: internal-muc.{{ .Values.common.domain }}
+            - name: XMPP_MUC_DOMAIN
+              value: muc.{{ .Values.common.domain }}
+            - name: XMPP_GUEST_DOMAIN
+              value: guest.{{ .Values.common.domain }}
+            - name: JVB_ADMINS
+              value: "\"jvb@auth.{{ .Values.common.domain }}\",\"focus@auth.{{ .Values.common.domain }}\""
+
             - name: JVB_AUTH_USER
               value: {{ .Values.jvb.userAuth.name }}
             - name: JVB_AUTH_PASSWORD

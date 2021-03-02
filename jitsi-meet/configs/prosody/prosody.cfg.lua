@@ -30,12 +30,20 @@ plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom", "/usr/share/jit
 use_libevent = true;
 
 
+# currently disabled in coturn server
 #turncredentials_secret = {{ .Env.TURN_AUTH_PASSWORD | default "uebersafe" | quote }}
 
 turncredentials = {
-  { type = "stun", host = "{{ .Env.TURN_HOST }}", credential = "{{ .Env.TURN_USER }}", password = "{{ .Env.TURN_PASS }}" },
-  { type = "turn", host = "{{ .Env.TURN_HOST }}", credential = "{{ .Env.TURN_USER }}", password = "{{ .Env.TURN_PASS }}" }
-  --{ type = "turns", host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURNS_PORT }}", transport = "tcp" }
+  { type = "stun",
+  	host = "{{ .{{ .Value.prosody..TURN_HOST }}", port = "{{ .Env.TURN_PORT }}",
+  	credential = "{{ .Env.TURN_USER }}", password = "{{ .Env.TURN_PASS }}" },
+  { type = "turn",
+  	host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}",
+  	credential = "{{ .Env.TURN_USER }}", password = "{{ .Env.TURN_PASS }}" },
+  { type = "turns",
+  	host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURNS_PORT }}",
+  	credential = "{{ .Env.TURN_USER }}", password = "{{ .Env.TURN_PASS }}" }
+
 };
 
 -- This is the list of modules Prosody will load on startup.
@@ -49,11 +57,15 @@ modules_enabled = {
 		"tls"; -- Add support for secure TLS on c2s/s2s connections
 		"dialback"; -- s2s dialback support
 		"disco"; -- Service discovery
+		"offline"; -- Store offline messages
+		"c2s"; -- Handle client connections
+		"s2s"; -- Handle server-to-server connections
+
 
 	-- Not essential, but recommended
 		"private"; -- Private XML storage (for room bookmarks, etc.)
 		"vcard"; -- Allow users to set vCards
-	
+
 	-- These are commented by default as they have a performance impact
 		--"privacy"; -- Support privacy lists
 		--"compression"; -- Stream compression (Debian: requires lua-zlib module to work)
@@ -69,7 +81,7 @@ modules_enabled = {
 	-- Admin interfaces
 		"admin_adhoc"; -- Allows administration via an XMPP client that supports ad-hoc commands
 		--"admin_telnet"; -- Opens telnet console interface on localhost port 5582
-	
+
 	-- HTTP modules
 		"bosh"; -- Enable BOSH clients, aka "Jabber over HTTP"
 		--"http_files"; -- Serve static files from a directory over HTTP
@@ -81,7 +93,7 @@ modules_enabled = {
 		--"groups"; -- Shared roster support
 		--"announce"; -- Send announcement to all online users
 		"welcome"; -- Welcome users who register accounts
-		"websocket"; 
+		"websocket";
 		"watchregistrations"; -- Alert admins of registrations
 		"motd"; -- Send a message to users when they log in
 		--"legacyauth"; -- Legacy authentication. Only used by some old clients and bots.

@@ -24,6 +24,19 @@ spec:
         image: "{{ .Values.jicofo.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.jicofo.image.pullPolicy }}
         env:
+          - name: XMPP_DOMAIN
+            value: {{ .Values.common.domain }}
+          - name: XMPP_AUTH_DOMAIN
+            value: auth.{{ .Values.common.domain }}
+          - name: XMPP_INTERNAL_MUC_DOMAIN
+            value: internal-muc.{{ .Values.common.domain }}
+          - name: XMPP_MUC_DOMAIN
+            value: muc.{{ .Values.common.domain }}
+          - name: XMPP_GUEST_DOMAIN
+            value: guest.{{ .Values.common.domain }}
+          - name: JVB_ADMINS
+            value: "\"jvb@auth.{{ .Values.common.domain }}\",\"focus@auth.{{ .Values.common.domain }}\""
+
           - name: JICOFO_AUTH_USER
             value: {{ .Values.jicofo.userAuth.name }}
           - name: JICOFO_AUTH_PASSWORD

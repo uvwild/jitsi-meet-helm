@@ -18,7 +18,8 @@ ingress:
     sidecar.istio.io/inject: "true"
 
 common:
-  environment:
+  domain: jitsi.otc
+  env:
     - name: ENABLE_XMPP_WEBSOCKET
       value: "0"
     - name: ENABLE_LETSENCRYPT
@@ -27,22 +28,8 @@ common:
       value: "0"
     - name: LETSENCRYPT_DOMAIN
       value: xxxx
-    - name: XMPP_DOMAIN
-      value: jitsi.otc
-    - name: XMPP_AUTH_DOMAIN
-      value: auth.jitsi.otc
-    - name: XMPP_INTERNAL_MUC_DOMAIN
-      value: internal-muc.jitsi.otc
-    - name: XMPP_MUC_DOMAIN
-      value: muc.jitsi.otc
-    - name: XMPP_GUEST_DOMAIN
-      value: guest.jitsi.otc
-    - name: XMPP_TURN_DOMAIN
-      value: turn.jitsi.otc
     - name: JVB_BREWERY_MUC
       value: jvbbrewery
-    - name: JVB_ADMINS
-      value: "\"jvb@auth.jitsi.otc\",\"focus@auth.jitsi.otc\""
     - name: TZ
       value: Europe/Amsterdam
 
@@ -52,7 +39,7 @@ jicofo:
     name: "focus"
     secret: dG90bw==
   componentSecret: dG90bw==
-  environment:
+  env:
     - name: LOG_LEVEL
       value: info
     - name: JICOFO_ENABLE_BRIDGE_HEALTH_CHECKS
@@ -84,7 +71,7 @@ jvb:
   # default ports for video streams
   udpport: 10000
   tcpport: 4443
-  environment:
+  env:
     - name: LOG_LEVEL
       value: info
     - name: JVB_OPTS
@@ -109,7 +96,17 @@ prosody:
     type: internal
   service:
     type: ClusterIP
-  environment:
+  env:
+    - name: TURN_HOST
+      value: jitsid.otcdemo.gardener.t-systems.net
+    - name: TURN_PORT
+      value: 38743
+    - name: TURNS_PORT
+      value: 39435
+    - name: TURN_USER
+      value: mycoturn
+    - name: TURN_PASS
+      value: m0recomplicatedPassword
     - name: LOG_LEVEL
       value: info
     - name: ENABLE_GUESTS
@@ -118,12 +115,6 @@ prosody:
       value: "false"
     - name: ENABLE_STATISTICS
       value: "true"
-    - name: TURN_HOST
-      value: jitsid.otcdemo.gardener.t-systems.net
-    - name: TURN_USER
-      value: mycoturn
-    - name: TURN_PASS
-      value: m0recomplicatedPassword
 #    - name: TURN_AUTH_PASSWORD
 #      value: mySecretTurnPasswordConfiguredInTurnServer
 #      value: meet-jit-si-turnrelay.jitsi.net
@@ -131,8 +122,6 @@ prosody:
 #  turnHost: turn.jitsi.otcdemo.gardener.t-systems.net
     # - name: TURN_PORT
     #   value: 3478
-    - name: TURNS_PORT
-      value: 5349
     # - name: TURN_TCP_PORT
     #   value: 3478
     # - name: TURN_UDP_PORT
@@ -169,7 +158,7 @@ web:
   replicaCount: 1
   # the letsencrypt script is not working inside the nodes of our helm chart
   # we are using istio in gardener instead
-  environment:
+  env:
     - name: ENABLE_GUESTS
       value: "1"
     - name: ENABLE_IPV6

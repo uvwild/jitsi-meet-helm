@@ -49,14 +49,30 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           env:
+            - name: XMPP_SERVER
+              value: {{ include "jitsi-meet.name-prosody" $root }}
+            - name: XMPP_DOMAIN
+              value: {{ $root.Values.common.domain }}
+            - name: XMPP_AUTH_DOMAIN
+              value: auth.{{ $root.Values.common.domain }}
+            - name: XMPP_INTERNAL_MUC_DOMAIN
+              value: internal-muc.{{ $root.Values.common.domain }}
+            - name: XMPP_MUC_DOMAIN
+              value: muc.{{ $root.Values.common.domain }}
+            - name: XMPP_GUEST_DOMAIN
+              value: guest.{{ $root.Values.common.domain }}
+            - name: JVB_ADMINS
+              value: "\"jvb@auth.{{ $root.Values.common.domain }}\",\"focus@auth.{{ $root.Values.common.domain }}\""
+
             - name: JVB_PORT
               value: {{ $udpport | quote }}
             - name: JVB_TCP_PORT
               value: {{ $tcpport | quote }}
             - name: JVB_TCP_MAPPED_PORT
               value: {{ $tcpport | quote }}
+              # external DNS of service
             - name: PUBLIC_URL
-              value: "https://{{ $root.Values.webHost }}:443"
+              value: "https://{{ $root.Values.webHost }}"
 
             # these values are used for the HARVESTER CONFIG
             - name: PUBLIC_IP
@@ -65,8 +81,6 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.hostIP      # the ip of the node runninng jvb
-            - name: XMPP_SERVER
-              value: {{ include "jitsi-meet.name-prosody" $root }}
             - name: PROSODY_INSTANCE
               value: {{ printf "%d" $nbr | quote }}
 
