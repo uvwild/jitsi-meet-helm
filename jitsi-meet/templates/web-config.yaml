@@ -7,7 +7,7 @@ metadata:
 {{ include "jitsi-meet.labels" . | indent 4 }}
 data:
   config.js: |-
-    {{- tpl (.Files.Get "configs/web/config.js") . | nindent 4 }}
+    {{- .Files.Get "configs/web/config.js" | nindent 4 }}
   interface_config.js: |-
     {{- .Files.Get "configs/web/interface_config.js" | nindent 4 }}
   plugin.head.html: |-

@@ -345,17 +345,18 @@ var config = {
             // { urls: 'stun:meet-jit-si-turnrelay.jitsi.net:443' }
             // { urls: 'stun:stun.t-online.de:3478' }
             {
-                urls: "stun:{{ .Values.prosody.env.TURN_HOST }}:{{ .Values.prosody.env.TURN_PORT }}"
+
+                urls: "stun:{{ .Env.TURN_HOST }}:{{ .Env.TURN_PORT }}"
             },
             {
-                urls: "turn:{{ .Values.prosody.env.TURN_HOST }}:{{ .Values.prosody.env.TURN_PORT }}",
-                credential: "{{ .Values.prosody.env.TURN_USER }}",
-                password = "{{ .Values.prosody.env.TURN_PASS }}"
+                urls: "turn:{{ .Env.TURN_HOST }}:{{ .Env.TURN_PORT }}",
+                credential: "{{ .Env.TURN_USER }}",
+                password = "{{ .Env.TURN_PASS }}"
             },
             {
-                urls: "turns:{{ .Values.prosody.env.TURN_HOST }}:{{ .Values.prosody.env.TURNS_PORT }}",
-                credential: "{{ .Values.prosody.env.TURN_USER }}",
-                password = "{{ .Values.prosody.env.TURN_PASS }}"
+                urls: "turns:{{ .Env.TURN_HOST }}:{{ .Env.TURNS_PORT }}",
+                credential: "{{ .Env.TURN_USER }}",
+                password = "{{ .Env.TURN_PASS }}"
             }
         ],
 
