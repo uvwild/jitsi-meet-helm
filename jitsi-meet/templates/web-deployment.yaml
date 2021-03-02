@@ -35,7 +35,7 @@ spec:
           lifecycle:
             postStart:
               exec:  # try to fix the error in the image
-                command: ["/bin/sh", "-c", "sed -i 's/cp \/defaults\/config.js/tpl \/default\/config.js >/' /etc/cont-init.d/10-config"]
+                command: ["/bin/sh", "-c", "sed -i 's/cp \\/defaults\\/config.js/tpl \\/default\\/config.js >/' /etc/cont-init.d/10-config"]
           env:
             - name: XMPP_DOMAIN
               value: {{ .Values.common.domain }}
