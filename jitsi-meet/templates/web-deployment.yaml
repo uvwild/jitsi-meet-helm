@@ -33,12 +33,24 @@ spec:
           image: "{{ .Values.web.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.web.image.pullPolicy }}
           env:
+            - name: XMPP_DOMAIN
+              value: {{ .Values.common.domain }}
+            - name: XMPP_AUTH_DOMAIN
+              value: auth.{{ .Values.common.domain }}
+            - name: XMPP_INTERNAL_MUC_DOMAIN
+              value: internal-muc.{{ .Values.common.domain }}
+            - name: XMPP_MUC_DOMAIN
+              value: muc.{{ .Values.common.domain }}
+            - name: XMPP_GUEST_DOMAIN
+              value: guest.{{ .Values.common.domain }}
+
             - name: PUBLIC_URL
               value: "https://{{ .Values.webHost }}:443"
             - name: PUBLIC_URL_HOST
               value: "{{ .Values.webHost }}"
             - name: XMPP_SERVER
               value: {{ include "jitsi-meet.name-prosody" . }}
+
             - name: JICOFO_AUTH_USER
               value: {{ .Values.jicofo.userAuth.name }}
             - name: JICOFO_AUTH_PASSWORD
@@ -53,6 +65,7 @@ spec:
                 secretKeyRef:
                   name: {{ template "jitsi-meet.name-jvb-secret" . }}
                   key: JVB_AUTH_PASSWORD
+            # to proxy bosh and websockets  (now moved to ingress)
             - name: XMPP_BOSH_URL_BASE
               value: "http://{{ include "jitsi-meet.name-prosody" . }}:5280"
             {{- range .Values.web.environment }}
