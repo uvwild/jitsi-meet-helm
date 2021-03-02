@@ -35,7 +35,7 @@ use_libevent = true;
 
 turncredentials = {
   { type = "stun",
-  	host = "{{ .{{ .Value.prosody..TURN_HOST }}", port = "{{ .Env.TURN_PORT }}",
+  	host = "{{ .{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}",
   	credential = "{{ .Env.TURN_USER }}", password = "{{ .Env.TURN_PASS }}" },
   { type = "turn",
   	host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}",

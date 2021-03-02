@@ -167,6 +167,9 @@ web:
       value: "0"
     - name: LOG_LEVEL
       value: info
+    # skip key generation on deployment
+    - name: DISABLE_HTTPS
+      value: "1"
   service:
     type: ClusterIP
     port: 80
