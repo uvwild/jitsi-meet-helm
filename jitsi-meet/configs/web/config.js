@@ -96,7 +96,7 @@ var config = {
 
     // Start calls with audio muted. Unlike the option above, this one is only
     // applied locally. FIXME: having these 2 options is confusing.
-    // startWithAudioMuted: false,
+    startWithAudioMuted: true,
 
     // Enabling it (with #params) will disable local audio output of remote
     // participants and to enable it back a reload is needed.
@@ -289,7 +289,7 @@ var config = {
 
     // Enables calendar integration, depends on googleApiApplicationClientID
     // and microsoftApiApplicationClientID
-    // enableCalendarIntegration: false,
+    enableCalendarIntegration: true,
 
     // Stats
     //
@@ -298,7 +298,7 @@ var config = {
     // This can be useful for debugging purposes (post-processing/analysis of
     // the webrtc stats) as it is done in the jitsi-meet-torture bandwidth
     // estimation tests.
-    // gatherStats: false,
+    gatherStats: true,
 
     // The interval at which PeerConnection.getStats() is called. Defaults to 10000
     // pcStatsInterval: 10000,
@@ -344,19 +344,18 @@ var config = {
             // { urls: 'stun:jitsi-meet.example.com:4446' },
             // { urls: 'stun:meet-jit-si-turnrelay.jitsi.net:443' }
             // { urls: 'stun:stun.t-online.de:3478' }
-            // HOST =0 PORT SPORT USER PASS=4
             {
-                urls: "stun:{{ (index .Values.prosody.env 0).value }}:{{ (index .Values.prosody.env 1).value }}"
+                urls: "stun:{{ .Values.prosody.env.TURN_HOST }}:{{ .Values.prosody.env.TURN_PORT }}"
             },
             {
-                urls: "turn:{{ (index .Values.prosody.env 0).value }}:{{ (index .Values.prosody.env 1).value }}",
-                credential: "{{ (index .Values.prosody.env 3).value }}",
-                password: "{{ (index .Values.prosody.env 4).value  }}"
+                urls: "turn:{{ .Values.prosody.env.TURN_HOST }}:{{ .Values.prosody.env.TURN_PORT }}",
+                credential: "{{ .Values.prosody.env.TURN_USER }}",
+                password = "{{ .Values.prosody.env.TURN_PASS }}"
             },
             {
-                urls: "turns:{{ (index .Values.prosody.env 0).value }}:{{ (index .Values.prosody.env 2).value }}",
-                credential: "{{ (index .Values.prosody.env 3).value }}",
-                password: "{{ (index .Values.prosody.env 4).value  }}"
+                urls: "turns:{{ .Values.prosody.env.TURN_HOST }}:{{ .Values.prosody.env.TURNS_PORT }}",
+                credential: "{{ .Values.prosody.env.TURN_USER }}",
+                password = "{{ .Values.prosody.env.TURN_PASS }}"
             }
         ],
 
