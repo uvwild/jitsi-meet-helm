@@ -30,12 +30,12 @@ plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom", "/usr/share/jit
 use_libevent = true;
 
 
-# currently disabled in coturn server
-#turncredentials_secret = {{ .Env.TURN_AUTH_PASSWORD | default "uebersafe" | quote }}
+# shared auth secret currently disabled in coturn server
+turncredentials_secret = {{ .Env.TURN_AUTH_PASSWORD | default "uebersafe" | quote }}
 
 turncredentials = {
   { type = "stun",
-  	host = "{{ .{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}",
+  	host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}",
   	credential = "{{ .Env.TURN_USER }}", password = "{{ .Env.TURN_PASS }}" },
   { type = "turn",
   	host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}",
@@ -43,7 +43,6 @@ turncredentials = {
   { type = "turns",
   	host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURNS_PORT }}",
   	credential = "{{ .Env.TURN_USER }}", password = "{{ .Env.TURN_PASS }}" }
-
 };
 
 -- This is the list of modules Prosody will load on startup.
