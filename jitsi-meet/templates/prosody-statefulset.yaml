@@ -79,11 +79,11 @@ spec:
             - name: AUTH_TYPE
               value: {{ .Values.prosody.userAuth.type | quote }}
 
-            {{- range .Values.prosody.environment }}
+            {{- range .Values.prosody.env }}
             - name: {{ .name | quote }}
               value: {{ .value | quote }}
             {{- end }}
-            {{- range .Values.common.environment }}
+            {{- range .Values.common.env }}
             - name: {{ .name | quote }}
               value: {{ .value | quote }}
             {{- end }}

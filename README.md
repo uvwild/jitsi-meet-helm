@@ -44,7 +44,7 @@ The following table lists the configurable parameters of the Jitsi Meet chart an
 | `image.pullSecrets`                                     | Image pull secrets                     | `nil`           |
 | `jicofo.image.repository`                               | Image repository                       | `jitsi/jicofo`  |
 | `jicofo.image.tag`                                      | Image tag                              | `latest`        |
-| `jicofo.environment`                                    | Additional environment variables       | `[]`            |
+| `jicofo.env`                                    | Additional env variables       | `[]`            |
 | `jicofo.componentSecret`                                | Base64 encoded component secret        | `nil`           |
 | `jicofo.userAuth.enabled`                               | Enabled authentication                 | `false`         |
 | `jicofo.userAuth.name`                                  | Username for authentication            | `focus`         |
@@ -53,7 +53,7 @@ The following table lists the configurable parameters of the Jitsi Meet chart an
 | `jvb.image.repository`                                  | Image repository                       | `jitsi/jvb`     |
 | `jvb.image.tag`                                         | Image tag                              | `latest`        |
 | `jvb.replicaCount`                                      | Replica count                          | `1`             |
-| `jvb.environment`                                       | Additional environment variables       | `[]`            |
+| `jvb.env`                                       | Additional env variables       | `[]`            |
 | `jvb.securityContext.fsGroup`                           | Security context deployment            | `412`           |
 | `jvb.service.annotations`                               | Service annotations                    | `[]`            |
 | `jvb.service.type`                                      | Service type                           | `NodePort`      |
@@ -68,7 +68,7 @@ The following table lists the configurable parameters of the Jitsi Meet chart an
 | `jvb.userAuth.secret`                                   | Secret for authentication              | `nil`           |
 | `prosody.image.repository`                              | Image repository                       | `jitsi/prosody` |
 | `prosody.image.tag`                                     | Image tag                              | `latest`        |
-| `prosody.environment`                                   | Additional environment variables       | `[]`            |
+| `prosody.env`                                   | Additional env variables       | `[]`            |
 | `prosody.replicaCount`                                  | Replica count                          | `1`             |
 | `prosody.service.annotations`                           | Service annotations                    | `[]`            |
 | `prosody.service.type`                                  | Service type                           | `ClusterIP`     |
@@ -80,7 +80,7 @@ The following table lists the configurable parameters of the Jitsi Meet chart an
 | `web.tolerations`                                       | Node tolerations                       | `{}`            |
 | `web.image.repository`                                  | Image repository                       | `jitsi/prosody` |
 | `web.image.tag`                                         | Image tag                              | `latest`        |
-| `web.environment`                                       | Additional environment variables       | `[]`            |
+| `web.env`                                       | Additional env variables       | `[]`            |
 | `web.replicaCount`                                      | Replica count                          | `1`             |
 | `web.service.annotations`                               | Service annotations                    | `[]`            |
 | `web.service.type`                                      | Service type                           | `ClusterIP`     |

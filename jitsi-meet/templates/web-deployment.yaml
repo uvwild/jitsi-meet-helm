@@ -72,15 +72,15 @@ spec:
             # to proxy bosh and websockets  (now moved to ingress)
             - name: XMPP_BOSH_URL_BASE
               value: "http://{{ include "jitsi-meet.name-prosody" . }}:5280"
-            {{- range .Values.web.environment }}
+            {{- range .Values.web.env }}
             - name: {{ .name | quote }}
               value: {{ .value | quote }}
             {{- end }}
-            {{- range .Values.prosody.environment }}
+            {{- range .Values.prosody.env }}
             - name: {{ .name | quote }}
               value: {{ .value | quote }}
             {{- end }}
-            {{- range .Values.common.environment }}
+            {{- range .Values.common.env }}
             - name: {{ .name | quote }}
               value: {{ .value | quote }}
             {{- end }}

@@ -42,22 +42,22 @@ spec:
             - name: TURN_TCP_PORT
               value: "{{ .Values.turn.tcpPort }}"
             - name: TURN_UDP_PORT
-              value: "{{ .Values.turn.udpPort }}"            
-            {{- range .Values.turn.environment }}
+              value: "{{ .Values.turn.udpPort }}"
+            {{- range .Values.turn.env }}
             - name: {{ .name | quote }}
               value: {{ .value | quote }}
             {{- end }}
-            {{- range .Values.common.environment }}
+            {{- range .Values.common.env }}
             - name: {{ .name | quote }}
               value: {{ .value | quote }}
             {{- end }}
           ports:
-            {{- if .Values.turn.udpPort }}      
+            {{- if .Values.turn.udpPort }}
             - name: turn
               containerPort: {{ .Values.turn.udpPort }}
               protocol: UDP
-            {{- end }}      
-            {{- if .Values.turn.tcpPort }}      
+            {{- end }}
+            {{- if .Values.turn.tcpPort }}
             - name: tcp
               containerPort: {{ .Values.turn.tcpPort }}
               protocol: TCP
@@ -69,14 +69,14 @@ spec:
             - name: stream-{{ $port }}
               containerPort:  {{ $nbr }}
               protocol: UDP
-              {{- end }}            
-            {{- end }}            
+              {{- end }}
+            {{- end }}
           volumeMounts:
             - name: config
               mountPath: "/etc/turnserver.conf"
-              subPath: "turnserver.conf"              
+              subPath: "turnserver.conf"
       volumes:
         - name: config
           configMap:
             name: {{ template "jitsi-meet.name-turn-config" . }}
-{{- end }}  
+{{- end }}

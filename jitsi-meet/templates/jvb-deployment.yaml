@@ -106,10 +106,10 @@ spec:
                   key: JVB_AUTH_PASSWORD
             - name: JVB_ENABLE_APIS
               value: "rest,colibri,xmpp"
-            {{- with $root.Values.jvb.environment }}
+            {{- with $root.Values.jvb.env }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
-            {{- with $root.Values.common.environment }}
+            {{- with $root.Values.common.env }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
           ports:

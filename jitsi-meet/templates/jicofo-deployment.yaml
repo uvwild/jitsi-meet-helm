@@ -53,11 +53,11 @@ spec:
             value: {{ include "jitsi-meet.name-prosody" . }}
           - name: PUBLIC_URL
             value: "https://{{ .Values.webHost }}"
-          {{- range .Values.jicofo.environment }}
+          {{- range .Values.jicofo.env }}
           - name: {{ .name | quote }}
             value: {{ .value | quote }}
           {{- end }}
-          {{- range .Values.common.environment }}
+          {{- range .Values.common.env }}
           - name: {{ .name | quote }}
             value: {{ .value | quote }}
           {{- end }}
