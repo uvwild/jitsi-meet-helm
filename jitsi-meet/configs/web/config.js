@@ -6,13 +6,13 @@ var config = {
 
     hosts: {
         // XMPP domain.
-        domain: '{{ .Values.common.domain }}',
+        domain: '{{ .Env.XMPP_DOMAIN }}',
 
         // When using authentication, domain for guest users.
-        // anonymousdomain: 'guest.example.com',
+        // anonymousdomain: 'guest.{{ .Env.XMPP_DOMAIN }},
 
         // Domain for authenticated users. Defaults to <domain>.
-        // authdomain: 'jitsi-meet.example.com',
+        // authdomain: 'auth.{{ .Env.XMPP_DOMAIN}}',
 
         // Jirecon recording component domain.
         // jirecon: 'jirecon.jitsi-meet.example.com',
@@ -21,16 +21,15 @@ var config = {
         // call_control: 'callcontrol.jitsi-meet.example.com',
 
         // Focus component domain. Defaults to focus.<domain>.
-        // focus: 'focus.jitsi-meet.example.com',
+        // focus: 'focus.{{ .Env.XMPP_DOMAIN }}',
 
         // XMPP MUC domain. FIXME: use XEP-0030 to discover it.
-        muc: 'muc.{{ .Values.common.domain }}',
-//        focus: 'focus.{{ .Values.common.domain }}',
+        muc: 'muc.{{ .Env.XMPP_DOMAIN }}',
     },
 
     // BOSH URL. FIXME: use XEP-0156 to discover it.
     // use abstract xmpp domain as hjst
-    bosh: '//{{ .Values.common.domain }}/http-bind',
+    bosh: '//{{ .Env.XMPP_DOMAIN}}/http-bind',
 
     // Websocket URL
     // websocket: 'wss://jitsi-meet.example.com/xmpp-websocket',

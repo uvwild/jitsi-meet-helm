@@ -76,6 +76,10 @@ spec:
             - name: {{ .name | quote }}
               value: {{ .value | quote }}
             {{- end }}
+            {{- range .Values.prosody.environment }}
+            - name: {{ .name | quote }}
+              value: {{ .value | quote }}
+            {{- end }}
             {{- range .Values.common.environment }}
             - name: {{ .name | quote }}
               value: {{ .value | quote }}
