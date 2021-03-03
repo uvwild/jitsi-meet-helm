@@ -50,7 +50,7 @@ var config = {
         p2pTestMode: false
 
         // Enables the test specific features consumed by jitsi-meet-torture
-        // testMode: true
+        testMode: true
 
         // Disables the auto-play behavior of *all* newly created video element.
         // This is useful when the client runs on a host with limited resources.
@@ -236,7 +236,7 @@ var config = {
     useStunTurn: false,
 
     // Enable IPv6 support.
-    //useIPv6: false,
+        //useIPv6: false,
 
     // Enables / disables a data communication channel with the Videobridge.
     // Values can be 'datachannel', 'websocket', true (treat it as
