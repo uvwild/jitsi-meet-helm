@@ -1,11 +1,6 @@
-admins ={ {{ .Env.JVB_ADMINS }} }
-
-plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom", "/usr/share/jitsi-meet/prosody-plugins/" }
-
 muc_mapper_domain_base = "{{ .Env.XMPP_DOMAIN }}";
-
-
 http_default_host = "{{ .Env.XMPP_DOMAIN }}"
+
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool }}
 {{ $AUTH_TYPE := .Env.AUTH_TYPE | default "internal" }}
 {{ $JWT_ASAP_KEYSERVER := .Env.JWT_ASAP_KEYSERVER | default "" }}
@@ -45,6 +40,7 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
   {{ end }}
 {{ else }}
     authentication = "anonymous"
+    allow_unencrypted_plain_auth = true
 {{ end }}
     app_id = ""
     app_secret = ""
@@ -73,7 +69,7 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
     speakerstats_component = "speakerstats.{{ .Env.XMPP_DOMAIN }}"
     conference_duration_component = "conferenceduration.{{ .Env.XMPP_DOMAIN }}"
     c2s_require_encryption = false
-    lobby_muc = "lobby.jitmeet.example.com"
+    lobby_muc = "lobby.{{ .Env.XMPP_DOMAIN }}"
     main_muc = "conference.{{ .Env.XMPP_DOMAIN }}"
 
 {{ if and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) }}
@@ -122,8 +118,10 @@ Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
     muc_room_default_public_jids = true
 Component "focus.{{ .Env.XMPP_DOMAIN }}"
     component_secret = "{{ .Env.JICOFO_COMPONENT_SECRET }}"
+
 Component "speakerstats.{{ .Env.XMPP_DOMAIN }}" "speakerstats_component"
     muc_component = "{{ .Env.XMPP_MUC_DOMAIN }}"
+
 Component "conferenceduration.{{ .Env.XMPP_DOMAIN }}" "conference_duration_component"
     muc_component = "{{ .Env.XMPP_MUC_DOMAIN }}"
 

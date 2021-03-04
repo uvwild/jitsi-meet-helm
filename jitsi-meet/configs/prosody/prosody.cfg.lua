@@ -127,6 +127,7 @@ s2s_secure_auth = false
 -- certificates. You can list domains here that will not be required to
 -- authenticate using certificates. They will be authenticated using DNS.
 s2s_insecure_domains = {
+	"{{ .Env.XMPP_DOMAIN }}","auth.{{ .Env.XMPP_DOMAIN }}",
 	"jitsid.otcdemo.gardener.t-systems.net",
 	"ng.jitsi.otcdemo.gardener.t-systems.net"
 }

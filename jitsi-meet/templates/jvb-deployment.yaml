@@ -119,13 +119,7 @@ spec:
             - name: {{ $tcpportname }}
               containerPort: {{ atoi $tcpport }}
               protocol: TCP
-            - name: "test-5555"
-              containerPort: 5555
-              protocol: TCP
-            - name: "test-8080"
-              containerPort: 8080
-              protocol: TCP
-            - name: "test-9090"
+            - name: "tcp-9090"
               containerPort: 9090
               protocol: TCP
           volumeMounts:
