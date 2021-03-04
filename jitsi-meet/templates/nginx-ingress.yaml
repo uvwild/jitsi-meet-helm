@@ -26,6 +26,12 @@ spec:
               serviceName: {{ include "jitsi-meet.name-prosody" . }}
               servicePort: 5280
 
+          - path: /xmpp-websocket
+            pathType: Prefix
+            backend:
+              serviceName: {{ include "jitsi-meet.name-prosody" . }}
+              servicePort: 5280
+
           - path: /colibri-ws/
             pathType: Prefix
             backend:
