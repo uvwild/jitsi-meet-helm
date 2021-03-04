@@ -29,10 +29,10 @@ var config = {
 
     // BOSH URL. FIXME: use XEP-0156 to discover it.
     // use abstract xmpp domain as hjst
-    bosh: '//{{ .Env.XMPP_DOMAIN}}/http-bind',
+    bosh: '//{{ .Env.XMPP_DOMAIN }}/http-bind',
 
     // Websocket URL
-    // websocket: 'wss://jitsi-meet.example.com/xmpp-websocket',
+    websocket: 'wss://{{ .Env.PUBLIC_URL }}/xmpp-websocket',
 
     // The name of client node advertised in XEP-0115 'c' stanza
     clientNode: 'http://jitsi.org/jitsimeet',
@@ -54,7 +54,7 @@ var config = {
 
         // Disables the auto-play behavior of *all* newly created video element.
         // This is useful when the client runs on a host with limited resources.
-        // noAutoPlayVideo: false
+        noAutoPlayVideo: true,
     },
 
     // Disables ICE/UDP by filtering out local and remote UDP candidates in

@@ -1,8 +1,9 @@
-{{- if (eq .Values.ingress.type "nginx-ingress-unused") -}}
+{{- if (eq .Values.ingress.type "nginx-ingress-disabled") -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: udp-services
+  # name configured with ingress-nginx helm template
+  name: ingress-nginx-udp
   namespace: {{ .Values.namespace }}
 data:
   10000: "jitsi/jitsi-otc-jvb-0:10000"
