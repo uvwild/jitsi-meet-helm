@@ -75,7 +75,7 @@ jvb:
     - name: LOG_LEVEL
       value: info
     - name: JVB_OPTS
-      value: "--apis=xmpp,rest,colibri"
+      value: "--apis=xmpp,rest"
     - name: ENABLE_STATISTICS
       value: "true"
     - name: JVB_TCP_HARVESTER_DISABLED
