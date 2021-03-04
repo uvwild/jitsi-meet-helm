@@ -29,10 +29,10 @@ var config = {
 
     // BOSH URL. FIXME: use XEP-0156 to discover it.
     // use abstract xmpp domain as host
-    bosh: '//{{ .Env.XMPP_DOMAIN }}/http-bind',
+    bosh: '//{{ .Env.XMPP_BOSH_URL_BASE }}/http-bind',
 
     // Websocket URL
-    websocket: 'wss://{{ .Env.PUBLIC_URL_HOST }}/xmpp-websocket',
+    websocket: 'wss://{{ .Env.XMPP_BOSH_URL_BASE }}/xmpp-websocket',
 
     // The name of client node advertised in XEP-0115 'c' stanza
     clientNode: 'http://jitsi.org/jitsimeet',
