@@ -9,10 +9,10 @@ var config = {
         domain: '{{ .Env.XMPP_DOMAIN }}',
 
         // When using authentication, domain for guest users.
-        // anonymousdomain: 'guest.{{ .Env.XMPP_DOMAIN }},
+        anonymousdomain: 'guest.{{ .Env.XMPP_DOMAIN }},
 
         // Domain for authenticated users. Defaults to <domain>.
-        // authdomain: 'auth.{{ .Env.XMPP_DOMAIN}}',
+        authdomain: 'auth.{{ .Env.XMPP_DOMAIN}}',
 
         // Jirecon recording component domain.
         // jirecon: 'jirecon.jitsi-meet.example.com',
@@ -21,18 +21,18 @@ var config = {
         // call_control: 'callcontrol.jitsi-meet.example.com',
 
         // Focus component domain. Defaults to focus.<domain>.
-        // focus: 'focus.{{ .Env.XMPP_DOMAIN }}',
+        focus: 'focus.{{ .Env.XMPP_DOMAIN }}',
 
         // XMPP MUC domain. FIXME: use XEP-0030 to discover it.
         muc: 'muc.{{ .Env.XMPP_DOMAIN }}',
     },
 
     // BOSH URL. FIXME: use XEP-0156 to discover it.
-    // use abstract xmpp domain as hjst
+    // use abstract xmpp domain as host
     bosh: '//{{ .Env.XMPP_DOMAIN }}/http-bind',
 
     // Websocket URL
-    websocket: 'wss://{{ .Env.PUBLIC_URL }}/xmpp-websocket',
+    websocket: 'wss://{{ .Env.PUBLIC_URL_HOST }}/xmpp-websocket',
 
     // The name of client node advertised in XEP-0115 'c' stanza
     clientNode: 'http://jitsi.org/jitsimeet',
