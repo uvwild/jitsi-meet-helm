@@ -71,7 +71,7 @@ spec:
                   key: JVB_AUTH_PASSWORD
             # to proxy bosh and websockets  (now moved to ingress)
             - name: XMPP_BOSH_URL_BASE
-              value: "{{ include "jitsi-meet.name-prosody" . }}:5280"
+              value: "http://{{ include "jitsi-meet.name-prosody" . }}:5280"
             {{- range .Values.web.env }}
             - name: {{ .name | quote }}
               value: {{ .value | quote }}
