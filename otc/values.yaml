@@ -21,7 +21,7 @@ common:
   domain: jitsi.otc
   env:
     - name: ENABLE_XMPP_WEBSOCKET
-      value: "1"
+      value: "0"
     - name: ENABLE_LETSENCRYPT
       value: "0"
     - name: ENABLE_AUTH
