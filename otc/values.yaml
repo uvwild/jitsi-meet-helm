@@ -113,7 +113,7 @@ prosody:
     - name: ENABLE_GUESTS
       value: "1"
     - name: ENABLE_IPV6
-      value: "false"
+      value: "true"
     - name: ENABLE_STATISTICS
       value: "true"
 #    - name: TURN_AUTH_PASSWORD
