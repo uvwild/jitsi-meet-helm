@@ -351,9 +351,8 @@ controller:
 
     ## List of IP addresses at which the controller services are available
     ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
-    ##
-    externalIPs:
-      - 80.158.51.176
+    ## the LB is assigning its own anyways...
+    externalIPs: []
 
     # loadBalancerIP: ""
     loadBalancerSourceRanges: []
