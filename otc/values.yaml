@@ -109,7 +109,7 @@ prosody:
     - name: TURN_PASS
       value: m0recomplicatedPassword
     - name: LOG_LEVEL
-      value: info
+      value: debug
     - name: ENABLE_GUESTS
       value: "1"
     - name: ENABLE_IPV6
