@@ -369,6 +369,7 @@ controller:
     # Must be either "None" or "ClientIP" if set. Kubernetes will default to "None".
     # Ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
     # sessionAffinity: ""
+    sessionAffinity: ClientIP
 
     # specifies the health check node port (numeric port number) for the service. If healthCheckNodePort isn’t specified,
     # the service controller allocates a port from your cluster’s NodePort range.
@@ -502,8 +503,7 @@ controller:
       ## List of IP addresses at which the stats-exporter service is available
       ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
       ##
-      externalIPs:
-        - 80.158.51.176
+      externalIPs: []
 
       # loadBalancerIP: ""
       loadBalancerSourceRanges: []
