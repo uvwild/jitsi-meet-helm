@@ -3,8 +3,7 @@
 ##########################################################################################
 #  configure jitsi
 ##########################################################################################
-##########################################################################################
-##########################################################################################namespace: jitsi
+namespace: jitsi
 svcSuffix: svc.cluster.local
 
 imagePullSecrets:
@@ -18,7 +17,7 @@ webHost: ng.jitsi.otcdemo.gardener.t-systems.net
 #webHostAlt: jitsing.otcdemo.gardener.t-systems.net
 
 ####  this is used again in the nginx config
-publicIp: 80.158.55.223
+publicIp: 80.158.59.113
 ingress:
   # nginx-ingress istio-ingress istio-gateway
   type: nginx-ingress
@@ -192,7 +191,8 @@ web:
 ##########################################################################################
 ##########################################################################################
 ##########################################################################################
-#  configure nginx controller BEWARE OF CHANING IPS
+#  configure nginx controller BEWARE OF CHANGING IPS
+##########################################################################################
 ingress-nginx:
   controller:
     image:
@@ -207,9 +207,9 @@ ingress-nginx:
   #    udp: 10000
     # Will add custom configuration options to Nginx https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/
     config:
-      proxy-read-timeout: 3600
-      proxy-send-timeout: 3600
-      error-log-level: debug
+      proxy-read-timeout: "3600"
+      proxy-send-timeout: "3600"
+      error-log-level: "debug"
       # ssl_buffer_size: 16k # default
 
     scope:
@@ -233,11 +233,10 @@ ingress-nginx:
       # sessionAffinity: ""
       sessionAffinity: ClientIP
 
-      externalIP:
-        - 80.158.55.223
+      externalIP: {}
   ## Default 404 backend
   defaultBackend:
-    enabled: true
+    enabled: false
 
   ## Optional array of imagePullSecrets containing private registry credentials
   ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
@@ -256,7 +255,7 @@ ingress-nginx:
   # Ref: https://github.com/kubernetes/contrib/tree/master/ingress/controllers/nginx/examples/udp
   ##
 
-  ############### ITS COMPLAINING ABOUT either tcp or udp not both !!!
+  ############### we cannot provide udb AND tcp routes 
   udp: {}
   #  10000: "jitsi/jitsi-otc-jvb-0:10000"
   #  53: "kube-system/kube-dns:53"
