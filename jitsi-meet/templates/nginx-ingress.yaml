@@ -9,8 +9,8 @@ metadata:
     nginx.ingress.kubernetes.io/websocket-services : {{ include "jitsi-meet.name-prosody" . }},{{ include "jitsi-meet.name-jvb" . }}-0
     nginx.org/websocket-services : {{ include "jitsi-meet.name-prosody" . }},{{ include "jitsi-meet.name-jvb" . }}-0
 #    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "1800"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: 3600
+    nginx.ingress.kubernetes.io/proxy-read-timeout: 3600
 
 #    nginx.ingress.kubernetes.io/configuration-snippet: |
 #      more_set_headers "proxy_read_timeout: 3600";
@@ -31,7 +31,7 @@ spec:
               serviceName: {{ include "jitsi-meet.name-prosody" . }}
               servicePort: 5280
 
-          - path: /xmpp-websocket
+          - path: /xmpp-websocket/
             pathType: Prefix
             backend:
               serviceName: {{ include "jitsi-meet.name-prosody" . }}
