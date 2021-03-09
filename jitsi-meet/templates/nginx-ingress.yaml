@@ -31,11 +31,12 @@ spec:
               serviceName: {{ include "jitsi-meet.name-prosody" . }}
               servicePort: 5280
 
+# try the ssl port for xmpp
           - path: /xmpp-websocket/
             pathType: Prefix
             backend:
               serviceName: {{ include "jitsi-meet.name-prosody" . }}
-              servicePort: 5280
+              servicePort: 5281
 
           - path: /colibri-ws/
             pathType: Prefix
