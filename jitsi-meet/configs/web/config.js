@@ -32,7 +32,7 @@ var config = {
     bosh: '/http-bind',
 
     // Websocket URL
-    // websocket: '/xmpp-websocket',
+    websocket: 'wss://{{ .Env.PUBLIC_URL_HOST }}/xmpp-websocket',
 
     // The name of client node advertised in XEP-0115 'c' stanza
     clientNode: 'http://jitsi.org/jitsimeet',
