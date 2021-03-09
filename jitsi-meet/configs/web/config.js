@@ -50,11 +50,11 @@ var config = {
         p2pTestMode: false,
 
         // Enables the test specific features consumed by jitsi-meet-torture
-        testMode: true,
+        testMode: false,
 
         // Disables the auto-play behavior of *all* newly created video element.
         // This is useful when the client runs on a host with limited resources.
-        noAutoPlayVideo: true,
+        noAutoPlayVideo: false,
     },
 
     // Disables ICE/UDP by filtering out local and remote UDP candidates in
@@ -84,7 +84,7 @@ var config = {
     // notify the user if there is noise, other than voice, coming from the current
     // selected microphone. The purpose it to let the user know that the input could
     // be potentially unpleasant for other meeting participants.
-    enableNoisyMicDetection: true,
+    enableNoisyMicDetection: false,
 
     // Start the conference in audio only mode (no video is being received nor
     // sent).

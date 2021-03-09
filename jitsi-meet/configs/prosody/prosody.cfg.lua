@@ -33,7 +33,7 @@ use_libevent = true;
 -- shared auth secret currently disabled in coturn server
 turncredentials_secret = {{ .Env.TURN_AUTH_PASSWORD | default "uebersafe" | quote }}
 
-turncredentials = {
+turncredentialsXXXX = {
   { type = "stun",
   	host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}",
   	credential = "{{ .Env.TURN_USER }}", password = "{{ .Env.TURN_PASS }}" },
@@ -56,10 +56,6 @@ modules_enabled = {
 		"tls"; -- Add support for secure TLS on c2s/s2s connections
 		"dialback"; -- s2s dialback support
 		"disco"; -- Service discovery
-		"offline"; -- Store offline messages
-		"c2s"; -- Handle client connections
-		"s2s"; -- Handle server-to-server connections
-
 
 	-- Not essential, but recommended
 		"private"; -- Private XML storage (for room bookmarks, etc.)
@@ -86,22 +82,26 @@ modules_enabled = {
 		--"http_files"; -- Serve static files from a directory over HTTP
 
         "turncredentials";
+
+        "smacks";   -- to support websockets??
+        "pinger"; 
+		"websocket";
 	-- Other specific functionality
 		"posix"; -- POSIX functionality, sends server to background, enables syslog, etc.
 		--"groups"; -- Shared roster support
 		--"announce"; -- Send announcement to all online users
-		"welcome"; -- Welcome users who register accounts
-		"websocket";
-		"watchregistrations"; -- Alert admins of registrations
-		"motd"; -- Send a message to users when they log in
+		--"welcome"; -- Welcome users who register accounts
+		--"watchregistrations"; -- Alert admins of registrations
+		--"motd"; -- Send a message to users when they log in
 		--"legacyauth"; -- Legacy authentication. Only used by some old clients and bots.
         {{ if .Env.GLOBAL_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.GLOBAL_MODULES) }}";
         {{ end }}
 };
 
-
+-- a user disabled this to use wss
 -- https_ports = { }
+
 -- These modules are auto-loaded, but should you want
 -- to disable them then uncomment them here:
 modules_disabled = {
@@ -111,7 +111,8 @@ modules_disabled = {
 };
 -- Disable account creation by default, for security
 -- For more information see http://prosody.im/doc/creating_accounts
-allow_registration = true;
+allow_registration = false;
+
 daemonize = false;
 pidfile = "/config/data/prosody.pid";
 -- Force clients to use encrypted connections? This option will
@@ -126,7 +127,8 @@ s2s_secure_auth = false
 -- Many servers don't support encryption or have invalid or self-signed
 -- certificates. You can list domains here that will not be required to
 -- authenticate using certificates. They will be authenticated using DNS.
-s2s_insecure_domains = {
+
+s2s_insecure_domains = { "gmail.com",
 	"{{ .Env.XMPP_DOMAIN }}","auth.{{ .Env.XMPP_DOMAIN }}",
 	"jitsid.otcdemo.gardener.t-systems.net",
 	"ng.jitsi.otcdemo.gardener.t-systems.net"
@@ -160,17 +162,25 @@ authentication = "internal_hashed"
 log = {
 	{ levels = {min = "{{ $LOG_LEVEL }}"}, to = "console"};
 }
+
 {{ if .Env.GLOBAL_CONFIG }}
 {{ join "\n" (splitList "\\n" .Env.GLOBAL_CONFIG) }}
 {{ end }}
+
 -- Enable use of native prosody 0.11 support for epoll over select
 network_backend = "epoll";
 -- Set the TCP backlog to 511 since the kernel rounds it up to the next power of 2: 512.
 network_settings = {
   tcp_backlog = 511;
 }
+
 component_interface = { "*" }
 
 data_path = "/config/data"
+
+smacks_max_unacked_stanzas = 5;
+smacks_hibernation_time = 60;
+smacks_max_hibernated_sessions = 1;
+smacks_max_old_sessions = 1;
 
 Include "conf.d/*.cfg.lua"
