@@ -2,7 +2,7 @@
 *.iml
 *.log
 *.txt
-.gitignore
+.jitsi*
 templated.yaml
 templated
 __pycache__
