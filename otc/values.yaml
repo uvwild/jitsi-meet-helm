@@ -207,7 +207,7 @@ controller:
     error-log-level: debug
     # ssl_buffer_size: 16k # default
 
- scope:
+  scope:
     enabled: true
     namespace: "jitsi"   # defaults to .Release.Namespace
 
