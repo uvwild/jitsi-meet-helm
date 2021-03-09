@@ -31,8 +31,8 @@ spec:
               serviceName: {{ include "jitsi-meet.name-prosody" . }}
               servicePort: 5280
 
-# try the ssl port for xmpp
-          - path: /xmpp-websocket/
+# try the ssl port for xmpp  (no ending slash here)
+          - path: /xmpp-websocket
             pathType: Prefix
             backend:
               serviceName: {{ include "jitsi-meet.name-prosody" . }}
