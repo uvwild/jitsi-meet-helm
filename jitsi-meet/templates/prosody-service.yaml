@@ -23,6 +23,11 @@ spec:
       targetPort: xmpp-bosh
       protocol: TCP
 
+    - name: xmpp-bosh-ssl
+      port: 5281
+      targetPort: xmpp-bosh-ssl
+      protocol: TCP
+
     - name: prosody-compreg
       port: 5347
       targetPort: prosody-compreg

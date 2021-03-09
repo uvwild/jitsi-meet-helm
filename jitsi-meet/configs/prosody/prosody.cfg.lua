@@ -101,7 +101,7 @@ modules_enabled = {
 };
 
 
-https_ports = { }
+-- https_ports = { }
 -- These modules are auto-loaded, but should you want
 -- to disable them then uncomment them here:
 modules_disabled = {
