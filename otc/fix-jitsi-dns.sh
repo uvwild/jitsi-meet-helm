@@ -29,13 +29,14 @@ if [ "$JITSI_OLDIP" == "$JITSI_NEWIP" ];then
 		echo -e "\e[32m NO CHANGE DONE\e[0m"
 else
 	if [ -n "$JITSI_OLDIP" ] ; then
-		echo -e "\e[31mRemove previous Entry with  $JITSI_OLDIP\e[0m"
-		echo openstack dns recordset delete $BASE_ZONE $JITSI_RECORD
-		openstack dns recordset delete $BASE_ZONE $JITSI_RECORD
+		echo -e "\e[31mUpdate previous Entry with  $JITSI_NEWIP\e[0m"
+		echo openstack dns recordset set $BASE_ZONE $JITSI_RECORD
+		openstack dns recordset set --record "$JITSI_NEWIP" $BASE_ZONE $JITSI_RECORD
+	else
+		echo -e "\e[32mCreate new entry \e[0m"
+		echo openstack dns recordset create --type A --name $JITSI_RECORD --record "$JITSI_NEWIP"  $BASE_ZONE
+		openstack dns recordset create --type A --name $JITSI_RECORD --record "$JITSI_NEWIP"  $BASE_ZONE
 	fi
-	echo -e "\e[32mCreate new entry \e[0m"
-	echo openstack dns recordset create --type A --name $JITSI_RECORD --record "$JITSI_NEWIP"  $BASE_ZONE
-	openstack dns recordset create --type A --name $JITSI_RECORD --record "$JITSI_NEWIP"  $BASE_ZONE
 fi
 
 echo -n OLDIP\ ;ping -c 1 $JITSI_OLDIP
