@@ -1,4 +1,10 @@
-namespace: jitsi
+##########################################################################################
+##########################################################################################
+##########################################################################################
+#  configure jitsi
+##########################################################################################
+##########################################################################################
+##########################################################################################namespace: jitsi
 svcSuffix: svc.cluster.local
 
 imagePullSecrets:
@@ -10,6 +16,8 @@ image:
 #publicIp: 80.158.56.57
 webHost: ng.jitsi.otcdemo.gardener.t-systems.net
 #webHostAlt: jitsing.otcdemo.gardener.t-systems.net
+
+####  this is used again in the nginx config
 publicIp: 80.158.55.125
 ingress:
   # nginx-ingress istio-ingress istio-gateway
@@ -228,6 +236,8 @@ controller:
     # sessionAffinity: ""
     sessionAffinity: ClientIP
 
+    externalIP:
+      - 80.158.55.125
 ## Default 404 backend
 defaultBackend:
   enabled: true
