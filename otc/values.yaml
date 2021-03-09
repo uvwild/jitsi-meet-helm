@@ -4,7 +4,7 @@ svcSuffix: svc.cluster.local
 imagePullSecrets:
   - name: regcred
 image:
-  tag: table-5390-3
+  tag: stable-5390-3
 
 #webHost: www.jitsi.otcdemo.gardener.t-systems.net
 #publicIp: 80.158.56.57
@@ -247,7 +247,7 @@ tcp:
 
 # UDP service key:value pairs
 # Ref: https://github.com/kubernetes/contrib/tree/master/ingress/controllers/nginx/examples/udp
-## 
+##
 
 ############### ITS COMPLAINING ABOUT either tcp or udp not both !!!
 udp: {}
