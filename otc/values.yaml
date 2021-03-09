@@ -163,14 +163,14 @@ web:
     - name: ENABLE_GUESTS
       value: "1"
     - name: ENABLE_IPV6
-      value: "false"
+      value: "true"
     - name: ENABLE_HTTP_REDIRECT
       value: "0"
     - name: LOG_LEVEL
       value: info
-    # skip key generation on deployment
+    # skip key generation on web deployment
     - name: DISABLE_HTTPS
-      value: "1"
+      value: "0"
   service:
     type: ClusterIP
     port: 80
