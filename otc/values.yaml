@@ -9,7 +9,8 @@ svcSuffix: svc.cluster.local
 imagePullSecrets:
   - name: regcred
 image:
-  tag: stable-5390-3
+  tag: stable-5142-4   # previous
+#  tag: stable-5390-3
 
 #webHost: www.jitsi.otcdemo.gardener.t-systems.net
 #publicIp: 80.158.56.57
