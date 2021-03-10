@@ -33,7 +33,7 @@ use_libevent = true;
 -- shared auth secret currently disabled in coturn server
 turncredentials_secret = {{ .Env.TURN_AUTH_PASSWORD | default "uebersafe" | quote }}
 
-turncredentialsXXXX = {
+turncredentials = {
   { type = "stun",
   	host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}",
   	credential = "{{ .Env.TURN_USER }}", password = "{{ .Env.TURN_PASS }}" },
@@ -84,8 +84,8 @@ modules_enabled = {
         "turncredentials";
 
         "smacks";   -- to support websockets??
-        "pinger"; 
-		"websocket";
+        "pinger";
+	"websocket";
 	-- Other specific functionality
 		"posix"; -- POSIX functionality, sends server to background, enables syslog, etc.
 		--"groups"; -- Shared roster support
@@ -100,7 +100,7 @@ modules_enabled = {
 };
 
 -- a user disabled this to use wss
--- https_ports = { }
+https_ports = { "5281" }
 
 -- These modules are auto-loaded, but should you want
 -- to disable them then uncomment them here:
