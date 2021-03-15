@@ -66,8 +66,8 @@ spec:
         # mount config file /var/app and copy to defaults
         volumeMounts:
           - name: config
-            mountPath: "/defaults/sip-communicator.properties"
-            subPath: "sip-communicator.properties"
+            mountPath: "/defaults/jicofo.conf"
+            subPath: "jicofo.conf"
           - name: config
             mountPath: "/defaults/logging.properties"
             subPath: "logging.properties"

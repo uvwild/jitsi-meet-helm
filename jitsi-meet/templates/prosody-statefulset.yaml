@@ -99,7 +99,7 @@ spec:
             - name: xmpp-bosh
               containerPort: 5280
               protocol: TCP
-
+            # probably unused
             - name: xmpp-bosh-ssl
               containerPort: 5281
               protocol: TCP

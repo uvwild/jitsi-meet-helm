@@ -1,4 +1,3 @@
-{{ $LOG_LEVEL := .Env.LOG_LEVEL | default "info" }}
  -- Prosody Example Configuration File
 --
 -- Information on configuring Prosody can be found on our
@@ -27,23 +26,24 @@ plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom", "/usr/share/jit
 
 -- Enable use of libevent for better performance under high load
 -- For more information see: http://prosody.im/doc/libevent
-use_libevent = true;
+--use_libevent = true;
 
 
+-- CONFIGURED in GLOBAL_CONFIG
 -- shared auth secret currently disabled in coturn server
-turncredentials_secret = {{ .Env.TURN_AUTH_PASSWORD | default "uebersafe" | quote }}
+-- turncredentials_secret = {{ .Env.TURN_AUTH_PASSWORD | default "uebersafe" | quote }}
 
-turncredentials = {
-  { type = "stun",
-  	host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}",
-  	credential = "{{ .Env.TURN_USER }}", password = "{{ .Env.TURN_PASS }}" },
-  { type = "turn",
-  	host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}",
-  	credential = "{{ .Env.TURN_USER }}", password = "{{ .Env.TURN_PASS }}" },
-  { type = "turns",
-  	host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURNS_PORT }}",
-  	credential = "{{ .Env.TURN_USER }}", password = "{{ .Env.TURN_PASS }}" }
-};
+-- turncredentials = {
+--   { type = "stun",
+--   	host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}",
+--   	credential = "{{ .Env.TURN_USER }}", password = "{{ .Env.TURN_PASS }}" },
+--   { type = "turn",
+--   	host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURN_PORT }}",
+--   	credential = "{{ .Env.TURN_USER }}", password = "{{ .Env.TURN_PASS }}" },
+--   { type = "turns",
+--   	host = "{{ .Env.TURN_HOST }}", port = "{{ .Env.TURNS_PORT }}",
+--   	credential = "{{ .Env.TURN_USER }}", password = "{{ .Env.TURN_PASS }}" }
+-- };
 
 -- This is the list of modules Prosody will load on startup.
 -- It looks for mod_modulename.lua in the plugins folder, so make sure that exists too.
@@ -78,14 +78,9 @@ modules_enabled = {
 		--"admin_telnet"; -- Opens telnet console interface on localhost port 5582
 
 	-- HTTP modules
-		"bosh"; -- Enable BOSH clients, aka "Jabber over HTTP"
+		--"bosh"; -- Enable BOSH clients, aka "Jabber over HTTP"
 		--"http_files"; -- Serve static files from a directory over HTTP
 
-        "turncredentials";
-
-        "smacks";   -- to support websockets??
-        "pinger";
-	"websocket";
 	-- Other specific functionality
 		"posix"; -- POSIX functionality, sends server to background, enables syslog, etc.
 		--"groups"; -- Shared roster support
@@ -99,31 +94,37 @@ modules_enabled = {
         {{ end }}
 };
 
--- a user disabled this to use wss
-https_ports = { "5281" }
+https_ports = { }
 
 -- These modules are auto-loaded, but should you want
 -- to disable them then uncomment them here:
 modules_disabled = {
 	-- "offline"; -- Store offline messages
 	-- "c2s"; -- Handle client connections
-	-- "s2s"; -- Handle server-to-server connections
+	"s2s"; -- Handle server-to-server connections
 };
+
 -- Disable account creation by default, for security
 -- For more information see http://prosody.im/doc/creating_accounts
 allow_registration = false;
 
 daemonize = false;
+
 pidfile = "/config/data/prosody.pid";
+
 -- Force clients to use encrypted connections? This option will
 -- prevent clients from authenticating unless they are using encryption.
+
 c2s_require_encryption = false
+
 -- Force certificate authentication for server-to-server connections?
 -- This provides ideal security, but requires servers you communicate
 -- with to support encryption AND present valid, trusted certificates.
 -- NOTE: Your version of LuaSec must support certificate verification!
 -- For more information see http://prosody.im/doc/s2s#security
+
 s2s_secure_auth = false
+
 -- Many servers don't support encryption or have invalid or self-signed
 -- certificates. You can list domains here that will not be required to
 -- authenticate using certificates. They will be authenticated using DNS.
@@ -133,32 +134,41 @@ s2s_insecure_domains = { "gmail.com",
 	"jitsid.otcdemo.gardener.t-systems.net",
 	"ng.jitsi.otcdemo.gardener.t-systems.net"
 }
+
 -- Even if you leave s2s_secure_auth disabled, you can still require valid
 -- certificates for some domains by specifying a list here.
+
 --s2s_secure_domains = { "jabber.org" }
+
 -- Select the authentication backend to use. The 'internal' providers
 -- use Prosody's configured data storage to store the authentication data.
 -- To allow Prosody to offer secure authentication mechanisms to clients, the
 -- default provider stores passwords in plaintext. If you do not trust your
 -- server please see http://prosody.im/doc/modules/mod_auth_internal_hashed
 -- for information about using the hashed backend.
+
 authentication = "internal_hashed"
+
 -- Select the storage backend to use. By default Prosody uses flat files
 -- in its configured data directory, but it also supports more backends
 -- through modules. An "sql" backend is included by default, but requires
 -- additional dependencies. See http://prosody.im/doc/storage for more info.
+
 --storage = "sql" -- Default is "internal" (Debian: "sql" requires one of the
 -- lua-dbi-sqlite3, lua-dbi-mysql or lua-dbi-postgresql packages to work)
+
 -- For the "sql" backend, you can uncomment *one* of the below to configure:
 --sql = { driver = "SQLite3", database = "prosody.sqlite" } -- Default. 'database' is the filename.
 --sql = { driver = "MySQL", database = "prosody", username = "prosody", password = "secret", host = "localhost" }
 --sql = { driver = "PostgreSQL", database = "prosody", username = "prosody", password = "secret", host = "localhost" }
+
 -- Logging configuration
 -- For advanced logging see http://prosody.im/doc/logging
 --
 -- Debian:
 --  Logs info and higher to /var/log
 --  Logs errors to syslog also
+{{ $LOG_LEVEL := .Env.LOG_LEVEL | default "info" }}
 log = {
 	{ levels = {min = "{{ $LOG_LEVEL }}"}, to = "console"};
 }

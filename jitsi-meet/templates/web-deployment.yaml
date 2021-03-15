@@ -49,9 +49,7 @@ spec:
               value: guest.{{ .Values.common.domain }}
 
             - name: PUBLIC_URL
-              value: "https://{{ .Values.webHost }}:443"
-            - name: PUBLIC_URL_HOST
-              value: "{{ .Values.webHost }}"
+              value: "https://{{ .Values.webHost }}"
             - name: XMPP_SERVER
               value: {{ include "jitsi-meet.name-prosody" . }}
 
