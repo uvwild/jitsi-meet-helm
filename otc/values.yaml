@@ -124,6 +124,10 @@ prosody:
       value: "true"
     - name: ENABLE_STATISTICS
       value: "true"
+    - name: GLOBAL_MODULES
+      value: smacks,turncredentials,websocket
+    - name: GLOBAL_CONFIG
+      value: turncredentials_secret='mySecretTurnPasswordConfiguredInTurnServer'
 #    - name: TURN_AUTH_PASSWORD
 #      value: mySecretTurnPasswordConfiguredInTurnServer
 #      value: meet-jit-si-turnrelay.jitsi.net

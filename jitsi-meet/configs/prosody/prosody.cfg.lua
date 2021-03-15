@@ -1,4 +1,4 @@
- -- Prosody Example Configuration File
+-- Prosody Example Configuration File
 --
 -- Information on configuring Prosody can be found on our
 -- website at http://prosody.im/doc/configure
