@@ -122,6 +122,7 @@ spec:
         - name: config
           configMap:
             name: {{ template "jitsi-meet.name-web-config" . }}
+            defaultMode: 0777
       {{- with .Values.web.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

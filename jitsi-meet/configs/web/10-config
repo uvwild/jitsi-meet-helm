@@ -58,17 +58,17 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
             echo "using keys found in /config/keys"
         else
             echo "generating self-signed keys in /config/keys, you can replace these with your own keys if required"
-            SUBJECT="/C=US/ST=TX/L=Austin/O=jitsi.org/OU=Jitsi Server/CN=*"
+            SUBJECT="/C=DE/ST=B/L=Berlin/O=jitsi.otc/OU=T-Systems/CN=*"
             openssl req -new -x509 -days 3650 -nodes -out /config/keys/cert.crt -keyout /config/keys/cert.key -subj "$SUBJECT"
         fi
     fi
 fi
 
-# copy config files
+# TEMPLATE all config files
 tpl /defaults/nginx.conf > /config/nginx/nginx.conf
 
 # copy our certs manually since letsencrypt is broken
-if [ -d /etc/letsencrypt/archive ];then
+if [ -d /etc/letsencrypt/live ];then
      mkdir -p /config/acme-certs/$LETSENCRYPT_DOMAIN/
      cp -p /etc/letsencrypt/live/$LETSENCRYPT_DOMAIN/* /config/acme-certs/$LETSENCRYPT_DOMAIN/
      ln -sf /config/acme-certs/$LETSENCRYPT_DOMAIN/privkey.pem /config/acme-certs/$LETSENCRYPT_DOMAIN/key.pem
@@ -78,11 +78,11 @@ tpl /defaults/meet.conf > /config/nginx/meet.conf
 if [[ -f /config/nginx/custom-meet.conf ]]; then
     cat /config/nginx/custom-meet.conf >> /config/nginx/meet.conf
 fi
-# enable this always for ssl template
-tmp=$ENABLE_LETSENCRYPT
-export ENABLE_LETSENCRYPT=1
+# in docker enable this switch to use the linked in certs
+#tmp=$ENABLE_LETSENCRYPT
+#export ENABLE_LETSENCRYPT=1
 tpl /defaults/ssl.conf > /config/nginx/ssl.conf
-ENABLE_LETSENCRYPT=$tmp
+#ENABLE_LETSENCRYPT=$tmp
 
 tpl /defaults/default > /config/nginx/site-confs/default
 
