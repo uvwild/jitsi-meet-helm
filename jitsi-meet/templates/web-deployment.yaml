@@ -103,6 +103,9 @@ spec:
             {{- toYaml .Values.web.resources | nindent 12 }}
           volumeMounts:
             - name: config
+              mountPath: "/etc/cont-init.d/10-config"
+              subPath: "10-config"
+            - name: config
               mountPath: "/defaults/config.js"
               subPath: "config.js"
             - name: config

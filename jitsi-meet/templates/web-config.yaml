@@ -6,6 +6,8 @@ metadata:
   labels:
 {{ include "jitsi-meet.labels" . | indent 4 }}
 data:
+  10-config: |-
+    {{- .Files.Get "configs/web/10-config" | nindent 4 }}
   config.js: |-
     {{- .Files.Get "configs/web/config.js" | nindent 4 }}
   interface_config.js: |-
