@@ -183,6 +183,10 @@ web:
     # skip key generation on web deployment
     - name: DISABLE_HTTPS
       value: "0"
+    - name: P2P_TEST_MODE
+      value: "true"
+
+
   service:
     type: ClusterIP
     port: 80

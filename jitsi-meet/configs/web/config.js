@@ -48,7 +48,7 @@ var config = {
     testing: {
         // P2P test mode disables automatic switching to P2P when there are 2
         // participants in the conference.
-        p2pTestMode: false,
+        p2pTestMode: {{ .Env.P2P_TEST_MODE | default "false" }},
 
         // Enables the test specific features consumed by jitsi-meet-torture
         // testMode: false
